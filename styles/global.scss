@@ -1,0 +1,441 @@
+@import 'tailwindcss/dist/base.min';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+$primary: rgba(255, 32, 32, 1);
+$secondary: rgba(235, 0, 141, 1);
+$primary-light: rgb(255, 130, 130);
+$secondary-light: rgb(235, 117, 188);
+
+// Light theme [DEFAULT]
+$background-primary: rgb(255, 255, 255);
+$background-secondary: rgb(237, 242, 247);
+$text-dark: rgb(74, 85, 104);
+$text-darker: rgb(26, 32, 44);
+$text-light: rgb(113, 128, 150);
+$text-lighter: #f7fafc;
+
+// Dark theme
+$d-background-primary: #2e2b3f;
+$d-background-secondary: #221f2e;
+$d-text-darker: rgb(247, 250, 252);
+$d-text-dark: rgb(113, 128, 150);
+$d-text-light: rgb(74, 85, 104);
+$d-text-lighter: rgb(26, 32, 44);
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary-900: #181c20;
+  --color-primary-800: #21262b;
+  --color-primary-700: #2b3136;
+  --color-primary-600: #4b5563;
+  --color-primary-500: #6b7280;
+  --color-primary-400: #9ca3af;
+  --color-primary-300: #d1d5db;
+  --color-primary-200: #e5e7eb;
+  --color-primary-100: #f3f4f6;
+
+  --border-input: #000;
+
+  --color-accent: #eb008d;
+  --color-accent-hover: #ee38a5;
+  --color-accent-hover-outline: #ee38a525;
+  --color-accent-disabled: #ec41a8;
+
+  --text-button: #f3f4f6;
+  --text-button-disabled: #f3f4f69c;
+
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --primary-light: #{$primary-light};
+  --secondary-light: #{$secondary-light};
+  --background-primary: #{$background-primary};
+  --background-secondary: #{$background-secondary};
+  --text-light: #{$text-light};
+  --text-lighter: #{$text-lighter};
+  --text-dark: #{$text-dark};
+  --text-darker: #{$text-darker};
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+[data-theme='dark'] {
+  --background-primary: #{$d-background-primary};
+  --background-secondary: #{$d-background-secondary};
+  --text-light: #{$d-text-light};
+  --text-lighter: #{$d-text-lighter};
+  --text-dark: #{$d-text-dark};
+  --text-darker: #{$d-text-darker};
+}
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: rgb(236, 204, 223);
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: rgb(235, 138, 196);
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: rgb(233, 60, 164);
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: rgb(253, 0, 152);
+}
+
+.empty-ceil {
+  fill: var(--background-secondary);
+}
+
+@font-face {
+  font-family: 'basiclazer';
+  src: url('../public/fonts/basiclazer.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.basiclazer {
+  font-family: 'basiclazer';
+}
+
+@font-face {
+  font-family: 'Lazer84';
+  src: url('../public/fonts/Lazer84.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.Lazer84 {
+  font-family: 'Lazer84';
+}
+
+@font-face {
+  font-family: 'American Captain';
+  src: url('../public/fonts/American\ Captain.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.AmericanCaptain {
+  font-family: 'American Captain';
+}
+
+@font-face {
+  font-family: 'Robot Crush';
+  src: url('../public/fonts/Robot\ Crush.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.RobotCrush {
+  font-family: 'Robot Crush';
+}
+
+// @font-face {
+//   font-family: "Press Start 2P";
+//   @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+// }
+
+// .PressStart {
+//   font-family: "Press Start 2P", cursive;
+// }
+
+.link-styled {
+  color: var(--color-primary-200);
+  background-color: var(--color-accent);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+  font-weight: bold;
+}
+
+.link {
+  color: var(--color-primary-200);
+  font-weight: bold;
+}
+
+.react-tags {
+  position: relative;
+  padding: 6px 0.75rem 0 0.75rem;
+  border: 1px solid black;
+  background-color: var(--color-primary-700);
+
+  border-radius: 0.5rem;
+  color: var(--text-darker);
+  /* shared font styles */
+
+  /* clicking anywhere will focus the input */
+  cursor: text;
+  &:hover {
+    border-color: var(--color-accent);
+  }
+}
+
+.react-tags__search {
+  *,
+  &::after,
+  &::before {
+    background-color: transparent;
+  }
+}
+.react-tags.is-focused {
+  border-color: var(--color-accent);
+}
+
+.react-tags__selected {
+  display: inline;
+}
+
+.react-tags__selected-tag {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 6px 6px 0;
+  padding: 6px 0.75rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 500px;
+  background: transparent;
+
+  /* match the font styles */
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.react-tags__selected-tag:after {
+  content: '\2715';
+  color: var(--color-accent);
+  margin-left: 8px;
+}
+
+.react-tags__selected-tag:hover,
+.react-tags__selected-tag:focus {
+  border-color: var(--color-accent);
+}
+
+.react-tags__search {
+  display: inline-block;
+
+  /* match tag layout */
+  padding: 7px 2px;
+  margin-bottom: 6px;
+
+  /* prevent autoresize overflowing the container */
+  max-width: 100%;
+}
+
+@media screen and (min-width: 30em) {
+  .react-tags__search {
+    /* this will become the offsetParent for suggestions */
+    position: relative;
+  }
+}
+
+.react-tags__search-input {
+  /* prevent autoresize overflowing the container */
+  max-width: 100%;
+
+  /* remove styles and layout from this element */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+
+  /* match the font styles */
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--color-primary-200);
+  font-weight: 500;
+}
+
+.react-tags__search-input::-ms-clear {
+  display: none;
+}
+
+.react-tags__suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+@media screen and (min-width: 30em) {
+  .react-tags__suggestions {
+    width: 240px;
+  }
+}
+
+.react-tags__suggestions ul {
+  margin: 4px -1px;
+  padding: 0;
+  list-style: none;
+  background: var(--color-primary-700);
+  border: 1px solid var(--color-accent);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+.react-tags__suggestions li {
+  border-bottom: 1px solid var(--color-accent);
+  padding: 6px 8px;
+  color: var(--text-darker);
+}
+
+.react-tags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+  color: var(--text-darker);
+}
+
+.react-tags__suggestions li:hover {
+  cursor: pointer;
+  background: var(--color-accent);
+}
+
+.react-tags__suggestions li.is-active {
+  background: var(--color-accent);
+}
+
+.react-tags__suggestions li.is-disabled {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+// matt added for amount input for donate page
+
+input.input-donate-amount {
+  font-weight: 500;
+  font-size: 3em;
+  text-align: center;
+  width: 100%;
+  //   background-color: rgb(190, 190, 190);
+  //   border: 1px solid rgba(203, 213, 224);
+  //   border-radius: 0.25rem;
+  resize: none;
+  height: 1.6em;
+  //   height: 2em;
+  //   border-bottom: 1px solid rgba(203, 213, 224);
+  background: 1px solid rgba(203, 213, 224, 1);
+  background: rgb(225, 225, 231, 0.4);
+
+  input.input-donate-amount::placeholder {
+    align-self: center;
+  }
+
+  //   input.input-donate-amount:focus {
+  //     outline: none;
+  //   }
+}
+
+// matt added for show browser mockup for about page
+
+.browser-mockup {
+  border-top: 2em solid rgba(230, 230, 230, 0.7);
+  position: relative;
+  height: 60vh;
+}
+
+.browser-mockup:before {
+  display: block;
+  position: absolute;
+  content: '';
+  top: -1.25em;
+  left: 1em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background-color: #f44;
+  box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
+}
+
+.browser-mockup > * {
+  display: block;
+}
+
+// from original navbar
+// add pink border to bottom
+.custom-nav-settings {
+  // background-color: #170042;
+  // background: linear-gradient(
+  //   279deg,
+  //   rgba(23, 0, 66, 1) 63%,
+  //   rgba(0, 0, 0, 1) 100%
+  // );
+  background: #000;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px 0 #ff005b, 0 2px 10px 0 #ff005b;
+}
+
+// make the letter look cool for the logo
+.threedeeshadow {
+  /* text-shadow: -0.04em -0.04em 0 #ff08ff, 0.04em 0.04em 0 cyan;
+  text-shadow: -0.03em -0.03em 0 #ff08ff, 0.03em 0.03em 0 cyan; */
+  text-shadow: -0.02em -0.02em 0 #ff08ff, 0.02em 0.02em 0 cyan;
+  text-shadow: -0.04em 0 #ff08ff, 0.04em 0 cyan;
+}
+
+// .gridBackground {
+//   background-image: url("https://steamuserimages-a.akamaihd.net/ugc/991262566628548285/2A23B0BB92EC12348B1180161261CB2DD10AEFED/");
+// }
+
+.themegradientbg {
+  background-image: linear-gradient(25deg, rgb(250, 25, 157) -60%, #2c0b30 85%);
+}
+
+/* Slideshow */
+.slick-dots li {
+  margin-top: 3rem;
+  display: inline-block;
+}
+
+.slick-slider ul {
+  position: absolute;
+}
+
+.slick-dots span {
+  background-color: #2b3136;
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  width: 1rem;
+}
+.slick-dots .slick-active span {
+  background-color: #eb008d;
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+  width: 3rem;
+}
+
+/* Infinite scroll */
+
+.infinite-scroll-component__outerdiv {
+  width: 100%;
+}
+
+/* Toggle buttons */
+
+.toggle-checkbox {
+  background-color: red;
+}
+
+.toggle-checkbox:checked {
+  right: 0;
+  border: 1px solid;
+  border-color: var(--color-accent);
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: var(--color-accent);
+}

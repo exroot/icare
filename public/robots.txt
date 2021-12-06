@@ -1,0 +1,4 @@
+Sitemap: https://shoutmo-frontend.vercel.app/sitemap.xml
+
+User-agent: *
+Allow: /*
