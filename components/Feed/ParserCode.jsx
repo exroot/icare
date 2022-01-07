@@ -377,7 +377,7 @@ function ShowGiphy(props) {
 }
 
 function ShowTwitch(props) {
-  const domain = "shoutmo.com";
+  const domain = "icare.com";
 
   const [visibility, setVisibility] = useState(false);
   const style = css`

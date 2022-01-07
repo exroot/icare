@@ -1,27 +1,27 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
-import { Form, Field, Formik } from 'formik'
-import tw, { css } from 'twin.macro'
-import { useToasts } from 'react-toast-notifications'
-import { motion, AnimatePresence } from 'framer-motion'
-import OutsideClickHandler from 'react-outside-click-handler'
-import { RiCloseFill } from 'react-icons/ri'
-import ShoutmoSchema from '../validations/shoutout.schema'
-import useUser from '../lib/useUser'
-import axios from '../lib/client'
-import { ButtonCTA as SubmitButton } from './Buttons/ButtonCTA'
-import resizeImage from '../utils/resizeImage'
+import React from "react";
+import { Form, Field, Formik } from "formik";
+import tw, { css } from "twin.macro";
+import { useToasts } from "react-toast-notifications";
+import { motion, AnimatePresence } from "framer-motion";
+import OutsideClickHandler from "react-outside-click-handler";
+import { RiCloseFill } from "react-icons/ri";
+import ShoutmoSchema from "../validations/shoutout.schema";
+import useUser from "../lib/useUser";
+import axios from "../lib/client";
+import { ButtonCTA as SubmitButton } from "./Buttons/ButtonCTA";
+import resizeImage from "../utils/resizeImage";
 
 const FormField = ({
   name,
   errors,
   touched,
-  placeholder = '',
+  placeholder = "",
   rows = 1,
-  as = 'input',
-  type = 'text',
+  as = "input",
+  type = "text",
 }) => {
-  const fieldName = name.toLowerCase()
+  const fieldName = name.toLowerCase();
   return (
     <Field
       as={as}
@@ -39,30 +39,30 @@ const FormField = ({
       `}
       rows={rows}
     />
-  )
-}
+  );
+};
 
 const ShoutoutModal = ({ showModal, setShowModal }) => {
-  const { addToast } = useToasts()
-  const { user } = useUser()
+  const { addToast } = useToasts();
+  const { user } = useUser();
   const handleSubmit = async (values, setSubmitting) => {
     try {
-      values.creator = user
+      values.creator = user;
       const { data } = await axios({
-        url: '/shoutouts/',
+        url: "/shoutouts/",
         body: values,
-        method: 'POST',
-      })
-      addToast('Shoutout created successfully.', {
-        appearance: 'success',
+        method: "POST",
+      });
+      addToast("Shoutout created successfully.", {
+        appearance: "success",
         autoDismiss: true,
-      })
-      setSubmitting(false)
-      setShowModal(false)
+      });
+      setSubmitting(false);
+      setShowModal(false);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   const container = {
     initial: {
@@ -74,7 +74,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const backup = {
     initial: {
       opacity: 0,
@@ -85,7 +85,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const modal = {
     initial: {
       scale: 1.2,
@@ -100,7 +100,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
       opacity: 0,
       scale: 1.2,
     },
-  }
+  };
   return (
     <AnimatePresence exitBeforeEnter>
       {showModal && (
@@ -133,7 +133,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
               {/* content */}
               <Formik
                 initialValues={{
-                  text: '',
+                  text: "",
                 }}
                 validationSchema={ShoutmoSchema}
                 validateOnBlur={false}
@@ -166,7 +166,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                         name="text"
                         errors={errors}
                         touched={touched}
-                        placeholder="What's up?"
+                        placeholder="Hola, qué tal?"
                         rows={5}
                       />
                     </div>
@@ -177,7 +177,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                       </div>
                       <div tw="max-w-sm">
                         <SubmitButton type="submit" isSubmitting={isSubmitting}>
-                          Send
+                          Postear
                         </SubmitButton>
                       </div>
                     </div>
@@ -189,7 +189,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
-export default ShoutoutModal
+export default ShoutoutModal;

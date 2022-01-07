@@ -4,172 +4,222 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { FaMapMarkerAlt } from 'react-icons/fa'
-import { RiLinksLine } from 'react-icons/ri'
-import Linkify from 'react-linkify'
-import tw, { css } from 'twin.macro'
-
-import LinksSection from './LinksSection'
-import AuthModal from '../Modals/AuthModal'
-import ShareModal from '../Modals/ShareModal'
-
-import axios from '../../lib/client'
-import useUser from '../../lib/useUser'
-import BottomNavigation from '../Navigation/BottomNavigation'
-import TopNavbar from '../Navigation/TopNavbar'
-import { ShareButtonForCard } from '../Buttons/ShareButtonForCard'
-import { EditButtonForCard } from '../Buttons/EditButtonForCard'
-import { UnfollowButtonForCard } from '../Buttons/UnfollowButtonForCard'
-import { FollowButtonForCard } from '../Buttons/FollowButtonForCard'
-import useShoutouts from '../../lib/useShoutoutsFetcher'
-import ShoutoutsContainer from './ShoutoutsContainer'
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { RiShareLine, RiEdit2Line, RiLinksLine } from "react-icons/ri";
+import { FiArrowLeft } from "react-icons/fi";
+import Linkify from "react-linkify";
+import { ButtonCTA as FollowButton } from "../Buttons/ButtonCTA";
+import {
+  ButtonPrimary as EditButton,
+  ButtonPrimary as ShareButton,
+} from "../Buttons/ButtonPrimary";
+import { ButtonSecondary as UnfollowButton } from "../Buttons/ButtonSecondary";
+import CategorySection from "./CategorySection";
+import FollowSection from "./FollowSection";
+import LinksSection from "./LinksSection";
+import AuthModal from "../Modals/AuthModal";
+import ShareModal from "../Modals/ShareModal";
+import resizeImage from "../../utils/resizeImage";
+import axios from "../../lib/client";
+import useUser from "../../lib/useUser";
+import "twin.macro";
+import BottomNavigation from "../Navigation/BottomNavigation";
+import TopNavbar from "../Navigation/TopNavbar";
+import Axios from "axios";
 
 const Profile = ({ profile, followersList = [], followingList = [] }) => {
-  const [buttonText, setButtonText] = useState('Following')
-  const [showModal, setShowModal] = useState(false)
-  const [showShareModal, setShowShareModal] = useState(false)
-  const [followingStatus, setFollowingStatus] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { user } = useUser()
-  const isUser = user && user.is_logged_in && user.username === profile.username
-  const router = useRouter()
+  const [buttonText, setButtonText] = useState("Following");
+  const [showModal, setShowModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+  const isUser =
+    user && user.is_logged_in && user.profile.username === profile.username;
+  const router = useRouter();
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     if (isMounted) {
-      ;(async () => {
-        let params = {}
+      (async () => {
+        let params = {};
         if (user) {
           params = {
             url: `/profiles/${profile.username}`,
-            method: 'GET',
-          }
+            method: "GET",
+          };
         } else {
           params = {
             url: `/profiles/${profile.username}`,
-            method: 'GET',
+            method: "GET",
             headers: {},
-          }
+          };
         }
-        const { data } = await axios(params)
+        const { data } = await axios(params);
         if (isMounted && data.data.following) {
-          setFollowingStatus(true)
+          setFollowingStatus(true);
         }
-      })()
+      })();
     }
     return () => {
-      isMounted = false
-    }
-  }, [user])
+      isMounted = false;
+    };
+  }, [user]);
 
   const followAction = async () => {
     try {
       if (user.is_logged_in === false) {
         // redirectTo(`/login?next=${profile.username}`);
-        setShowModal(true)
-        return
+        setShowModal(true);
+        return;
       }
-      setLoading(true)
+      setLoading(true);
       if (!followingStatus) {
         // action: follow user
-        await axios({
-          url: `/profiles/${profile.username}/follows/`,
-          method: 'POST',
-          body: {
-            follower: user.id,
-            followed: profile.id,
-          },
-        })
-        setFollowingStatus(true)
-        setLoading(false)
+        const { data } = await Axios.post(
+          Axios.defaults.baseURL + `/${profile.username}/folllowing`,
+          {},
+          {
+            headers: {
+              Authorization: localStorage.getItem("access"),
+            },
+          }
+        );
+        setFollowingStatus(true);
+        setLoading(false);
       } else {
         // action: unfollow user
-        await axios({
-          url: `/profiles/${profile.username}/follows/`,
-          method: 'DELETE',
-        })
-        setFollowingStatus(false)
-        setLoading(false)
+        // await axios({
+        //   url: `/profiles/${profile.username}/following`,
+        //   method: "DELETE",
+        // });
+
+        const { data } = await Axios.delete(
+          Axios.defaults.baseURL + `/${profile.username}/folllowing`,
+          {},
+          {
+            headers: {
+              Authorization: localStorage.getItem("access"),
+            },
+          }
+        );
+        console.log("DATA: ", data);
+        setFollowingStatus(false);
+        setLoading(false);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   return (
     <div tw="bg-black">
       {/* Back Button */}
       <TopNavbar />
-      {/* start testing card  */}
-      <div tw="ml-0 w-full max-w-md mx-auto | sm:mx-auto | md:ml-36 | lg:ml-48 | mt-16 lg:mt-24 space-y-3 mb-20">
-        <div tw="flex flex-row items-center space-x-3">
-          {/* <!-- avatar  --> */}
-          <Avatar src={profile.profile_picture} username={profile.username} />
+      <div tw="hidden sm:block sticky top-6 left-2 w-20 h-0">
+        <button
+          type="button"
+          tw="text-button text-sm block px-4 py-2 bg-accent hover:bg-accent-hover rounded-full"
+          onClick={() => router.back()}
+        >
+          <span tw="flex justify-center">
+            <FiArrowLeft tw="mt-1" />
+            Back
+          </span>
+        </button>
+      </div>
+      {/* Top Bio */}
+      <Bio
+        cover={
+          profile.image_cover
+            ? profile.image_cover
+            : "https://images.unsplash.com/photo-1567304529193-acc92518efcd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1656&q=1"
+        }
+      >
+        <div tw="w-full h-full bg-gradient-to-t sm:bg-gradient-to-r from-black via-black to-transparent">
+          <div tw="h-screen mx-6 sm:mx-24">
+            <div tw="space-y-6 pt-20">
+              <div tw="flex flex-col space-y-3 sm:space-y-5">
+                <Avatar src={profile.image_avatar} />
 
-          <div tw="flex flex-col w-full space-y-3">
-            {/* <!-- name / username --> */}
-            <div tw="flex flex-col w-full">
-              <p tw="text-2xl sm:text-3xl text-white font-semibold">
-                {nameParser(
-                  profile.firstname,
-                  profile.lastname,
-                  profile.username
-                )}
-              </p>
-
-              <p tw="text-white font-medium">@{profile.username}</p>
-            </div>
-
-            {/* <!-- start buttons section  --> */}
-            <div tw="mb-3 flex flex-row flex-wrap space-x-2 justify-end">
-              {!isUser ? (
-                !followingStatus ? (
-                  <FollowButtonForCard
-                    isSubmitting={loading}
-                    onClick={followAction}
-                  >
-                    Follow
-                  </FollowButtonForCard>
+                <NameAndUsername
+                  firstname={profile.first_name}
+                  lastname={profile.last_name}
+                  username={profile.username}
+                />
+              </div>
+              <div tw="w-full sm:w-3/4 lg:w-1/2 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                {!isUser ? (
+                  !followingStatus ? (
+                    <FollowButton isSubmitting={loading} onClick={followAction}>
+                      Seguir
+                    </FollowButton>
+                  ) : (
+                    <UnfollowButton
+                      onMouseEnter={() => setButtonText("Dejar de seguir")}
+                      onMouseLeave={() => setButtonText("Siguiendo")}
+                      isSubmitting={loading}
+                      onClick={followAction}
+                    >
+                      {buttonText}
+                    </UnfollowButton>
+                  )
                 ) : (
-                  <UnfollowButtonForCard
-                    onMouseEnter={() => setButtonText('Unfollow')}
-                    onMouseLeave={() => setButtonText('Following')}
-                    isSubmitting={loading}
-                    onClick={followAction}
-                  >
-                    {buttonText}
-                  </UnfollowButtonForCard>
-                )
-              ) : (
-                <EditButtonForCard anchor href="/settings">
-                  <span tw="flex justify-center">Edit Profile</span>
-                </EditButtonForCard>
-              )}
-              <ShareButtonForCard onClick={() => setShowShareModal(true)} />
-            </div>
+                  <EditButton anchor href="/settings">
+                    <span tw="flex justify-center">
+                      <RiEdit2Line tw="mr-1 mt-1" /> Editar perfil
+                    </span>
+                  </EditButton>
+                )}
+                <ShareButton onClick={() => setShowShareModal(true)}>
+                  <span tw="flex justify-center">
+                    <RiShareLine tw="mr-1 mt-1" />
+                    Compartir
+                  </span>
+                </ShareButton>
+              </div>
 
-            {/* <!-- end buttons section  --> */}
+              <div tw="space-y-2">
+                <Description
+                  description={
+                    "Hola, soy el administrador de iCare y desarrolle esta plataforma con la que intencion de que sirva como una herramienta para la comunidad de cuidadores de pacientes con Alzheimer."
+                  }
+                />
+                <GeoPosition country={"Venezuela"} city={"El Tocuyo"} />
+              </div>
+
+              <Follows
+                followers={profile.follower_count}
+                following={profile.following_count}
+              />
+            </div>
           </div>
         </div>
-
-        {/* <!-- meta section / bio section  --> */}
-        <MetaSection
-          following={profile.following_count}
-          followers={profile.follower_count}
-          profile={profile}
-        />
-        <BioSection bio={profile.bio} />
-
-        {/* <!-- tabs /tab bar  --> */}
-        <ProfileCardTabs
-          links={profile.social_links}
-          withTitle={false}
-          profile={profile}
-        />
-      </div>
-      {/* end card  */}
-
+      </Bio>
+      {/* Bottom section  */}
+      {/* <div tw="mx-6 sm:mx-24 mt-40 sm:mt-16">
+        <div tw="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:gap-x-72 xl:gap-x-96 mb-8">
+          <div tw="">
+            <WebsiteSection url={profile.website} username={profile.username} />
+            <CategorySection
+              categories={[
+                "Programming",
+                "Gaming",
+                "Fitness",
+                "Movies",
+                "Hiking",
+              ]}
+            />
+          </div>
+          <div tw="lg:mt-0">
+            <FollowSection />
+            <FollowSection />
+          </div>
+        </div>
+        <LinksSection links={profile.social_links} />
+        <DefaultSection />
+      </div> */}
       <AuthModal showModal={showModal} setShowModal={setShowModal} />
       <ShareModal
         showModal={showShareModal}
@@ -180,8 +230,8 @@ const Profile = ({ profile, followersList = [], followingList = [] }) => {
       />
       <BottomNavigation />
     </div>
-  )
-}
+  );
+};
 
 const Bio = ({ cover, children }) => (
   <div
@@ -192,30 +242,30 @@ const Bio = ({ cover, children }) => (
   >
     {children}
   </div>
-)
+);
 
-// const Avatar = ({ src }) => (
-//   <>
-//     <img
-//       tw="mx-auto sm:ml-0 rounded-full w-36 h-auto sm:w-32 md:w-40 lg:w-44 sm:h-auto border-4 sm:mr-8 shadow-2xl"
-//       src={src ? resizeImage(src, [200, 200]) : '/img/avatar_placeholder.png'}
-//       alt="user avatar"
-//     />
-//   </>
-// )
+const Avatar = ({ src }) => (
+  <>
+    <img
+      tw="mx-auto sm:ml-0 rounded-full w-36 h-auto sm:w-32 md:w-40 lg:w-44 sm:h-auto border-4 sm:mr-8 shadow-2xl"
+      src={src ? src : "/img/avatar_placeholder.png"}
+      alt="user avatar"
+    />
+  </>
+);
 
 const nameParser = (firstname, lastname, username) => {
   if (firstname && lastname) {
-    return `${firstname} ${lastname}`
+    return `${firstname} ${lastname}`;
   }
   if (!lastname && firstname) {
-    return firstname
+    return firstname;
   }
   if (!firstname && lastname) {
-    return lastname
+    return lastname;
   }
-  return `${username}'s profile`
-}
+  return `${username}'s profile`;
+};
 
 const NameAndUsername = ({ firstname, lastname, username }) => (
   <>
@@ -226,75 +276,75 @@ const NameAndUsername = ({ firstname, lastname, username }) => (
       <span tw="text-xl text-primary-400">{`@${username}`}</span>
     </div>
   </>
-)
+);
 
 const Description = ({ description }) => {
   if (!description) {
-    return null
+    return null;
   }
   return (
     <p tw="w-full sm:w-3/4 lg:w-1/2 mr-4 text-base lg:text-base">
       {description}
     </p>
-  )
-}
+  );
+};
 
 const geoParser = (country, city) => {
   if (country && city) {
     // Parse country with city
-    return `${city}, ${country}`
+    return `${city}, ${country}`;
   }
   if (!city && country) {
     // Just show country
-    return country
+    return country;
   }
   if (!country && city) {
     // Just show city
-    return city
+    return city;
   }
-  return null
-}
+  return null;
+};
 
 const GeoPosition = ({ country, city }) => {
-  const geoData = geoParser(country, city)
+  const geoData = geoParser(country, city);
 
-  if (!geoData) return null
+  if (!geoData) return null;
 
   return (
     <div tw="w-full sm:w-5/12 flex flex-row items-center text-primary-400">
       <FaMapMarkerAlt size={24} fill="#eb008d" tw="w-4 h-4 align-bottom mr-1" />
       <span>{geoData}</span>
     </div>
-  )
-}
+  );
+};
 
 const fansParser = (fansCount) => {
   if (fansCount < 1000) {
-    return fansCount
+    return fansCount;
   }
-  const units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
-  const floor = Math.floor(Math.abs(fansCount).toString().length / 3)
-  const value = +(fansCount / Math.pow(1000, floor))
-  return +value.toFixed(1) + units[floor - 1]
-}
+  const units = ["k", "M", "G", "T", "P", "E", "Z", "Y"];
+  const floor = Math.floor(Math.abs(fansCount).toString().length / 3);
+  const value = +(fansCount / Math.pow(1000, floor));
+  return +value.toFixed(1) + units[floor - 1];
+};
 
 const Follows = ({ following, followers }) => {
-  const fansQuantity = fansParser(followers)
+  const fansQuantity = fansParser(followers);
   return (
     <div tw="flex flex-row space-x-16 pb-9 justify-center sm:justify-start">
       <div>
-        <span tw="text-primary-400 block">Fans</span>
+        <span tw="text-primary-400 block">Seguidores</span>
         <span tw="text-primary-200 text-4xl font-bold block">
           {fansQuantity}
         </span>
       </div>
       <div>
-        <span tw="text-primary-400 block">Following</span>
+        <span tw="text-primary-400 block">Siguiendo</span>
         <span tw="text-primary-200 text-4xl font-bold block">{following}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 function WebsiteSection({ url, username }) {
   return (
@@ -311,7 +361,7 @@ function WebsiteSection({ url, username }) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function WebsiteLink({ url, username }) {
@@ -329,7 +379,7 @@ function WebsiteLink({ url, username }) {
                 rel="noopener noreferrer"
                 key={key}
                 style={{
-                  color: '#eb008d',
+                  color: "#eb008d",
                 }}
                 tw="mt-2 hover:underline"
               >
@@ -342,7 +392,7 @@ function WebsiteLink({ url, username }) {
         </Linkify>
       </div>
     </>
-  )
+  );
 }
 
 function DefaultSection() {
@@ -355,208 +405,7 @@ function DefaultSection() {
         <div tw="h-64 flex flex-row bg-gray-500" />
       </div>
     </>
-  )
+  );
 }
 
-function Avatar({ src, username }) {
-  return (
-    <>
-      <img
-        tw="object-contain w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 sm:border-4 border-gray-500"
-        src={src || '/img/avatar_placeholder.png'}
-        alt={`${username} avatar.`}
-      />
-    </>
-  )
-}
-
-export async function getServerSideProps(context) {
-  const {
-    params: { username },
-    req: {
-      headers: { referer },
-    },
-  } = context
-
-  try {
-    const { data: response } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${username}`
-    )
-    return {
-      props: { data: response.data, referrer: referer || null },
-    }
-  } catch (err) {
-    return { props: { data: { notFound: true, profile: { username: null } } } }
-  }
-}
-
-function TipMeButton() {
-  return (
-    <>
-      <button
-        type="button"
-        tw="flex items-center place-content-between px-4 py-2 text-base text-white font-semibold rounded-md border border-transparent hover:text-white bg-green-500 hover:bg-green-500 hover:border-white w-full focus:outline-none outline-none"
-      >
-        <FaRegCreditCard tw="text-white" />
-        <p>Send Tip</p>
-        <FaChevronRight tw="text-white" />
-      </button>
-    </>
-  )
-}
-
-// const LinksSection = ({ withTitle = true, links, profile }) => {
-//   if (!links || !links.length) {
-//     return <MessageBox text="This user hasn't added any links yet." />
-//   }
-//   return (
-//     <section>
-//       {withTitle && <p tw="text-button text-3xl font-bold">Links</p>}
-
-//       <div tw="w-full flex flex-col space-y-2">
-//         {profile.connected_account ? <TipMeButton /> : null}
-//         {links.map((link) => (
-//           <LinkButton
-//             platformName={link.platform_name}
-//             url={link.user_url}
-//             key={link.id}
-//           />
-//         ))}
-//       </div>
-//     </section>
-//   )
-// }
-
-function ProfileCardTabs({ links, profile }) {
-  const { shoutoutsLoading, shoutouts } = useShoutouts(profile)
-
-  const TABBAR_ITEM = {
-    ShowUsersShoutouts: (
-      <ShoutoutsContainer
-        shoutoutsLoading={shoutoutsLoading}
-        shoutouts={shoutouts}
-        profile={profile}
-      />
-    ),
-    ShowUsersLinks: (
-      <LinksSection links={links} withTitle={false} profile={profile} />
-    ),
-  }
-  const [selectedItem, setSelectedItem] = useState('ShowUsersLinks')
-
-  return (
-    <>
-      <div tw="flex flex-wrap w-full text-white space-y-2">
-        <Tabs setSelectedItem={setSelectedItem} selectedItem={selectedItem} />
-        <div tw="w-full">{TABBAR_ITEM[selectedItem]}</div>
-      </div>
-    </>
-  )
-}
-
-function Tabs({ setSelectedItem, selectedItem }) {
-  const activeStyle = css`
-    ${tw`text-accent`}
-  `
-  const inactiveStyle = css`
-    ${tw`text-gray-600`}
-  `
-
-  return (
-    <>
-      <div tw="w-full pt-3 flex space-x-4">
-        <button
-          tw="w-1/2 text-xl py-1 font-bold uppercase tracking-wide leading-6 sm:text-lg sm:leading-7 text-gray-600 hover:text-accent border-b-2 border-transparent hover:border-b-2 hover:border-accent focus:outline-none transition duration-300 ease-in"
-          type="button"
-          css={selectedItem === 'ShowUsersLinks' ? activeStyle : inactiveStyle}
-          onClick={() => setSelectedItem('ShowUsersLinks')}
-        >
-          Links
-        </button>
-        <button
-          tw="w-1/2 text-xl py-1 font-bold uppercase tracking-wide leading-6 sm:text-lg sm:leading-7 text-gray-600 hover:text-accent border-b-2 border-transparent hover:border-b-2 hover:border-accent focus:outline-none transition duration-300 ease-in"
-          type="button"
-          css={
-            selectedItem === 'ShowUsersShoutouts' ? activeStyle : inactiveStyle
-          }
-          onClick={() => setSelectedItem('ShowUsersShoutouts')}
-        >
-          Shoutouts
-        </button>
-      </div>
-    </>
-  )
-}
-
-function LinkButton({ platformName, url }) {
-  const iconSize = 24
-  return (
-    <>
-      <a
-        target="_blank"
-        href={url}
-        rel="noopener noreferrer"
-        tw="py-2 my-1 px-4 cursor-pointer text-primary-200 bg-primary-700 border border-primary-900 hover:border-accent font-semibold 
-          rounded-md flex flex-row w-full justify-between
-          transition duration-100 ease-in-out transform shadow-2xl w-full"
-      >
-        <div tw="">
-          <PlatformIcon icon={platformName} />
-        </div>
-        <div tw="items-center">{platformName}</div>
-        <div tw="">
-          <FaAngleRight size={iconSize} />
-        </div>
-      </a>
-    </>
-  )
-}
-
-function MetaSection({ following, followers, profile }) {
-  return (
-    <>
-      <div tw="flex flex-col pt-3">
-        <div tw="flex flex-row flex-wrap w-full place-items-start space-x-5">
-          <div tw="flex flex-row space-x-1 items-center">
-            <p tw="text-white font-bold">{followers}</p>
-            <p tw="text-white">Followers</p>
-          </div>
-          <div tw="flex flex-row space-x-1 items-baseline">
-            <p tw="text-white font-bold">{following}</p>
-            <p tw="text-white">Following</p>
-          </div>
-          <div tw="flex flex-row space-x-1 items-center">
-            <p tw="text-white font-bold">
-              {profile.shoutouts_count ? profile.shoutouts_count : '0'}
-            </p>
-            <p tw="text-white">Shouts</p>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
-function BioSection({ bio }) {
-  return (
-    <>
-      {/* <p tw="mt-3 text-gray-400 text-sm text-justify">{bio}</p> */}
-      {/* <p tw="mt-3 text-gray-400">{bio}</p> */}
-      <p tw="w-full mt-3 text-gray-400 text-sm break-words">{bio}</p>
-    </>
-  )
-}
-
-function MessageBox({ text }) {
-  return (
-    <>
-      <div tw="flex flex-row w-full p-2 mb-6 bg-primary-900 rounded-lg">
-        <div tw="w-full">
-          <h3 tw="block text-center text-text-dark font-bold">{text}</h3>
-        </div>
-      </div>
-    </>
-  )
-}
-
-export default Profile
+export default Profile;

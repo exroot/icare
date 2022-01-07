@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import OutsideClickHandler from 'react-outside-click-handler'
-import Link from 'next/link'
-import useUser from '../../lib/useUser'
-import Transition from '../Transitions/Transition'
-import resizeImage from '../../utils/resizeImage'
-import tw, { css } from 'twin.macro'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import OutsideClickHandler from "react-outside-click-handler";
+import Link from "next/link";
+import useUser from "../../lib/useUser";
+import Transition from "../Transitions/Transition";
+import resizeImage from "../../utils/resizeImage";
+import tw, { css } from "twin.macro";
 
 const ProfileDropdown = ({
   dropdownActive,
@@ -15,13 +15,13 @@ const ProfileDropdown = ({
   userData,
   handleLogout,
 }) => {
-  const { user } = useUser({ initialData: userData })
-  const useData = user && user.is_logged_in
+  const { user } = useUser({ initialData: userData });
+  const useData = user && user.is_logged_in;
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
         if (dropdownActive.profile) {
-          setDropdownActive({ profile: false, notifications: false })
+          setDropdownActive({ profile: false, notifications: false });
         }
       }}
     >
@@ -35,8 +35,8 @@ const ProfileDropdown = ({
                 const newState = {
                   profile: !prevState.profile,
                   notifications: false,
-                }
-                return newState
+                };
+                return newState;
               })
             }
             tw="w-auto flex items-center text-sm rounded-full focus:outline-none"
@@ -47,12 +47,14 @@ const ProfileDropdown = ({
             {useData ? (
               <>
                 <img
-                  key={user.profile_picture || '/img/avatar_placeholder.png'}
+                  key={
+                    user.profile.image_avatar || "/img/avatar_placeholder.png"
+                  }
                   tw="h-10 w-10 rounded-full border-2 border-button"
                   src={
-                    user.profile_picture
-                      ? resizeImage(user.profile_picture, [35, 35])
-                      : '/img/avatar_placeholder.png'
+                    user.profile.image_avatar
+                      ? user.profile.image_avatar
+                      : "/img/avatar_placeholder.png"
                   }
                   width="60px"
                   height="60px"
@@ -83,7 +85,7 @@ const ProfileDropdown = ({
                   tw="block px-4 py-2 text-sm text-primary-400 hover:text-primary-200 hover:font-bold hover:bg-primary-800 ease-in-out duration-150"
                   role="menuitem"
                 >
-                  Your Profile
+                  Mi perfil
                 </a>
               </Link>
               <Link href="/following" passHref>
@@ -91,7 +93,7 @@ const ProfileDropdown = ({
                   tw="block px-4 py-2 text-sm text-primary-400 hover:text-primary-200 hover:font-bold hover:bg-primary-800 ease-in-out duration-150"
                   role="menuitem"
                 >
-                  Following
+                  Mi círculo
                 </a>
               </Link>
               <Link href="/settings" passHref>
@@ -99,7 +101,7 @@ const ProfileDropdown = ({
                   tw="block px-4 py-2 text-sm text-primary-400 hover:text-primary-200 hover:font-bold hover:bg-primary-800 ease-in-out duration-150"
                   role="menuitem"
                 >
-                  Settings
+                  Configuración
                 </a>
               </Link>
               <button
@@ -108,15 +110,15 @@ const ProfileDropdown = ({
                 role="menuitem"
                 onClick={handleLogout}
               >
-                Log out
+                Cerrar sesión
               </button>
             </div>
           </div>
         </Transition>
       </div>
     </OutsideClickHandler>
-  )
-}
+  );
+};
 
 // function TopButton({ title }) {
 //   const [TopButtonSelected, setTopButtonSelected] = useState(false)
@@ -152,6 +154,6 @@ ProfileDropdown.propTypes = {
   setDropdownActive: PropTypes.func,
   user: PropTypes.object,
   handleLogout: PropTypes.func,
-}
+};
 
-export default ProfileDropdown
+export default ProfileDropdown;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   FaTwitter,
   FaTwitch,
@@ -13,12 +13,12 @@ import {
   FaInstagram,
   FaFacebook,
   FaPeriscope,
-} from 'react-icons/fa'
-import { SiStitcher } from 'react-icons/si'
-import { RiArrowRightUpLine } from 'react-icons/ri'
-import { BiCheck } from 'react-icons/bi'
-import { css } from 'twin.macro'
-import SEO from '../../components/SEO'
+} from "react-icons/fa";
+import { SiStitcher } from "react-icons/si";
+import { RiArrowRightUpLine } from "react-icons/ri";
+import { BiCheck } from "react-icons/bi";
+import { css } from "twin.macro";
+import SEO from "../../components/SEO";
 
 export default function AboutLayout() {
   return (
@@ -28,26 +28,26 @@ export default function AboutLayout() {
         description="We're not a social media platform, we're an influencer connecting platform. Share your links to everything."
         openGraph={{
           url: process.env.NEXT_PUBLIC_CLIENT_URL,
-          type: 'website',
+          type: "website",
           description:
             "We're not a social media platform, we're an influencer connecting platform. Share your links to everything.",
           images: [
             {
-              url: process.env.NEXT_PUBLIC_CLIENT_URL + 'img/shoutmo.png',
+              url: process.env.NEXT_PUBLIC_CLIENT_URL + "img/shoutmo.png",
               width: 1000,
               height: 300,
-              alt: 'Shoutmo image',
+              alt: "Shoutmo image",
             },
           ],
         }}
         twitter={{
-          handle: '@handle',
-          site: '@site',
-          cardType: 'summary_large_image',
+          handle: "@handle",
+          site: "@site",
+          cardType: "summary_large_image",
         }}
       />
       <div
-        style={{ background: 'rgba(8,0,23)' }}
+        style={{ background: "rgba(8,0,23)" }}
         //  style={{ background: "rgba(23, 0, 66, 1)" }}
       >
         {/* <Navbartesting /> */}
@@ -75,7 +75,7 @@ export default function AboutLayout() {
         <FooterNew />
       </div>
     </>
-  )
+  );
 }
 
 function Intro() {
@@ -90,10 +90,10 @@ function Intro() {
               tw="font-bold text-5xl text-white"
               className="threedeeshadow"
               style={{
-                fontFamily: 'basiclazer',
+                fontFamily: "basiclazer",
               }}
             >
-              Shoutmo
+              iCare
             </li>
             <li tw="self-center">
               <div tw="">
@@ -125,7 +125,7 @@ function Intro() {
                       href="/signup"
                       tw="text-gray-500 font-semibold hover:text-blue-600"
                     >
-                      {' '}
+                      {" "}
                       Signup
                     </a>
                   </li>
@@ -145,7 +145,7 @@ function Intro() {
         {/* <OpeningTextOrig /> */}
       </section>
     </>
-  )
+  );
 }
 
 function OpeningText() {
@@ -194,7 +194,7 @@ function OpeningText() {
         </div>
       </section>
     </>
-  )
+  );
 }
 
 function OpeningTextOrig() {
@@ -205,7 +205,7 @@ function OpeningTextOrig() {
           tw="text-5xl sm:text-6xl px-4 mx-10 md:px-0 md:mx-40 font-black text-center"
           // tw="text-5xl sm:text-6xl font-black text-center"
           style={{
-            color: '#ff27e1',
+            color: "#ff27e1",
           }}
         >
           ALL YOUR LINKS ARE BELONG TO US.
@@ -226,7 +226,7 @@ function OpeningTextOrig() {
         <LinkStack />
       </div>
     </>
-  )
+  );
 }
 
 function CheckmarksSectionAgain() {
@@ -240,7 +240,7 @@ function CheckmarksSectionAgain() {
             <p tw="text-white text-4xl sm:text-5xl font-black leading-tight pl-8 sm:pl-0 uppercase">
               We're not a social media platform,
               <br />
-              <span style={{ color: '#006CFF' }}>
+              <span style={{ color: "#006CFF" }}>
                 we're an influencer connecting platform.
               </span>
             </p>
@@ -251,7 +251,7 @@ function CheckmarksSectionAgain() {
             <div tw="flex flex-row">
               <p
                 tw="text-white text-lg ml-8 mt-8 sm:mt-2"
-                style={{ color: '#ff27e1' }}
+                style={{ color: "#ff27e1" }}
               >
                 COMING SOON
               </p>
@@ -282,42 +282,42 @@ function CheckmarksSectionAgain() {
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Animated video panels
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
             <div tw="flex flex-row">
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Guest Lists
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
             <div tw="flex flex-row">
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Messaging
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
             <div tw="flex flex-row">
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Push notifications
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
             <div tw="flex flex-row">
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Mobile app
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
             <div tw="flex flex-row">
               <BiCheck size={26} color="#006CFF" />
               <p tw="text-white">
                 Donations
-                <span style={{ color: '#ff27e1' }}>*</span>
+                <span style={{ color: "#ff27e1" }}>*</span>
               </p>
             </div>
           </div>
@@ -325,7 +325,7 @@ function CheckmarksSectionAgain() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function QRCodeSection() {
@@ -347,7 +347,7 @@ function QRCodeSection() {
         </div>
       </section>
     </>
-  )
+  );
 }
 
 function ShareableCards() {
@@ -359,7 +359,7 @@ function ShareableCards() {
             <div tw="text-xl md:text-3xl font-medium mb-2 ">
               <p tw="text-5xl font-black uppercase">Shareable Profile Cards.</p>
             </div>
-            <div tw="text-lg" style={{ color: '#006CFF' }}>
+            <div tw="text-lg" style={{ color: "#006CFF" }}>
               Video overlays coming soon.
             </div>
           </div>
@@ -374,7 +374,7 @@ function ShareableCards() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function PowerToTheLinks() {
@@ -387,7 +387,7 @@ function PowerToTheLinks() {
         src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=Example&bgcolor=203-213-224"
       />
     </>
-  )
+  );
 }
 
 function MoreFeatures() {
@@ -404,7 +404,7 @@ function MoreFeatures() {
         </div>
       </section>
     </>
-  )
+  );
 }
 
 function MoreFeaturesAgain() {
@@ -419,7 +419,7 @@ function MoreFeaturesAgain() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function FeaturesList() {
@@ -429,7 +429,7 @@ function FeaturesList() {
         <div tw="flex flex-row flex-grow sm:text-left">
           <p
             tw="text-white text-lg ml-8 mt-8 sm:mt-2"
-            style={{ color: '#ff27e1' }}
+            style={{ color: "#ff27e1" }}
           >
             COMING SOON
           </p>
@@ -456,47 +456,47 @@ function FeaturesList() {
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Animated video panels
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
         <div tw="flex flex-row">
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Guest Lists
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
         <div tw="flex flex-row">
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Messaging
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
         <div tw="flex flex-row">
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Push notifications
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
         <div tw="flex flex-row">
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Mobile app
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
         <div tw="flex flex-row">
           <BiCheck size={26} color="#006CFF" />
           <p tw="ml-2 text-white">
             Donations
-            <span style={{ color: '#ff27e1' }}>*</span>
+            <span style={{ color: "#ff27e1" }}>*</span>
           </p>
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Navbartesting() {
@@ -510,7 +510,7 @@ function Navbartesting() {
             tw="px-2 lg:px-0 font-bold text-5xl text-center text-white"
             className="threedeeshadow"
             style={{
-              fontFamily: 'basiclazer',
+              fontFamily: "basiclazer",
             }}
           >
             Shoutmo
@@ -519,20 +519,20 @@ function Navbartesting() {
         <ul tw="inline-flex items-center">
           <li tw="px-2 md:px-4">
             <a href="" tw="text-gray-500 font-semibold hover:text-purple-500">
-              {' '}
-              Login{' '}
+              {" "}
+              Login{" "}
             </a>
           </li>
           <li tw="px-2 md:px-4">
             <a href="" tw="text-gray-500 font-semibold hover:text-purple-500">
-              {' '}
-              Signup{' '}
+              {" "}
+              Signup{" "}
             </a>
           </li>
         </ul>
       </header>
     </>
-  )
+  );
 }
 
 function SingleContentFilled() {
@@ -544,11 +544,11 @@ function SingleContentFilled() {
           Up your web pressence game
           <span
             style={{
-              color: '#ff27e1',
+              color: "#ff27e1",
             }}
           >
-            {' '}
-            10x{' '}
+            {" "}
+            10x{" "}
           </span>
           or more and get found everywhere.
         </h2>
@@ -561,7 +561,7 @@ function SingleContentFilled() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function SingleContentFilledTwo() {
@@ -569,15 +569,15 @@ function SingleContentFilledTwo() {
     <>
       <div tw="px-4 lg:px-0 mt-12 text-gray-300 max-w-screen-md mx-auto text-lg leading-relaxed">
         <h2 tw="text-2xl text-white font-semibold mb-4 mt-4">
-          <span style={{ color: '#00DE90' }}> 34 </span>Links and counting.
+          <span style={{ color: "#00DE90" }}> 34 </span>Links and counting.
         </h2>
 
         <p tw="pb-6">
           Now you can share your total online web presence and make it easy for
-          your fans to find you, wherever you are.{' '}
+          your fans to find you, wherever you are.{" "}
           <span
             style={{
-              color: '#01A8FC',
+              color: "#01A8FC",
             }}
           >
             +&nbsp;
@@ -586,7 +586,7 @@ function SingleContentFilledTwo() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function SingleContentFilledThree() {
@@ -595,7 +595,7 @@ function SingleContentFilledThree() {
       <div tw="px-4 lg:px-0 mt-12 text-gray-300 max-w-screen-md mx-auto text-lg leading-relaxed">
         <h2
           tw="text-2xl text-gray-300 font-semibold mb-4 mt-4"
-          style={{ color: '#00DE90' }}
+          style={{ color: "#00DE90" }}
         >
           EVOLVE
         </h2>
@@ -607,7 +607,7 @@ function SingleContentFilledThree() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function SingleContentFilledFour() {
@@ -626,7 +626,7 @@ function SingleContentFilledFour() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function StepsSectionSplit() {
@@ -646,10 +646,10 @@ function StepsSectionSplit() {
                   <br />
                   <span
                     style={{
-                      color: '#006CFF',
+                      color: "#006CFF",
                     }}
                   >
-                    {' '}
+                    {" "}
                     we're an influencer connecting platform.
                   </span>
                 </h2>
@@ -661,7 +661,7 @@ function StepsSectionSplit() {
               <div tw="flex flex-row">
                 <p
                   tw="ml-2 text-white text-xs ml-8 mt-2"
-                  style={{ color: '#ff27e1' }}
+                  style={{ color: "#ff27e1" }}
                 >
                   COMING SOON
                 </p>
@@ -701,7 +701,7 @@ function StepsSectionSplit() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function SignupSectionCTA() {
@@ -727,28 +727,28 @@ function SignupSectionCTA() {
               </span>
             </p> */}
           <p tw="text-white text-5xl font-black leading-tight mb-3 w-full sm:w-1/2 mx-auto text-center">
-            Get started with{' '}
+            Get started with{" "}
             <span
               style={{
-                color: '#ff27e1',
-                fontFamily: 'basiclazer',
+                color: "#ff27e1",
+                fontFamily: "basiclazer",
                 fontSize: 80,
               }}
             >
-              SHOUTMO
-            </span>{' '}
+              iCare
+            </span>{" "}
             today.
           </p>
           {/* <DownloadTheAppButtons /> */}
           {/* <a href="/signup" tw="border border-white rounded-lg mx-auto w-1/2"> */}
           <a href="/signup" tw="">
             <p tw="text-white text-2xl font-medium leading-tight mt-8 mb-3 w-1/2 mx-auto text-center">
-              Sign up for a free account{' '}
+              Sign up for a free account{" "}
               <RiArrowRightUpLine
                 tw="inline-block"
                 size={32}
                 style={{
-                  color: '#006CFF',
+                  color: "#006CFF",
                 }}
               />
             </p>
@@ -756,7 +756,7 @@ function SignupSectionCTA() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function FooterNew() {
@@ -776,7 +776,7 @@ function FooterNew() {
                   tw="w-full font-bold text-5xl text-center text-white"
                   className="threedeeshadow"
                   style={{
-                    fontFamily: 'basiclazer',
+                    fontFamily: "basiclazer",
                   }}
                 >
                   Shoutmo
@@ -826,7 +826,7 @@ function FooterNew() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function LinkStack() {
@@ -922,7 +922,7 @@ function LinkStack() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function ChecksCard() {
@@ -933,12 +933,12 @@ function ChecksCard() {
           <div tw="mt-4">
             <div tw="max-w-sm text-2xl font-light mx-auto">
               <div tw="flex flex-row">
-                <p tw="ml-2 text-white ml-8 mt-2" style={{ color: '#ff27e1' }}>
+                <p tw="ml-2 text-white ml-8 mt-2" style={{ color: "#ff27e1" }}>
                   COMING SOON
                 </p>
                 <p
                   tw="text-lg sm:text-xl text-white mt-2"
-                  style={{ color: '#ff27e1' }}
+                  style={{ color: "#ff27e1" }}
                 >
                   COMING SOON
                 </p>
@@ -1058,7 +1058,7 @@ function ChecksCard() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function ChecksCardTwo() {
@@ -1069,13 +1069,13 @@ function ChecksCardTwo() {
           {/* start  */}
           <p
             tw="text-2xl sm:text-2xl text-white mt-2 text-center font-bold"
-            style={{ color: '#006CFF' }}
+            style={{ color: "#006CFF" }}
           >
             FEATURES
           </p>
           <p
             tw="text-sm sm:text-lg text-white mt-2 text-center"
-            style={{ color: '#ff27e1' }}
+            style={{ color: "#ff27e1" }}
           >
             *COMING SOON
           </p>
@@ -1114,7 +1114,7 @@ function ChecksCardTwo() {
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
                   Animated video panels
-                  <span style={{ color: '#ff27e1' }}>*</span>
+                  <span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1125,7 +1125,7 @@ function ChecksCardTwo() {
                 </div>
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
-                  Guest Lists<span style={{ color: '#ff27e1' }}>*</span>
+                  Guest Lists<span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1136,7 +1136,7 @@ function ChecksCardTwo() {
                 </div>
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
-                  Messaging<span style={{ color: '#ff27e1' }}>*</span>
+                  Messaging<span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1147,7 +1147,7 @@ function ChecksCardTwo() {
                 </div>
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
-                  Push notifications<span style={{ color: '#ff27e1' }}>*</span>
+                  Push notifications<span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1158,7 +1158,7 @@ function ChecksCardTwo() {
                 </div>
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
-                  Mobile app<span style={{ color: '#ff27e1' }}>*</span>
+                  Mobile app<span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1169,7 +1169,7 @@ function ChecksCardTwo() {
                 </div>
 
                 <p tw="ml-2 text-white float-right mx-3 sm:text-2xl">
-                  Donations<span style={{ color: '#ff27e1' }}>*</span>
+                  Donations<span style={{ color: "#ff27e1" }}>*</span>
                 </p>
               </div>
             </div>
@@ -1179,7 +1179,7 @@ function ChecksCardTwo() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function SocialWords() {
@@ -1191,10 +1191,10 @@ function SocialWords() {
           <br />
           <span
             style={{
-              color: '#006CFF',
+              color: "#006CFF",
             }}
           >
-            {' '}
+            {" "}
             we're an influencer connecting platform.
           </span>
         </h2>
@@ -1206,15 +1206,15 @@ function SocialWords() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 const textEfx = css`
   text-shadow: -0.01em 0 #ff08ff, 0.01em 0 cyan;
   text-shadow: -0.01em 0 #ff08ff, 0.01em 0 cyan, 0 0 4px blue;
-`
+`;
 
 const QRGlow = css`
   box-shadow: 0 0 10px blue, 0 0 5px blue, 0 0 0px blue, 0 0 1px blue,
     0 0 90px blue;
-`
+`;

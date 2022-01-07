@@ -1,64 +1,63 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import SEO from '../components/SEO'
-import Hero from '../components/Index/Hero'
-import Navbar from '../components/NavbarIndex'
-import LogoHero from '../components/Logo/LogoHero'
-import GlowButton from '../components/Buttons/GlowButton'
-import useUser from '../lib/useUser'
-import CookieConsent from '../components/CookieConsent'
-import 'twin.macro'
+import React from "react";
+import { useRouter } from "next/router";
+import SEO from "../components/SEO";
+import Hero from "../components/Index/Hero";
+import Navbar from "../components/NavbarIndex";
+import LogoHero from "../components/Logo/LogoHero";
+import GlowButton from "../components/Buttons/GlowButton";
+import useUser from "../lib/useUser";
+import CookieConsent from "../components/CookieConsent";
+import "twin.macro";
 
 const Home = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { user } = useUser({
-    redirectTo: router.query.next || '/feed',
+    redirectTo: router.query.next || "/feed",
     redirectIfFound: true,
     oneCall: true,
-  })
+  });
   return (
     <>
       <SEO
         description="Share your connections now"
         openGraph={{
           url: process.env.NEXT_PUBLIC_CLIENT_URL,
-          type: 'website',
-          description: 'Share your connections now',
+          type: "website",
+          description: "Share your connections now",
           images: [
             {
-              url: process.env.NEXT_PUBLIC_CLIENT_URL + 'img/shoutmo.png',
+              url: process.env.NEXT_PUBLIC_CLIENT_URL + "img/icare.png",
               width: 1000,
               height: 300,
-              alt: 'Shoutmo image',
+              alt: "icare image",
             },
           ],
         }}
         twitter={{
-          handle: '@handle',
-          site: '@site',
-          cardType: 'summary_large_image',
+          handle: "@handle",
+          site: "@site",
+          cardType: "summary_large_image",
         }}
       />
       <Navbar />
       <Hero>
         <div tw="mb-8 leading-none">
           <LogoHero />
-          <p tw="text-gray-400 font-light tracking-wide text-base md:text-2xl lg:text-4xl">
-            Join now and start{' '}
-            <span tw="text-red-400">sharing your connections</span>
+          <p tw="text-gray-400 mt-2 font-light tracking-wide text-base md:text-2xl lg:text-4xl">
+            Unete ahora mismo y <span tw="text-accent">cuida de ti.</span>
           </p>
         </div>
         <GlowButton href="/info/about" hero={true}>
-          See more
+          Ver más
         </GlowButton>
         {/* <TakeActionButtonArea /> */}
       </Hero>
       <CookieConsent />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
 
 function TakeActionButtonArea() {
   return (
@@ -81,5 +80,5 @@ function TakeActionButtonArea() {
         </div>
       </div>
     </>
-  )
+  );
 }

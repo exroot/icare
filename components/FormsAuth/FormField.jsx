@@ -1,16 +1,16 @@
-import { Field } from 'formik'
-import tw, { css } from 'twin.macro'
+import { Field } from "formik";
+import tw, { css } from "twin.macro";
 
-const FormField = ({ name, errors, touched, type = 'text' }) => {
-  const fieldName = name.toLowerCase()
+const FormField = ({ name, errors, touched, type = "text" }) => {
+  const fieldName = name.toLowerCase();
   return (
     <Field
       name={fieldName}
       validate
       type={type}
-      autoComplete={type === 'password' ? 'new-password' : 'on'}
+      autoComplete={type === "password" ? "new-password" : "on"}
       css={css`
-        ${tw`appearance-none block w-full bg-primary-700 text-primary-200 font-medium border rounded-lg py-3 px-3 leading-tight 
+        ${tw`appearance-none block w-full bg-primary-700 text-primary-200 font-medium rounded-lg py-3 px-3 leading-tight 
 focus:outline-none hover:border-accent duration-75 ease-in-out`}
         ${touched[`${fieldName}`] &&
         errors[`${fieldName}`] &&
@@ -19,7 +19,7 @@ focus:outline-none hover:border-accent duration-75 ease-in-out`}
           : tw`border-field`}
       `}
     />
-  )
-}
+  );
+};
 
-export default FormField
+export default FormField;

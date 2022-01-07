@@ -11,7 +11,7 @@ function FakeNavbar() {
     <>
       <nav tw="flex items-center justify-between flex-wrap bg-gray-900 p-6">
         <div tw="flex items-center flex-shrink-0 text-white mr-6">
-          <span tw="font-semibold text-xl tracking-tight">SHOUTMO</span>
+          <span tw="font-semibold text-xl tracking-tight">iCare</span>
         </div>
 
         <div tw="w-full block flex-grow lg:flex lg:items-center lg:w-auto">

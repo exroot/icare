@@ -54,7 +54,7 @@ const ProfileDropdown = ({ dropdown, setDropdown }) => {
                   tw="block px-4 py-2 text-sm text-text-dark hover:bg-background-secondary transition ease-in-out duration-150"
                   role="menuitem"
                 >
-                  Your Profile
+                  Mi perfil
                 </a>
                 <a
                   href="#"

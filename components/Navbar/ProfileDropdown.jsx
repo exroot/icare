@@ -1,12 +1,12 @@
-import Image from 'next/image'
-import Transition from '../Transitions/Transition'
-import PropTypes from 'prop-types'
-import { RiArrowDropDownLine } from 'react-icons/ri'
-import useUser from '../../lib/useUser'
-import OutsideClickHandler from 'react-outside-click-handler'
-import Link from 'next/link'
-import 'twin.macro'
-import resizeImage from '../../utils/resizeImage'
+import Image from "next/image";
+import Transition from "../Transitions/Transition";
+import PropTypes from "prop-types";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import useUser from "../../lib/useUser";
+import OutsideClickHandler from "react-outside-click-handler";
+import Link from "next/link";
+import "twin.macro";
+import resizeImage from "../../utils/resizeImage";
 
 const ProfileDropdown = ({
   dropdownActive,
@@ -14,12 +14,12 @@ const ProfileDropdown = ({
   userData,
   handleLogout,
 }) => {
-  const { user } = useUser({ initialData: userData })
+  const { user } = useUser({ initialData: userData });
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
         if (dropdownActive.profile) {
-          setDropdownActive({ profile: false, notifications: false })
+          setDropdownActive({ profile: false, notifications: false });
         }
       }}
     >
@@ -31,8 +31,8 @@ const ProfileDropdown = ({
                 let newState = {
                   profile: !prevState.profile,
                   notifications: false,
-                }
-                return newState
+                };
+                return newState;
               })
             }
             tw="w-auto flex items-center text-sm rounded-full focus:outline-none"
@@ -43,12 +43,12 @@ const ProfileDropdown = ({
             {user && user.is_logged_in ? (
               <>
                 <img
-                  key={user.profile_picture || '/img/avatar_placeholder.png'}
+                  key={user.avatar_image || "/img/avatar_placeholder.png"}
                   tw="h-10 w-10 rounded-full border-2 border-button"
                   src={
-                    user.profile_picture
-                      ? resizeImage(user.profile_picture, [35, 35])
-                      : '/img/avatar_placeholder.png'
+                    user.avatar_image
+                      ? resizeImage(user.avatar_image, [35, 35])
+                      : "/img/avatar_placeholder.png"
                   }
                   width="60px"
                   height="60px"
@@ -75,7 +75,7 @@ const ProfileDropdown = ({
                   tw="block px-4 py-2 text-sm text-text-dark hover:bg-background-secondary transition ease-in-out duration-150"
                   role="menuitem"
                 >
-                  Your Profile
+                  Mi perfil
                 </a>
               </Link>
               <a
@@ -97,14 +97,14 @@ const ProfileDropdown = ({
         </Transition>
       </div>
     </OutsideClickHandler>
-  )
-}
+  );
+};
 
 ProfileDropdown.propTypes = {
   dropdownActive: PropTypes.object,
   setDropdownActive: PropTypes.func,
   user: PropTypes.object,
   handleLogout: PropTypes.func,
-}
+};
 
-export default ProfileDropdown
+export default ProfileDropdown;

@@ -32,7 +32,7 @@ const SidebarMobileAuthenticated = ({ router }) => {
           className="group"
           tw="text-text-light flex items-center pr-4 pl-2 pt-4 pb-2 text-base font-bold uppercase"
         >
-          Shoutmo
+          iCare
         </span>
 
         <SidebarItem href={"/feed"} pathname={router.pathname}>
@@ -247,10 +247,10 @@ const SidebarMobile = ({ isSidebarOpen, setIsSidebarOpen }) => {
                       <h1
                         tw="text-secondary w-full font-bold text-5xl text-left pl-4"
                         style={{
-                          fontFamily: "basiclazer",
+                          fontFamily: "Pacifico",
                         }}
                       >
-                        Shoutmo
+                        iCare
                       </h1>
                     </div>
                     {/* <div tw="flex-shrink-0 flex items-center px-4 -mt-6">

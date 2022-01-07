@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React from 'react'
-import Head from 'next/head'
-import 'twin.macro'
-import Layout from '../../components/Layout'
-import useUser from '../../lib/useUser'
-import PageLoader from '../../components/PageLoader'
-import Navbar from '../../components/Navbar/NavbarAlt';
-import Overview from "./Overview"
-import TrafficSources from './TrafficSources';
+import React from "react";
+import Head from "next/head";
+import "twin.macro";
+import Layout from "../../components/Layout";
+import useUser from "../../lib/useUser";
+import PageLoader from "../../components/PageLoader";
+import Navbar from "../../components/Navbar/NavbarAlt";
+import Overview from "./Overview";
+import TrafficSources from "./TrafficSources";
 
 const DashboardPage = () => {
-  const { user, isLoading } = useUser({ redirectTo: '/login' })
+  const { user, isLoading } = useUser({ redirectTo: "/login" });
   if (isLoading || user.is_logged_in === false) {
     return (
       <>
@@ -22,7 +22,7 @@ const DashboardPage = () => {
         </Head>
         <PageLoader />
       </>
-    )
+    );
   }
 
   return (
@@ -43,7 +43,7 @@ const DashboardPage = () => {
               Last 28 days summary
             </span>
             <div tw="w-full space-y-9 pt-9">
-              <Overview /> 
+              <Overview />
               <TrafficSources />
               {/* when we add payments */}
               {/* <SupportersCard /> */}
@@ -54,8 +54,8 @@ const DashboardPage = () => {
         </div>
       </Layout>
     </>
-  )
-}
+  );
+};
 
 function SupportersCard() {
   return (
@@ -71,7 +71,7 @@ function SupportersCard() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function DonationsTable() {
@@ -95,8 +95,8 @@ function DonationsTable() {
           </div>
           <div tw="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-primary-800  sm:grid-cols-9    ">
             <span tw="flex items-center col-span-3">
-              {' '}
-              Showing 21-30 of 100{' '}
+              {" "}
+              Showing 21-30 of 100{" "}
             </span>
             <span tw="col-span-2" />
             {/* <!-- Pagination --> */}
@@ -199,7 +199,7 @@ function DonationsTable() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Supporter() {
@@ -236,7 +236,7 @@ function Supporter() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Tablerow() {
@@ -268,10 +268,8 @@ function Tablerow() {
         <td tw="px-4 py-3 text-sm">15-01-2021</td>
       </tr>
     </>
-  )
+  );
 }
-
-
 
 function RowTitles() {
   return (
@@ -289,7 +287,7 @@ function RowTitles() {
       </div>
       <NewDataRowLayout />
     </>
-  )
+  );
 }
 
 function NewDataRow() {
@@ -304,7 +302,7 @@ function NewDataRow() {
         <p tw="text-gray-100 font-medium">99</p>
       </div>
     </>
-  )
+  );
 }
 
 function NewDataRowLayout() {
@@ -317,10 +315,8 @@ function NewDataRowLayout() {
       </div>
       <NewDataRow />
     </>
-  )
+  );
 }
-
-
 
 function TopCardsSection() {
   return (
@@ -334,7 +330,7 @@ function TopCardsSection() {
       </div> */}
       <TopCard />
     </>
-  )
+  );
 }
 
 function TopCard() {
@@ -349,7 +345,7 @@ function TopCard() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function ShowDiffPill() {
@@ -373,7 +369,7 @@ function ShowDiffPill() {
         <span>1.8%</span>
       </span>
     </>
-  )
+  );
 }
 
 function OverviewCardWithPayments() {
@@ -392,7 +388,7 @@ function OverviewCardWithPayments() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default DashboardPage;

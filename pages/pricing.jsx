@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import axios from '../lib/client'
-import NotLoggedInNavbar from '../components/NavbarForNonLoggedInUsers'
+import React, { useState, useEffect } from "react";
+import axios from "../lib/client";
+import NotLoggedInNavbar from "../components/NavbarForNonLoggedInUsers";
 import {
   FaDollarSign,
   FaEllipsisH,
   FaInfoCircle,
   FaCheck,
   FaChevronRight,
-} from 'react-icons/fa'
-import { loadStripe } from '@stripe/stripe-js'
+} from "react-icons/fa";
+import { loadStripe } from "@stripe/stripe-js";
 
-import 'twin.macro'
+import "twin.macro";
 
 export default function Basic() {
   return (
@@ -23,7 +23,7 @@ export default function Basic() {
         {/* <PricingLayoutFour /> */}
       </div>
     </>
-  )
+  );
 }
 
 function PricingLayoutFour() {
@@ -59,7 +59,7 @@ function PricingLayoutFour() {
         </table>
       </div>
     </>
-  )
+  );
 }
 
 function NewNavbar() {
@@ -75,10 +75,10 @@ function NewNavbar() {
               tw="w-full font-bold text-5xl text-center"
               className="threedeeshadow"
               style={{
-                fontFamily: 'basiclazer',
+                fontFamily: "Pacifico",
               }}
             >
-              Shoutmo
+              iCare
             </h1>
           </div>
         </div>
@@ -118,7 +118,7 @@ function NewNavbar() {
         </div>
       </nav>
     </>
-  )
+  );
 }
 
 function CircleCheck() {
@@ -129,11 +129,11 @@ function CircleCheck() {
         <FaCheck tw="mx-auto text-green-500" />
       </div>
     </>
-  )
+  );
 }
 
 function PurpleButton({ onClick, isLoading }) {
-  console.log('isLoading', isLoading)
+  console.log("isLoading", isLoading);
   return (
     <>
       <button
@@ -141,18 +141,18 @@ function PurpleButton({ onClick, isLoading }) {
       border border-purple-500 font-semibold rounded px-4 py-1"
         onClick={onClick}
       >
-        {isLoading ? 'Please wait' : 'Get started'}
+        {isLoading ? "Please wait" : "Get started"}
       </button>
     </>
-  )
+  );
 }
 
 function XLText(props) {
   return (
     <>
-      <p tw="text-4xl font-semibold -my-2"> {props.price || 'n/a'}</p>
+      <p tw="text-4xl font-semibold -my-2"> {props.price || "n/a"}</p>
     </>
-  )
+  );
 }
 
 function TableHeader(props) {
@@ -171,7 +171,7 @@ function TableHeader(props) {
       </div>
       {/* <PurpleButton  onClick={()=>{}}/> */}
     </>
-  )
+  );
 }
 
 function TableHeaderAlt(props) {
@@ -187,7 +187,7 @@ function TableHeaderAlt(props) {
       </div>
       <PurpleButton onClick={() => {}} />
     </>
-  )
+  );
 }
 
 function Embeds() {
@@ -213,65 +213,65 @@ function Embeds() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function BuyButtons() {
-  const [stripePublicKey, setPublicKey] = useState(null)
-  const [billingPeriod, setBillingPeriod] = useState('yearly')
-  const [checkoutSessionLoading, setCheckoutSessionLoading] = useState(false)
-  const [plan, setPlan] = useState(null)
+  const [stripePublicKey, setPublicKey] = useState(null);
+  const [billingPeriod, setBillingPeriod] = useState("yearly");
+  const [checkoutSessionLoading, setCheckoutSessionLoading] = useState(false);
+  const [plan, setPlan] = useState(null);
 
   const setStripeKey = async () => {
     try {
-      setCheckoutSessionLoading(true)
+      setCheckoutSessionLoading(true);
       const { data: response } = await axios({
-        url: 'payments/config/',
-        method: 'GET',
+        url: "payments/config/",
+        method: "GET",
         headers: {},
-      })
+      });
       if (response.publicKey) {
-        setCheckoutSessionLoading(true)
-        setPublicKey(response.publicKey)
+        setCheckoutSessionLoading(true);
+        setPublicKey(response.publicKey);
       }
     } catch (err) {
-      setCheckoutSessionLoading(true)
+      setCheckoutSessionLoading(true);
 
       if (err.response.data) {
       } else {
-        alert(JSON.stringify(err))
+        alert(JSON.stringify(err));
       }
     }
-  }
+  };
 
   useEffect(() => {
-    setStripeKey()
-  }, [])
+    setStripeKey();
+  }, []);
 
   const handleGoToCheckout = async ({ plan }) => {
-    setPlan(plan)
+    setPlan(plan);
     try {
       const { data: response } = await axios({
-        url: 'payments/create-checkout-session/',
-        method: 'POST',
+        url: "payments/create-checkout-session/",
+        method: "POST",
         body: { plan: `${plan}_${billingPeriod}` },
         headers: {},
-      })
+      });
 
       if (response.sessionId) {
         loadStripe(stripePublicKey).then((res) => {
           res.redirectToCheckout({
             sessionId: response.sessionId,
-          })
-        })
+          });
+        });
       }
     } catch (err) {
       if (err.response?.data) {
       } else {
-        alert(JSON.stringify(err))
+        alert(JSON.stringify(err));
       }
     }
-  }
+  };
 
   return (
     <>
@@ -284,23 +284,23 @@ function BuyButtons() {
         </th>
         <th tw="border w-1/4 px-4 py-4">
           <PurpleButton
-            isLoading={checkoutSessionLoading && plan === 'basic'}
+            isLoading={checkoutSessionLoading && plan === "basic"}
             onClick={() => {
-              handleGoToCheckout({ plan: 'basic' })
+              handleGoToCheckout({ plan: "basic" });
             }}
           />
         </th>
         <th tw="border w-1/4 px-4 py-4">
           <PurpleButton
-            isLoading={checkoutSessionLoading && plan === 'pro'}
+            isLoading={checkoutSessionLoading && plan === "pro"}
             onClick={() => {
-              handleGoToCheckout({ plan: 'pro' })
+              handleGoToCheckout({ plan: "pro" });
             }}
           />
         </th>
       </tr>
     </>
-  )
+  );
 }
 
 function OtherFeatures() {
@@ -322,7 +322,7 @@ function OtherFeatures() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function PlusMoreFeatures() {
@@ -343,7 +343,7 @@ function PlusMoreFeatures() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function Analytics() {
@@ -365,7 +365,7 @@ function Analytics() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function Email() {
@@ -387,7 +387,7 @@ function Email() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function Newsletter() {
@@ -409,7 +409,7 @@ function Newsletter() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 function MembershipBadge() {
   return (
@@ -433,7 +433,7 @@ function MembershipBadge() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function Messaging() {
@@ -458,7 +458,7 @@ function Messaging() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function AnimatedVideoOverlays() {
@@ -484,7 +484,7 @@ function AnimatedVideoOverlays() {
         </td>
       </tr>
     </>
-  )
+  );
 }
 
 function THead() {
@@ -503,7 +503,7 @@ function THead() {
         </th>
       </tr>
     </>
-  )
+  );
 }
 
 function PricingLayoutOne() {
@@ -633,7 +633,7 @@ function PricingLayoutOne() {
         </div>
       </div>
     </>
-  )
+  );
 }
 function PricingLayoutTwo() {
   return (
@@ -705,7 +705,7 @@ function PricingLayoutTwo() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function PricingLayoutThree() {
@@ -1129,5 +1129,5 @@ function PricingLayoutThree() {
         </div>
       </section>
     </>
-  )
+  );
 }

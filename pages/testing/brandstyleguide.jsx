@@ -157,10 +157,10 @@ function GlowTextSection() {
       <div tw="mx-4 space-y-6 h-80">
         <SectionTitle title="Text, font styles, etc" />
         <div tw="flex flex-row p-3 space-x-3">
-          <GlowText text="SHOUTMO" />
-          <GlowText text="SHOUTMO" />
-          <GlowText text="SHOUTMO" />
-          <GlowText text="SHOUTMO" />
+          <GlowText text="iCare" />
+          <GlowText text="iCare" />
+          <GlowText text="iCare" />
+          <GlowText text="iCare" />
         </div>
       </div>
     </>

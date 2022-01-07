@@ -1,18 +1,18 @@
-import * as Yup from 'yup'
+import * as Yup from "yup";
 
 const SignUpSchema = Yup.object().shape({
   email: Yup.string()
-    .email('Please enter a correct email address.')
-    .required('Please enter an email.'),
-  username: Yup.string()
-    .required('Please enter a username.')
-    .min(4, 'Username needs to be a minimum of 4 characters.'),
+    .email("Ingresa una dirección de email válida.")
+    .required("Ingresa tu dirección de email."),
   password: Yup.string()
-    .min(6, 'Password too short.')
-    .required('Please enter your password.'),
+    .min(6, "Ingresa una contraseña válida (mínimo 6 caracteres).")
+    .required("Ingresa tu contraseña."),
+  username: Yup.string()
+    .min(4, "Ingresa un username válido (mínimo 4 caracteres).")
+    .required("Ingresa tu username."),
   password_confirm: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match.')
-    .required('Please confirm your password.'),
-})
+    .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir.")
+    .required("Confirma tu contraseña."),
+});
 
-export default SignUpSchema
+export default SignUpSchema;

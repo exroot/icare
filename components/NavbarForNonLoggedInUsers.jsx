@@ -17,7 +17,7 @@ export default function NotLoggedInNavbar() {
                 fontFamily: "basiclazer",
               }}
             >
-              Shoutmo
+              iCare
             </h1>
           </div>
         </div>

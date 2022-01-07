@@ -1,32 +1,32 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
-import { useState, useEffect } from 'react'
-import { RiSearchLine } from 'react-icons/ri'
-import { BeatLoader } from 'react-spinners'
-import { AnimatePresence, motion } from 'framer-motion'
-import tw, { css } from 'twin.macro'
-import Link from 'next/link'
-import Image from 'next/image'
-import { FaAngleRight } from 'react-icons/fa'
-import resizeImage from '../../../utils/resizeImage'
-import SecondaryButton from '../../../components/Buttons/SecondaryButton'
-import { BiError } from 'react-icons/bi'
-import SecondaryButtonForResults from '../../../components/Buttons/SecondaryButtonResultsCardFromSearch'
+import { useState, useEffect } from "react";
+import { RiSearchLine } from "react-icons/ri";
+import { BeatLoader } from "react-spinners";
+import { AnimatePresence, motion } from "framer-motion";
+import tw, { css } from "twin.macro";
+import Link from "next/link";
+import Image from "next/image";
+import { FaAngleRight } from "react-icons/fa";
+import resizeImage from "../../../utils/resizeImage";
+import SecondaryButton from "../../../components/Buttons/SecondaryButton";
+import { BiError } from "react-icons/bi";
+import SecondaryButtonForResults from "../../../components/Buttons/SecondaryButtonResultsCardFromSearch";
 
 function SearchBarSection() {
   return (
     <>
-      <div tw="w-full space-y-4">
+      <div tw="w-full space-y-4 ">
         <SearchPage />
       </div>
     </>
-  )
+  );
 }
 
 const SearchPage = () => {
-  const [isLoading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [results, setResults] = useState([])
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [results, setResults] = useState([]);
 
   // console.log(results)
 
@@ -53,57 +53,57 @@ const SearchPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 const SearchBar = ({ setLoading, setResults, setError }) => {
-  const [searchTerm, setSearchTerm] = useState('') // this holds the search term that use effect watches
+  const [searchTerm, setSearchTerm] = useState(""); // this holds the search term that use effect watches
 
   useEffect(() => {
     if (searchTerm.length === 0) {
-      setResults([])
-      setLoading(false)
-      setError(false)
+      setResults([]);
+      setLoading(false);
+      setError(false);
     }
     if (searchTerm.length > 0) {
-      setLoading(true)
+      setLoading(true);
       const delayDebounceFn = setTimeout(() => {
         fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/profile-search/?keyword=${searchTerm}`
         )
           .then((data) => data.json())
           .then((data) => {
-            setResults(data.data.results)
-            setLoading(false)
+            setResults(data.data.results);
+            setLoading(false);
           })
           .catch((err) => {
-            setError(true)
-            setLoading(false)
-          })
-      }, 2500)
+            setError(true);
+            setLoading(false);
+          });
+      }, 2500);
 
-      return () => clearTimeout(delayDebounceFn)
+      return () => clearTimeout(delayDebounceFn);
     }
-  }, [searchTerm])
+  }, [searchTerm]);
 
   return (
-    <div tw="text-gray-600 flex flex-row items-center">
+    <div tw="text-primary-200 flex flex-row items-center">
       <input
-        tw="bg-background-primary border border-gray-600 h-10 px-5 w-full pl-10 rounded-full focus:outline-none"
+        tw="bg-primary-900 border border-primary-600 h-10 px-5 w-full pl-10 rounded-full focus:outline-none"
         type="search"
         autoComplete="off"
         name="search"
-        placeholder="Find Someone"
+        placeholder="Buscar usuarios"
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       {/* <RiSearchLine tw="text-gray-600 absolute mt-3 ml-4" /> */}
       <RiSearchLine tw="text-gray-600 absolute m-3" size={20} />
     </div>
-  )
-}
+  );
+};
 
 const ResultsContainer = ({ results, isLoading, error }) => {
-  const [isFollower, setFollower] = useState(false)
+  const [isFollower, setFollower] = useState(false);
   const resultsAnimation = {
     initial: { opacity: 0, y: -50 },
     animate: (i) => ({
@@ -120,7 +120,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
         delay: i * 0.3,
       },
     }),
-  }
+  };
   const loaderAnimation = {
     initial: {
       opacity: 0,
@@ -134,7 +134,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
       opacity: 0,
       y: 50,
     },
-  }
+  };
   if (error) {
     return (
       <AnimatePresence exitBeforeEnter>
@@ -148,7 +148,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
           <Status loading={isLoading} error={error} topic="results" />
         </motion.div>
       </AnimatePresence>
-    )
+    );
   }
   return (
     <AnimatePresence exitBeforeEnter>
@@ -182,7 +182,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
                 tw="bg-transparent rounded mb-2"
                 whileHover={{
                   scale: 1.02,
-                  boxShadow: '0px 4px 8px rgba(0, 0, 0, .17)',
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, .17)",
                 }}
               >
                 <SearchResult
@@ -209,14 +209,14 @@ const ResultsContainer = ({ results, isLoading, error }) => {
         )}
       </div>
     </AnimatePresence>
-  )
-}
+  );
+};
 
 const SearchResult = ({ result, isFollower, setFollower }) => {
   const headerStyle = css`
     ${tw`pl-4`}
     ${!(result.first_name || result.last_name) ? tw`mt-3` : tw`mt-1`}
-  `
+  `;
   return (
     <Link href={`/${result.username}`} passHref>
       <div
@@ -229,12 +229,12 @@ const SearchResult = ({ result, isFollower, setFollower }) => {
           {/* image / avatar */}
           <div tw="h-12 w-12 overflow-hidden rounded-full">
             <img
-              key={result.profile_picture || '/img/avatar_placeholder.png'}
+              key={result.profile_picture || "/img/avatar_placeholder.png"}
               alt={`${result.username} avatar`}
               src={
                 result.profile_picture
                   ? resizeImage(result.profile_picture, [50, 50])
-                  : '/img/avatar_placeholder.png'
+                  : "/img/avatar_placeholder.png"
               }
               tw="object-cover h-full w-full"
             />
@@ -259,8 +259,8 @@ const SearchResult = ({ result, isFollower, setFollower }) => {
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
 const Status = ({ loading, error, topic }) => {
   if (error) {
@@ -272,7 +272,7 @@ const Status = ({ loading, error, topic }) => {
           </div>
           An error has ocurred while fetching your {topic}.
           <span tw="block text-center text-base font-light text-primary-200">
-            Please reload the page and try again. If the error persists,{' '}
+            Please reload the page and try again. If the error persists,{" "}
             <span tw="underline font-normal">
               <Link href="/info/contact">contact us</Link>
             </span>
@@ -280,7 +280,7 @@ const Status = ({ loading, error, topic }) => {
           </span>
         </span>
       </div>
-    )
+    );
   }
   if (loading) {
     return (
@@ -292,9 +292,9 @@ const Status = ({ loading, error, topic }) => {
           <span tw="text-primary-200 font-bold">Loading links...</span>
         </div>
       </div>
-    )
+    );
   }
-  return null
-}
+  return null;
+};
 
-export default SearchBarSection
+export default SearchBarSection;

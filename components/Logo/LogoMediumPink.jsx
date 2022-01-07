@@ -7,12 +7,12 @@ export default function SHOUTMOlogo() {
         <span
           style={{
             color: "#ff27e1",
-            fontFamily: "basiclazer",
+            fontFamily: "Pacifico",
             fontSize: 60,
             // fontSize: 80,
           }}
         >
-          SHOUTMO
+          iCare
         </span>
       </p>
     </>

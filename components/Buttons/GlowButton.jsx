@@ -11,13 +11,13 @@ const GlowButton = ({ children, href, hero }) => {
         uppercase
         no-underline
         border-2
-        border-red-500
+        border-blue-600
         rounded-l-full
         rounded-r-full
         font-bold
         text-white
         tracking-wide
-        bg-gradient-to-br from-glow-primary to-glow-secondary
+        bg-gradient-to-br from-blue-400 to-purple-600
         transition duration-300 ease-in-out
         hover:cursor-pointer
     `}
@@ -46,7 +46,7 @@ const GlowButton = ({ children, href, hero }) => {
             font-bold
             text-white
             absolute
-            bg-gradient-to-b from-glow-primary to-glow-secondary
+            bg-gradient-to-b from-blue-400 to-purple-600
             transition duration-300 ease-in-out
         `}
     }

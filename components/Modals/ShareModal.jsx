@@ -1,33 +1,33 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FacebookShareButton,
   LinkedinShareButton,
   RedditShareButton,
   TwitterShareButton,
   VKShareButton,
-} from 'react-share'
-import saveSvgAsPng from 'save-svg-as-png'
+} from "react-share";
+import saveSvgAsPng from "save-svg-as-png";
 import {
   RiDownload2Line,
   RiEmotionLaughLine,
   RiQrCodeFill,
   RiCloseFill,
-} from 'react-icons/ri'
-import QRCode from 'qrcode.react'
-import tw, { css } from 'twin.macro'
-import PlatformIcon from '../PlatformIcon'
+} from "react-icons/ri";
+import QRCode from "qrcode.react";
+import tw, { css } from "twin.macro";
+import PlatformIcon from "../PlatformIcon";
 
 const ShareModal = ({ showModal, setShowModal, profile }) => {
-  const [tab, setTab] = useState('social-media')
+  const [tab, setTab] = useState("social-media");
   const tabSelected = css`
     ${tw`px-4 py-6 block focus:outline-none text-accent border-b-2 font-medium border-accent duration-75 ease-in-out`}
-  `
+  `;
   const tabNormal = css`
     ${tw`px-4 py-6 block hover:border-b-2 text-primary-200 border-accent font-medium hover:text-accent focus:outline-none duration-75 ease-in-out`}
-  `
+  `;
   const container = {
     initial: {
       opacity: 0,
@@ -38,7 +38,7 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const backup = {
     initial: {
       opacity: 0,
@@ -49,7 +49,7 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const modal = {
     initial: {
       scale: 1.2,
@@ -64,7 +64,7 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
       opacity: 0,
       scale: 1.2,
     },
-  }
+  };
 
   return (
     <AnimatePresence exitBeforeEnter>
@@ -109,7 +109,7 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
 
               {/* body */}
               <div tw="px-4">
-                {tab === 'social-media' ? (
+                {tab === "social-media" ? (
                   <SocialMediaShare profile={profile} />
                 ) : (
                   <QRCodeShare profile={profile} />
@@ -121,8 +121,8 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
                 <nav tw="grid grid-cols-2 gap-4 w-full">
                   <button
                     type="button"
-                    onClick={() => setTab('social-media')}
-                    css={tab === 'social-media' ? tabSelected : tabNormal}
+                    onClick={() => setTab("social-media")}
+                    css={tab === "social-media" ? tabSelected : tabNormal}
                   >
                     <span tw="flex justify-center text-sm">
                       <RiEmotionLaughLine tw="mt-1 mr-1" size={16} />
@@ -131,8 +131,8 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setTab('qrcode')}
-                    css={tab === 'qrcode' ? tabSelected : tabNormal}
+                    onClick={() => setTab("qrcode")}
+                    css={tab === "qrcode" ? tabSelected : tabNormal}
                   >
                     <span tw="flex justify-center text-sm">
                       <RiQrCodeFill tw="mt-1 mr-1" size={16} />
@@ -146,28 +146,28 @@ const ShareModal = ({ showModal, setShowModal, profile }) => {
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
 const SocialMediaShare = ({ profile }) => {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
   const buttonStyle = css`
     ${tw`mt-2 px-4 py-2 rounded-full bg-accent w-full flex justify-center text-primary-200 hover:bg-accent-hover duration-75 ease-in-out`}
-  `
+  `;
   const animationProps = {
     initial: {
-      x: '-20',
+      x: "-20",
       opacity: 0,
     },
     animate: {
-      x: '0',
+      x: "0",
       opacity: 1,
     },
     exit: {
-      x: '-20',
+      x: "-20",
       opacity: 0,
     },
-  }
+  };
   return (
     <AnimatePresence exitBeforeEnter>
       <motion.div
@@ -179,65 +179,66 @@ const SocialMediaShare = ({ profile }) => {
       >
         <div tw="w-full mb-4">
           <h1 tw="text-primary-200 font-bold text-center text-lg mb-1">
-            Hi{' '}
+            Hola cuidador,{" "}
             {/* <span tw="text-primary-200 font-extrabold text-center">
               @{profile.username}
             </span> */}
           </h1>
           <p tw="text-primary-200 text-sm text-center">
-            Share this profile page with all your friends.
+            Aquí puedes compartir fácilmente tu perfil con todos tus amigos o
+            allegados.
           </p>
         </div>
         {/* Social share buttons */}
         <div tw="w-full">
           <TwitterShareButton
-            url={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+            url={process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username}
             resetButtonStyle={false}
-            title="Hi there, follow me on shoutmo"
-            hashtags={['shoutmo']}
+            title="Hola amigos, este es mi perfil de iCare #iCare #cuidadores"
+            hashtags={["iCare"]}
             css={buttonStyle}
           >
             <PlatformIcon icon="Twitter" />
-            <span tw="ml-2">Share on Twitter</span>
+            <span tw="ml-2">Compartir en Twitter</span>
           </TwitterShareButton>
           <FacebookShareButton
-            url={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+            url={process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username}
             resetButtonStyle={false}
-            quote="Hi there, follow me on shoutmo"
-            hashtag="#shoutmo"
+            quote="Hola amigos, este es mi perfil de iCare"
+            hashtag="#iCare"
             css={buttonStyle}
           >
             <PlatformIcon icon="Facebook" />
-            <span tw="ml-2">Share on Facebook</span>
+            <span tw="ml-2">Compartir en Facebook</span>
           </FacebookShareButton>
           <VKShareButton
-            url={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+            url={process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username}
             resetButtonStyle={false}
-            image={profile.profile_picture}
+            image={profile.image_avatar}
             title={`${profile.username}'s profile page`}
             css={buttonStyle}
           >
             <PlatformIcon icon="VK" />
-            <span tw="ml-2">Share on VK</span>
+            <span tw="ml-2">Compartir en VK</span>
           </VKShareButton>
           <RedditShareButton
-            url={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+            url={process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username}
             resetButtonStyle={false}
             title={`${profile.username}'s profile page`}
             css={buttonStyle}
           >
             <PlatformIcon icon="Reddit" />
-            <span tw="ml-2">Share on Reddit</span>
+            <span tw="ml-2">Compartir en Reddit</span>
           </RedditShareButton>
           <LinkedinShareButton
-            url={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+            url={process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username}
             resetButtonStyle={false}
             css={buttonStyle}
             summary={`${profile.username}'s profile page`}
             source={process.env.NEXT_PUBLIC_CLIENT_URL}
           >
             <PlatformIcon icon="LinkedIn" />
-            <span tw="ml-2">Share on Linkedin</span>
+            <span tw="ml-2">Compartir en Linkedin</span>
           </LinkedinShareButton>
         </div>
         <p tw="pt-3 pb-2 w-full mx-auto text-primary-200 text-center">OR</p>
@@ -246,7 +247,9 @@ const SocialMediaShare = ({ profile }) => {
             <input
               tw="appearance-none text-center bg-transparent border-none w-full text-primary-200 mr-3 py-1 px-2 rounded-none leading-tight text-sm focus:outline-none"
               readOnly
-              value={process.env.NEXT_PUBLIC_CLIENT_URL + profile.username}
+              value={
+                process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username
+              }
               aria-label="Full name"
               id="foo"
             />
@@ -254,46 +257,46 @@ const SocialMediaShare = ({ profile }) => {
               tw="flex-shrink-0 bg-accent hover:bg-accent border-accent text-sm border-4 text-primary-200 py-1 px-2 rounded-full focus:outline-none"
               type="button"
               onClick={() => {
-                setCopied(true)
+                setCopied(true);
                 navigator.clipboard.writeText(
-                  process.env.NEXT_PUBLIC_CLIENT_URL + profile.username
-                )
+                  process.env.NEXT_PUBLIC_CLIENT_URL + "/" + profile.username
+                );
               }}
             >
-              {copied ? 'copied!' : 'copy'}
+              {copied ? "copied!" : "copy"}
             </button>
           </div>
         </div>
       </motion.div>
     </AnimatePresence>
-  )
-}
+  );
+};
 
 const QRCodeShare = ({ profile }) => {
   const downloadQR = () => {
     saveSvgAsPng.saveSvgAsPng(
-      document.getElementById('qrcode'),
+      document.getElementById("qrcode"),
       `${profile.username}_QRCode.png`,
       {
         scale: 5,
         encoderOptions: 1,
       }
-    )
-  }
+    );
+  };
   const animationProps = {
     initial: {
-      x: '20',
+      x: "20",
       opacity: 0,
     },
     animate: {
-      x: '0',
+      x: "0",
       opacity: 1,
     },
     exit: {
-      x: '20',
+      x: "20",
       opacity: 0,
     },
-  }
+  };
   return (
     <AnimatePresence exitBeforeEnter>
       <motion.div
@@ -305,21 +308,22 @@ const QRCodeShare = ({ profile }) => {
       >
         <div tw="w-full mb-4">
           <h1 tw="text-primary-200 font-bold text-center text-lg mb-1">
-            Hi{' '}
+            Hola cuidador,{" "}
             {/* <span tw="text-primary-200 font-extrabold text-center">
               @{profile.username}
             </span> */}
           </h1>
           <p tw="text-primary-200 text-sm text-center">
-            Share this <span tw="font-extrabold">QR Code</span> with all your
-            friends. Everyone will be redirect to this page instantly.
+            Comparte este <span tw="font-extrabold">Código QR</span> con todos
+            tus amigos o allegados. Siempre serán reedirigidos a tu pagina de
+            perfil de inmediato.
           </p>
         </div>
         <div tw="w-full">
           <QRCode
             tw="mx-auto border-2 border-transparent rounded"
             id="qrcode"
-            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}${profile.username}`}
+            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${profile.username}`}
             size={128}
             bgColor="var(--primary-900)"
             fgColor="var(--color-primary-100)"
@@ -328,7 +332,7 @@ const QRCodeShare = ({ profile }) => {
             renderAs="svg"
           />
           <p tw="text-primary-200 text-sm text-center mt-2 italic">
-            {`${process.env.NEXT_PUBLIC_CLIENT_URL}${profile.username}`}
+            {`${process.env.NEXT_PUBLIC_CLIENT_URL}/${profile.username}`}
           </p>
         </div>
         <div tw="w-full flex justify-center">
@@ -343,6 +347,6 @@ const QRCodeShare = ({ profile }) => {
         </div>
       </motion.div>
     </AnimatePresence>
-  )
-}
-export default ShareModal
+  );
+};
+export default ShareModal;

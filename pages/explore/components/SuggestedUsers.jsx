@@ -1,109 +1,112 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import tw, { css } from 'twin.macro'
-import axios from '../../../lib/client'
-import resizeImage from '../../../utils/resizeImage'
-import SuggestedUsersSkeleton from '../../../components/Feed/FeedSkeleton'
-import useUser from '../../../lib/useUser'
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import tw, { css } from "twin.macro";
+import axios from "../../../lib/client";
+import resizeImage from "../../../utils/resizeImage";
+import SuggestedUsersSkeleton from "../../../components/Feed/FeedSkeleton";
+import useUser from "../../../lib/useUser";
+import useSuggestedUsers from "../../../lib/useSuggestedUsers";
 
 const SuggestedUsers = () => {
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { suggested, errorSuggested } = useSuggestedUsers();
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     if (isMounted) {
-      ;(async () => {
-        setLoading(true)
+      (async () => {
+        setLoading(true);
         try {
           const { data: suggested } = await axios({
-            url: '/profiles/me/suggested/?page=1',
-            method: 'GET',
-          })
+            url: "/profiles/me/suggested/?page=1",
+            method: "GET",
+          });
           setUsers(
             // TODO show users who have a profile pic first
             // TODO show more users button
             suggested.data.results.sort(() => 0.5 - Math.random()).slice(0, 8)
-          )
+          );
         } catch (err) {
           // console.log(err)
         } finally {
-          setLoading(false)
+          setLoading(false);
         }
-      })()
+      })();
     }
     return () => {
-      isMounted = false
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, []);
   if (loading) {
-    return <SuggestedUsersSkeleton />
+    return <SuggestedUsersSkeleton />;
   }
   return (
     <>
       <div tw="flex flex-col space-y-1">
         <div tw="flex flex-row overflow-x-scroll space-x-3 h-64">
-          {users.map((profile) => (
-            <Suggested key={profile.username} profile={profile} />
+          {console.log("suggested: ", suggested)}
+          {suggested.map((profile) => (
+            <Suggested key={profile.id} profile={profile} />
           ))}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 const nameParser = (firstname, lastname, username) => {
   if (firstname && lastname) {
-    return `${firstname} ${lastname}`
+    return `${firstname} ${lastname}`;
   }
   if (!lastname && firstname) {
-    return firstname
+    return firstname;
   }
   if (!firstname && lastname) {
-    return lastname
+    return lastname;
   }
-  return `${username}'s profile`
-}
+  return `${username}'s profile`;
+};
 
 const Suggested = ({ profile }) => {
-  const [followed, setFollowed] = useState(false)
-  const { user: userLogged } = useUser()
+  const [followed, setFollowed] = useState(false);
+  const { user: userLogged } = useUser();
 
   const followUser = async () => {
     if (!followed) {
       await axios({
         url: `/profiles/${profile.username}/follows/`,
-        method: 'POST',
+        method: "POST",
         body: {
           follower: userLogged.id,
           followed: profile.id,
         },
-      })
-      setFollowed(true)
+      });
+      setFollowed(true);
     } else {
       // action: unfollow user
       await axios({
         url: `/profiles/${profile.username}/follows/`,
-        method: 'DELETE',
-      })
-      setFollowed(false)
+        method: "DELETE",
+      });
+      setFollowed(false);
     }
-  }
+  };
 
   return (
     <>
       <Link href={`/${profile.username}`} passHref>
-        <div tw="flex-shrink-0 h-full w-36 cursor-pointer duration-100 ease-in space-y-1">
+        <div tw="flex-shrink-0 h-full w-40 bg-primary-700 hover:bg-primary-800 cursor-pointer duration-100 ease-in space-y-1">
           <img
-            tw="object-cover w-full h-48 rounded"
+            tw="object-cover w-full h-40 rounded"
             src={
-              profile.profile_picture
-                ? resizeImage(profile.profile_picture, [50, 50])
-                : '/img/avatar_placeholder.png'
+              profile.image_avatar
+                ? profile.image_avatar
+                : "/img/avatar_placeholder.png"
             }
             alt={`${profile.username}'s avatar`}
           />
-          <div tw="flex flex-col space-y-0 text-sm">
+          <div tw="flex flex-col space-y-0 text-sm px-4 py-2">
             <a tw="block text-sm text-primary-200 font-bold leading-tight hover:underline duration-75 ease-in-out truncate text-white tracking-wide text-white font-semibold">
               {nameParser(
                 profile.first_name,
@@ -116,7 +119,7 @@ const Suggested = ({ profile }) => {
         </div>
       </Link>
     </>
-  )
-}
+  );
+};
 
-export default SuggestedUsers
+export default SuggestedUsers;

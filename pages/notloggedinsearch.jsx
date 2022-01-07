@@ -88,7 +88,7 @@ export default function SearchPage() {
             queryResults.map((user) => (
               <li tw="list-none mx-8">
                 <SearchResultCard
-                  profile_picture={user.profile_picture}
+                  profile_picture={user.profile.image_avatar}
                   id={user.id}
                   username={user.username}
                   first_name={user.first_name}

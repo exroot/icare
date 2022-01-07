@@ -1,47 +1,47 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
-import { RiMenuLine, RiMoneyDollarCircleLine } from 'react-icons/ri'
-import NotificationsDropdown from './NotificationsDropdown'
-import ProfileDropdown from './ProfileDropdown'
-import useUser from '../../lib/useUser'
-import axios from '../../lib/client'
-import redirectTo from '../../utils/redirectTo'
-import { trigger, cache } from 'swr'
-import Link from 'next/link'
-import ToggleTheme from '../Buttons/ToggleTheme'
-import localforage from 'localforage'
-import 'twin.macro'
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { RiMenuLine, RiMoneyDollarCircleLine } from "react-icons/ri";
+import NotificationsDropdown from "./NotificationsDropdown";
+import ProfileDropdown from "./ProfileDropdown";
+import useUser from "../../lib/useUser";
+import axios from "../../lib/client";
+import redirectTo from "../../utils/redirectTo";
+import { trigger, cache } from "swr";
+import Link from "next/link";
+import ToggleTheme from "../Buttons/ToggleTheme";
+import localforage from "localforage";
+import "twin.macro";
 
 const Navbar = ({ setIsSidebarOpen }) => {
   const { user, isLoading, mutateUser, error } = useUser({
     oneCall: true,
-  })
+  });
   const [dropdownActive, setDropdownActive] = useState({
     notifications: false,
     profile: false,
-  })
+  });
   const handleLogout = async () => {
     try {
       const body = {
-        refresh_token: localStorage.getItem('refresh'),
-        device_token: await localforage.getItem('fcm_token'),
-      }
+        refresh_token: localStorage.getItem("refresh"),
+        device_token: await localforage.getItem("fcm_token"),
+      };
       const { data } = await axios({
-        url: '/auth/logout/',
-        method: 'POST',
+        url: "/auth/logout/",
+        method: "POST",
         body,
-      })
-      localStorage.removeItem('access')
-      localStorage.removeItem('refresh')
-      await mutateUser({ ...user, is_logged_in: false }, false)
-      await trigger('/auth/me')
-      cache.clear()
-      redirectTo('/login')
+      });
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      await mutateUser({ ...user, is_logged_in: false }, false);
+      await trigger("/auth/me");
+      cache.clear();
+      redirectTo("/login");
     } catch (err) {
-      console.log(err)
-      throw err
+      console.log(err);
+      throw err;
     }
-  }
+  };
 
   return (
     <nav tw="relative flex-shrink-0 flex h-16 bg-transparent shadow z-20">
@@ -79,7 +79,7 @@ const Navbar = ({ setIsSidebarOpen }) => {
           <a href="/donate">
             <button
               tw="bg-gray-300 text-indigo-900 hover:text-black font-bold py-2 px-4 rounded inline-flex items-center"
-              style={{ background: '#9AFF87' }}
+              style={{ background: "#9AFF87" }}
             >
               {/* <RiMoneyDollarCircleLine size={24} fill="#39FF14" /> */}
               <span tw="text-sm mr-1">Support Us</span>
@@ -92,10 +92,10 @@ const Navbar = ({ setIsSidebarOpen }) => {
         {/* Check if user its logged */}
         {!isLoading && user && user.is_logged_in ? (
           <div tw="ml-4 flex items-center md:ml-6">
-            <NotificationsDropdown
+            {/* <NotificationsDropdown
               dropdownActive={dropdownActive}
               setDropdownActive={setDropdownActive}
-            />
+            /> */}
             {/* Profile dropdown */}
             <div tw="ml-3">
               <ProfileDropdown
@@ -137,10 +137,10 @@ const Navbar = ({ setIsSidebarOpen }) => {
         )}
       </div>
     </nav>
-  )
-}
+  );
+};
 
 Navbar.propTypes = {
   setIsSidebarOpen: PropTypes.func,
-}
-export default Navbar
+};
+export default Navbar;

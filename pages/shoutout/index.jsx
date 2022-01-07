@@ -6,28 +6,28 @@ import ShoutoutForm from "../../components/ShoutoutForm";
 import "twin.macro";
 
 const Shoutout = () => {
-    const { user, isLoading } = useUser({ redirectTo: "/login" });
+  const { user, isLoading } = useUser({ redirectTo: "/login" });
 
-    if (isLoading || user.is_logged_in === false) {
-        return (
-            <>
-                <Head>
-                    <title>Shoutmo</title>
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-                <PageLoader />
-            </>
-        );
-    }
+  if (isLoading || user.is_logged_in === false) {
     return (
-        <>
-            <Head>
-                <title>Shoutmo | Shoutout</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+      <>
+        <Head>
+          <title>iCare</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <PageLoader />
+      </>
+    );
+  }
+  return (
+    <>
+      <Head>
+        <title>iCare | Shoutout</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-            <Wrapper>
-                {/* <div tw="max-w-6xl mx-auto px-4 py-4 sm:px-6 md:px-8">
+      <Wrapper>
+        {/* <div tw="max-w-6xl mx-auto px-4 py-4 sm:px-6 md:px-8">
           <h1 tw="text-4xl font-semibold text-text-dark">Profile</h1>
           <div tw="border border-gray-600 rounded-lg" />
         </div>
@@ -48,17 +48,15 @@ const Shoutout = () => {
             </ul>
           </div>
         </div> */}
-                {/* Shoutout Form */}
-                <div tw="max-w-6xl mx-auto px-4 py-4 sm:px-6 md:px-8">
-                    <h1 tw="text-4xl font-semibold text-text-dark">
-                        Shoutout Form
-                    </h1>
-                    <div tw="border border-gray-600 rounded-lg" />
-                    <ShoutoutForm />
-                </div>
-            </Wrapper>
-        </>
-    );
+        {/* Shoutout Form */}
+        <div tw="max-w-6xl mx-auto px-4 py-4 sm:px-6 md:px-8">
+          <h1 tw="text-4xl font-semibold text-text-dark">Shoutout Form</h1>
+          <div tw="border border-gray-600 rounded-lg" />
+          <ShoutoutForm />
+        </div>
+      </Wrapper>
+    </>
+  );
 };
 
 export default Shoutout;

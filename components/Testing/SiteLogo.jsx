@@ -13,7 +13,7 @@ function SiteLogo() {
               color: "#ff27e1",
             }}
           >
-            Shoutmo
+            iCare
           </h1>
         </div>
       </div>

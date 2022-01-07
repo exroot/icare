@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import 'twin.macro'
+import Link from "next/link";
+import "twin.macro";
 
 const LoginSubactions = () => {
   return (
@@ -7,11 +7,13 @@ const LoginSubactions = () => {
       <div />
       <div tw="w-1/2 text-right">
         <Link href="/password-reset" passHref>
-          <a tw="text-accent text-sm tracking-tight">Forgot password?</a>
+          <a tw="text-accent text-sm tracking-tight">
+            ¿Olvidaste tu contraseña?
+          </a>
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginSubactions
+export default LoginSubactions;

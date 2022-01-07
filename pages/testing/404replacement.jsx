@@ -48,7 +48,7 @@ function SHOUTMO() {
           fontFamily: "basiclazer",
         }}
       >
-        SHOUTMO
+        iCare
       </p>
     </>
   );

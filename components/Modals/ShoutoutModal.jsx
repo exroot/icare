@@ -1,43 +1,47 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable react/prop-types */
-import React from 'react'
-import { Form, Field, Formik } from 'formik'
-import { useToasts } from 'react-toast-notifications'
-import { motion, AnimatePresence } from 'framer-motion'
-import OutsideClickHandler from 'react-outside-click-handler'
-import { RiCloseFill } from 'react-icons/ri'
-import tw, { css } from 'twin.macro'
-import ShoutmoSchema from '../../validations/shoutout.schema'
-import useUser from '../../lib/useUser'
-import axios from '../../lib/client'
-import { ButtonCTA as SubmitButton } from '../Buttons/ButtonCTA'
-import resizeImage from '../../utils/resizeImage'
+import React from "react";
+import { Form, Field, Formik } from "formik";
+import { useToasts } from "react-toast-notifications";
+import { motion, AnimatePresence } from "framer-motion";
+import OutsideClickHandler from "react-outside-click-handler";
+import { RiCloseFill } from "react-icons/ri";
+import tw, { css } from "twin.macro";
+import ShoutmoSchema from "../../validations/shoutout.schema";
+import useUser from "../../lib/useUser";
+import axios from "../../lib/client";
+import { ButtonCTA as SubmitButton } from "../Buttons/ButtonCTA";
+import resizeImage from "../../utils/resizeImage";
 
 const ShoutoutModal = ({ showModal, setShowModal }) => {
-  const { addToast } = useToasts()
-  const { user } = useUser()
+  const { addToast } = useToasts();
+  const { user } = useUser();
   const handleSubmit = async (values, setSubmitting) => {
     try {
-      values.creator = user
+      const body = {
+        title: values.title,
+        body: values.text,
+        user_id: user.id,
+      };
       await axios({
-        url: '/shoutouts/',
-        body: values,
-        method: 'POST',
-      })
-      addToast('Shoutout created successfully.', {
-        appearance: 'success',
+        url: "/posts",
+        body: body,
+        method: "POST",
+      });
+      addToast("Post creado satisfactoriamente.", {
+        appearance: "success",
         autoDismiss: true,
-      })
-      setSubmitting(false)
-      setShowModal(false)
+      });
+      setSubmitting(false);
+      setShowModal(false);
     } catch (err) {
-      addToast('Server error, please try again in a few seconds.', {
-        appearance: 'error',
+      addToast("Error en el servidor, intentalo mas tarde.", {
+        appearance: "error",
         autoDismiss: true,
-      })
+      });
     }
-  }
+  };
 
   const container = {
     initial: {
@@ -49,7 +53,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const backup = {
     initial: {
       opacity: 0,
@@ -60,7 +64,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const modal = {
     initial: {
       scale: 1.2,
@@ -75,7 +79,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
       opacity: 0,
       scale: 1.2,
     },
-  }
+  };
   return (
     <AnimatePresence exitBeforeEnter>
       {showModal && (
@@ -108,7 +112,8 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
               {/* content */}
               <Formik
                 initialValues={{
-                  text: '',
+                  title: "",
+                  text: "",
                 }}
                 validationSchema={ShoutmoSchema}
                 validateOnBlur={false}
@@ -119,7 +124,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                 {({ errors, touched, isSubmitting }) => (
                   <Form tw="rounded-lg shadow-lg relative flex flex-col w-full bg-primary-900 text-button outline-none focus:outline-none border border-accent">
                     {/* header */}
-                    <div tw="text-primary-200 py-2">
+                    <div tw="text-primary-200 py-4">
                       <button
                         type="button"
                         tw="text-white text-xl absolute top-4 right-2 -mt-2 px-2 py-2 rounded-full bg-primary-700 hover:cursor-pointer hover:bg-primary-600 z-10"
@@ -131,24 +136,36 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
 
                     {/* body */}
                     <div tw="pt-4 pb-4 pl-20 pr-10 relative">
+                      <div tw="bg-primary-700 rounded-lg px-2 py-2 text-primary-200 mb-4">
+                        <FormField
+                          as="input"
+                          name="title"
+                          errors={errors}
+                          touched={touched}
+                          placeholder="Titulo del post"
+                          rows={5}
+                        />
+                      </div>
                       <img
                         tw="absolute h-10 w-10 top-0 left-0 mt-4 ml-4 rounded-full"
                         src={
-                          user.profile_picture
-                            ? resizeImage(user.profile_picture, [40, 40])
-                            : '/img/avatar_placeholder.png'
+                          user.profile.image_avatar
+                            ? user.profile.image_avatar
+                            : "/img/avatar_placeholder.png"
                         }
                         alt={`${user && user.username} avatar`}
                       />
 
-                      <FormField
-                        as="textarea"
-                        name="text"
-                        errors={errors}
-                        touched={touched}
-                        placeholder="What's up?"
-                        rows={5}
-                      />
+                      <div tw="px-2 bg-primary-700 py-2 rounded-lg">
+                        <FormField
+                          as="textarea"
+                          name="text"
+                          errors={errors}
+                          touched={touched}
+                          placeholder="Contenido del post"
+                          rows={5}
+                        />
+                      </div>
                     </div>
                     {/* footer */}
                     <div tw="p-4 pl-20 flex justify-between">
@@ -161,7 +178,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                           isSubmitting={isSubmitting}
                           fluid
                         >
-                          Shout
+                          Postear
                         </SubmitButton>
                       </div>
                     </div>
@@ -173,19 +190,19 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
 const FormField = ({
   name,
   errors,
   touched,
-  placeholder = '',
+  placeholder = "",
   rows = 1,
-  as = 'input',
-  type = 'text',
+  as = "input",
+  type = "text",
 }) => {
-  const fieldName = name.toLowerCase()
+  const fieldName = name.toLowerCase();
   return (
     <Field
       as={as}
@@ -203,7 +220,7 @@ const FormField = ({
       `}
       rows={rows}
     />
-  )
-}
+  );
+};
 
-export default ShoutoutModal
+export default ShoutoutModal;

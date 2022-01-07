@@ -1,4 +1,4 @@
-const ENDPOINTS = {
+export const ENDPOINTS = {
   auth: {
     login: "/login",
     register: "/register",
@@ -8,4 +8,6 @@ const ENDPOINTS = {
   comments: "/comments",
   commentsAll: "/comments-all",
   categories: "/categories",
+  profiles: "/profiles",
+  feed: "/feed",
 };

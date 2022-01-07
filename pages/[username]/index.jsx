@@ -1,124 +1,223 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { FaChevronRight, FaAngleRight, FaRegCreditCard } from 'react-icons/fa'
-import tw, { css } from 'twin.macro'
-import { ShareButtonForCard } from '../../components/Buttons/ShareButtonForCard'
-import { FollowButtonForCard } from '../../components/Buttons/FollowButtonForCard'
-import { UnfollowButtonForCard } from '../../components/Buttons/UnfollowButtonForCard'
-import { EditButtonForCard } from '../../components/Buttons/EditButtonForCard'
-import useShoutouts from '../../lib/useShoutoutsFetcher'
-import NotFoundPage from '../../components/404'
-import TopNavbar from '../../components/Navigation/TopNavbar'
-import AuthModal from '../../components/Modals/AuthModal'
-import ShareModal from '../../components/Modals/ShareModal'
-import BottomNavigation from '../../components/Navigation/BottomNavigation'
-import useUser from '../../lib/useUser'
-import axiosClient from '../../lib/client'
-import SEOProfile from '../../components/SEOProfile'
-import PlatformIcon from '../../components/PlatformIcon'
-import ShoutoutsContainer from '../../components/Profile/ShoutoutsContainer'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaChevronRight, FaAngleRight, FaRegCreditCard } from "react-icons/fa";
+import tw, { css } from "twin.macro";
+import { ShareButtonForCard } from "../../components/Buttons/ShareButtonForCard";
+import { FollowButtonForCard } from "../../components/Buttons/FollowButtonForCard";
+import { UnfollowButtonForCard } from "../../components/Buttons/UnfollowButtonForCard";
+import { EditButtonForCard } from "../../components/Buttons/EditButtonForCard";
+import { ButtonCTA as FollowButton } from "../../components/Buttons/ButtonCTA";
+import {
+  ButtonPrimary as EditButton,
+  ButtonPrimary as ShareButton,
+} from "../../components/Buttons/ButtonPrimary";
+import { ButtonSecondary as UnfollowButton } from "../../components/Buttons/ButtonSecondary";
+import useShoutouts from "../../lib/useShoutoutsFetcher";
+import NotFoundPage from "../../components/404";
+import TopNavbar from "../../components/Navigation/TopNavbar";
+import AuthModal from "../../components/Modals/AuthModal";
+import ShareModal from "../../components/Modals/ShareModal";
+import BottomNavigation from "../../components/Navigation/BottomNavigation";
+import useUser from "../../lib/useUser";
+import axiosClient from "../../lib/client";
+import SEOProfile from "../../components/SEOProfile";
+import PlatformIcon from "../../components/PlatformIcon";
+import ShoutoutsContainer from "../../components/Profile/ShoutoutsContainer";
+import { FiArrowLeft } from "react-icons/fi";
+import { RiShareLine, RiEdit2Line } from "react-icons/ri";
+import { event } from "../../lib/gtag";
 
-import { event } from '../../lib/gtag'
+const Bio = ({ cover, children }) => (
+  <div
+    tw="w-full h-full bg-local bg-no-repeat pt-20 sm:pt-0 bg-cover text-primary-200"
+    css={`
+      background-image: url(${cover});
+    `}
+  >
+    {children}
+  </div>
+);
+
+const NameAndUsername = ({ firstname, lastname, username }) => (
+  <>
+    <div tw="w-full text-center sm:text-left">
+      <h1 tw="text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-none">
+        {nameParser(firstname, lastname, username)}
+      </h1>
+      <span tw="text-xl text-primary-400">{`@${username}`}</span>
+    </div>
+  </>
+);
+
+const Description = ({ description }) => {
+  if (!description) {
+    return null;
+  }
+  return (
+    <p tw="w-full sm:w-3/4 lg:w-1/2 mr-4 text-base lg:text-base">
+      {description}
+    </p>
+  );
+};
+
+const geoParser = (country, city) => {
+  if (country && city) {
+    // Parse country with city
+    return `${city}, ${country}`;
+  }
+  if (!city && country) {
+    // Just show country
+    return country;
+  }
+  if (!country && city) {
+    // Just show city
+    return city;
+  }
+  return null;
+};
+
+const GeoPosition = ({ country, city }) => {
+  const geoData = geoParser(country, city);
+
+  if (!geoData) return null;
+
+  return (
+    <div tw="w-full sm:w-5/12 flex flex-row items-center text-primary-400">
+      <FaMapMarkerAlt size={24} fill="#eb008d" tw="w-4 h-4 align-bottom mr-1" />
+      <span>{geoData}</span>
+    </div>
+  );
+};
+
+const fansParser = (fansCount) => {
+  if (fansCount < 1000) {
+    return fansCount;
+  }
+  const units = ["k", "M", "G", "T", "P", "E", "Z", "Y"];
+  const floor = Math.floor(Math.abs(fansCount).toString().length / 3);
+  const value = +(fansCount / Math.pow(1000, floor));
+  return +value.toFixed(1) + units[floor - 1];
+};
+
+const Follows = ({ following, followers }) => {
+  const fansQuantity = fansParser(followers);
+  return (
+    <div tw="flex flex-row space-x-16 pb-9 justify-center sm:justify-start">
+      <div>
+        <span tw="text-primary-400 block">Seguidores</span>
+        <span tw="text-primary-200 text-4xl font-bold block">
+          {fansQuantity}
+        </span>
+      </div>
+      <div>
+        <span tw="text-primary-400 block">Siguiendo</span>
+        <span tw="text-primary-200 text-4xl font-bold block">{following}</span>
+      </div>
+    </div>
+  );
+};
 
 const nameParser = (firstname, lastname, username) => {
   if (firstname && lastname) {
-    return `${firstname} ${lastname}`
+    return `${firstname} ${lastname}`;
   }
   if (!lastname && firstname) {
-    return firstname
+    return firstname;
   }
   if (!firstname && lastname) {
-    return lastname
+    return lastname;
   }
-  return `${username}'s profile`
-}
+  return `${username}'s profile`;
+};
 
 const ProfilePage = ({ data, referrer }) => {
-  const [buttonText, setButtonText] = useState('Following')
-  const [showModal, setShowModal] = useState(false)
-  const [showShareModal, setShowShareModal] = useState(false)
-  const [followingStatus, setFollowingStatus] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { user } = useUser()
+  const [buttonText, setButtonText] = useState("Siguiendo");
+  const [showModal, setShowModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const isUser =
-    user && user.is_logged_in && user.username === data.profile.username
+    user && user.is_logged_in && user.profile.username === data.username;
+
+  // useEffect(() => {
+  //   console.log("data: ", data);
+  //   event("profileview", data.profile.username, "referrer", referrer);
+  //   if (referrer) {
+  //     axiosClient({
+  //       url: `/traffic/profile-page-views`,
+  //       method: "POST",
+  //       body: {
+  //         user: data.profile.username,
+  //         referrer,
+  //       },
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
-    event('profileview', data.profile.username, 'referrer', referrer)
-    if (referrer) {
-      axiosClient({
-        url: `/traffic/profile-page-views`,
-        method: 'POST',
-        body: {
-          user: data.profile.username,
-          referrer,
-        },
-      })
-    }
-  }, [])
-
-  useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     if (isMounted) {
-      ;(async () => {
-        let params = {}
+      (async () => {
+        let params = {};
         if (user) {
           params = {
-            url: `/profiles/${data.profile.username}`,
-            method: 'GET',
-          }
+            url: `/profiles/${data.username}`,
+            method: "GET",
+          };
         } else {
           params = {
-            url: `/profiles/${data.profile.username}`,
-            method: 'GET',
+            url: `/profiles/${data.username}`,
+            method: "GET",
             headers: {},
-          }
+          };
         }
-        const { data: responseData } = await axiosClient(params)
+        const { data: responseData } = await axiosClient(params);
         if (isMounted && responseData.data.following) {
-          setFollowingStatus(true)
+          setFollowingStatus(true);
         }
-      })()
+      })();
     }
     return () => {
-      isMounted = false
-    }
-  }, [user])
+      isMounted = false;
+    };
+  }, [user]);
 
   const followAction = async () => {
     try {
       if (user.is_logged_in === false) {
         // redirectTo(`/login?next=${profile.username}`);
-        setShowModal(true)
-        return
+        setShowModal(true);
+        return;
       }
-      setLoading(true)
+      setLoading(true);
       if (!followingStatus) {
         // action: follow user
-        await axiosClient({
-          url: `/profiles/${data.profile.username}/follows/`,
-          method: 'POST',
-          body: {
-            follower: user.id,
-            followed: data.profile.id,
-          },
-        })
-        setFollowingStatus(true)
-        setLoading(false)
+        const resp = await axiosClient({
+          url: `/profiles/${data.username}/following`,
+          method: "POST",
+          body: {},
+        });
+        setFollowingStatus(true);
+        setLoading(false);
       } else {
+        console.log("no following status: ", data.username);
         // action: unfollow user
-        await axiosClient({
-          url: `/profiles/${data.profile.username}/follows/`,
-          method: 'DELETE',
-        })
-        setFollowingStatus(false)
-        setLoading(false)
+        const resp = await axiosClient({
+          url: `/profiles/${data.username}/following`,
+          method: "DELETE",
+        });
+        setFollowingStatus(false);
+        setLoading(false);
       }
-    } catch (err) {}
-  }
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
   if (data.notFound) {
     //  Show profile doesnt exist
     return (
@@ -126,112 +225,139 @@ const ProfilePage = ({ data, referrer }) => {
         <SEOProfile profile={null} />
         <NotFoundPage />
       </>
-    )
+    );
   }
 
   return (
-    <>
-      <SEOProfile profile={data.profile} />
+    <div tw="bg-black">
+      <SEOProfile profile={data} />
+      {/* Back Button */}
+      <TopNavbar />
+      <div tw="hidden sm:block sticky top-6 left-2 w-20 h-0">
+        <button
+          type="button"
+          tw="text-button text-sm block px-4 py-2 bg-accent hover:bg-accent-hover rounded-full"
+          onClick={() => router.back()}
+        >
+          <span tw="flex justify-center">
+            <FiArrowLeft tw="mt-1" />
+            Back
+          </span>
+        </button>
+      </div>
+      {/* Top Bio */}
+      <Bio
+        cover={
+          data.image_cover
+            ? data.image_cover
+            : "https://images.unsplash.com/photo-1567304529193-acc92518efcd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1656&q=1"
+        }
+      >
+        <div tw="w-full h-full bg-gradient-to-t sm:bg-gradient-to-r from-black via-black to-transparent">
+          <div tw="h-screen mx-6 sm:mx-24">
+            <div tw="space-y-6 pt-20">
+              <div tw="flex flex-col space-y-3 sm:space-y-5">
+                <Avatar src={data.image_avatar} />
 
-      <div tw="bg-black py-6 flex flex-col justify-center sm:py-6">
-        <TopNavbar />
-
-        {/* start testing card  */}
-        <div tw="ml-0 w-full max-w-md mx-auto px-3 | sm:px-0 sm:mx-auto | md:ml-36 | lg:ml-48 | mt-16 lg:mt-24 space-y-3 mb-20">
-          <div tw="flex flex-row items-center space-x-3">
-            {/* <!-- avatar  --> */}
-            <Avatar
-              src={data.profile.profile_picture}
-              username={data.profile.username}
-            />
-
-            <div tw="flex flex-col w-full space-y-3">
-              {/* <!-- name / username --> */}
-              <div tw="flex flex-col w-full">
-                <p tw="text-2xl sm:text-3xl text-white font-semibold">
-                  {nameParser(
-                    data.profile.firstname,
-                    data.profile.lastname,
-                    data.profile.username
-                  )}
-                </p>
-                <p tw="text-white font-medium">@{data.profile.username}</p>
+                <NameAndUsername
+                  firstname={data.first_name}
+                  lastname={data.last_name}
+                  username={data.username}
+                />
               </div>
-
-              {/* <!-- start buttons section  --> */}
-              <div tw="mb-3 flex flex-row flex-wrap space-x-2 justify-end">
+              <div tw="w-full sm:w-3/4 lg:w-1/2 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                 {!isUser ? (
                   !followingStatus ? (
-                    <FollowButtonForCard
-                      isSubmitting={loading}
-                      onClick={followAction}
-                    >
+                    <FollowButton isSubmitting={loading} onClick={followAction}>
                       Follow
-                    </FollowButtonForCard>
+                    </FollowButton>
                   ) : (
-                    <UnfollowButtonForCard
-                      onMouseEnter={() => setButtonText('Unfollow')}
-                      onMouseLeave={() => setButtonText('Following')}
+                    <UnfollowButton
+                      onMouseEnter={() => setButtonText("Dejar de seguir")}
+                      onMouseLeave={() => setButtonText("Siguiendo")}
                       isSubmitting={loading}
                       onClick={followAction}
                     >
                       {buttonText}
-                    </UnfollowButtonForCard>
+                    </UnfollowButton>
                   )
                 ) : (
-                  <EditButtonForCard anchor href="/settings">
-                    <span tw="flex justify-center">Edit Profile</span>
-                  </EditButtonForCard>
+                  <EditButton anchor href="/settings">
+                    <span tw="flex justify-center">
+                      <RiEdit2Line tw="mr-1 mt-1" /> Editar perfil
+                    </span>
+                  </EditButton>
                 )}
-                <ShareButtonForCard onClick={() => setShowShareModal(true)} />
+                <ShareButton onClick={() => setShowShareModal(true)}>
+                  <span tw="flex justify-center">
+                    <RiShareLine tw="mr-1 mt-1" />
+                    Compartir
+                  </span>
+                </ShareButton>
               </div>
 
-              {/* <!-- end buttons section  --> */}
+              <div tw="space-y-2">
+                <Description description={data.bio} />
+                <GeoPosition
+                  country={data.location_country}
+                  city={data.location_city}
+                />
+              </div>
+
+              <Follows
+                followers={data.follower_count}
+                following={data.following_count}
+              />
             </div>
           </div>
-
-          {/* <!-- meta section / bio section  --> */}
-          <MetaSection
-            following={data.profile.following_count}
-            followers={data.profile.follower_count}
-            profile={data.profile}
-          />
-          <BioSection bio={data.profile.bio} />
-
-          {/* <!-- tabs /tab bar  --> */}
-          <ProfileCardTabs
-            links={data.profile.social_links}
-            withTitle={false}
-            profile={data.profile}
-          />
         </div>
-        {/* end card  */}
-
-        <AuthModal showModal={showModal} setShowModal={setShowModal} />
-
-        <ShareModal
-          showModal={showShareModal}
-          setShowModal={setShowShareModal}
-          profile={{
-            username: data.profile.username,
-          }}
-        />
-        <BottomNavigation />
-      </div>
-    </>
-  )
-}
+      </Bio>
+      {/* Bottom section  */}
+      {/* <div tw="mx-6 sm:mx-24 mt-40 sm:mt-16">
+        <div tw="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:gap-x-72 xl:gap-x-96 mb-8">
+          <div tw="">
+            <WebsiteSection url={profile.website} username={profile.username} />
+            <CategorySection
+              categories={[
+                "Programming",
+                "Gaming",
+                "Fitness",
+                "Movies",
+                "Hiking",
+              ]}
+            />
+          </div>
+          <div tw="lg:mt-0">
+            <FollowSection />
+            <FollowSection />
+          </div>
+        </div>
+        <LinksSection links={profile.social_links} />
+        <DefaultSection />
+      </div> */}
+      <AuthModal showModal={showModal} setShowModal={setShowModal} />
+      <ShareModal
+        showModal={showShareModal}
+        setShowModal={setShowShareModal}
+        profile={{
+          username: data.username,
+        }}
+      />
+      <BottomNavigation />
+    </div>
+  );
+};
 
 function Avatar({ src, username }) {
   return (
     <>
       <img
         tw="object-contain w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 sm:border-4 border-gray-500"
-        src={src || '/img/avatar_placeholder.png'}
+        src={src || "/img/avatar_placeholder.png"}
         alt={`${username} avatar.`}
       />
     </>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
@@ -240,17 +366,22 @@ export async function getServerSideProps(context) {
     req: {
       headers: { referer },
     },
-  } = context
-
+  } = context;
   try {
     const { data: response } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${username}`
-    )
+      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${username}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return {
       props: { data: response.data, referrer: referer || null },
-    }
+    };
   } catch (err) {
-    return { props: { data: { notFound: true, profile: { username: null } } } }
+    return { props: { data: { notFound: true, profile: { username: null } } } };
   }
 }
 
@@ -266,12 +397,12 @@ function TipMeButton() {
         <FaChevronRight tw="text-white" />
       </button>
     </>
-  )
+  );
 }
 
 const LinksSection = ({ withTitle = true, links, profile }) => {
   if (!links || !links.length) {
-    return <MessageBox text="This user hasn't added any links yet." />
+    return <MessageBox text="This user hasn't added any links yet." />;
   }
   return (
     <section>
@@ -288,11 +419,11 @@ const LinksSection = ({ withTitle = true, links, profile }) => {
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 function ProfileCardTabs({ links, profile }) {
-  const { shoutoutsLoading, shoutouts } = useShoutouts(profile)
+  const { shoutoutsLoading, shoutouts } = useShoutouts(profile);
 
   const TABBAR_ITEM = {
     ShowUsersShoutouts: (
@@ -305,8 +436,8 @@ function ProfileCardTabs({ links, profile }) {
     ShowUsersLinks: (
       <LinksSection links={links} withTitle={false} profile={profile} />
     ),
-  }
-  const [selectedItem, setSelectedItem] = useState('ShowUsersLinks')
+  };
+  const [selectedItem, setSelectedItem] = useState("ShowUsersLinks");
 
   return (
     <>
@@ -315,16 +446,16 @@ function ProfileCardTabs({ links, profile }) {
         <div tw="w-full">{TABBAR_ITEM[selectedItem]}</div>
       </div>
     </>
-  )
+  );
 }
 
 function Tabs({ setSelectedItem, selectedItem }) {
   const activeStyle = css`
     ${tw`text-accent`}
-  `
+  `;
   const inactiveStyle = css`
     ${tw`text-gray-600`}
-  `
+  `;
 
   return (
     <>
@@ -332,8 +463,8 @@ function Tabs({ setSelectedItem, selectedItem }) {
         <button
           tw="w-1/2 text-xl py-1 font-bold uppercase tracking-wide leading-6 sm:text-lg sm:leading-7 text-gray-600 hover:text-accent border-b-2 border-transparent hover:border-b-2 hover:border-accent focus:outline-none transition duration-300 ease-in"
           type="button"
-          css={selectedItem === 'ShowUsersLinks' ? activeStyle : inactiveStyle}
-          onClick={() => setSelectedItem('ShowUsersLinks')}
+          css={selectedItem === "ShowUsersLinks" ? activeStyle : inactiveStyle}
+          onClick={() => setSelectedItem("ShowUsersLinks")}
         >
           Links
         </button>
@@ -341,19 +472,19 @@ function Tabs({ setSelectedItem, selectedItem }) {
           tw="w-1/2 text-xl py-1 font-bold uppercase tracking-wide leading-6 sm:text-lg sm:leading-7 text-gray-600 hover:text-accent border-b-2 border-transparent hover:border-b-2 hover:border-accent focus:outline-none transition duration-300 ease-in"
           type="button"
           css={
-            selectedItem === 'ShowUsersShoutouts' ? activeStyle : inactiveStyle
+            selectedItem === "ShowUsersShoutouts" ? activeStyle : inactiveStyle
           }
-          onClick={() => setSelectedItem('ShowUsersShoutouts')}
+          onClick={() => setSelectedItem("ShowUsersShoutouts")}
         >
           Shoutouts
         </button>
       </div>
     </>
-  )
+  );
 }
 
 function LinkButton({ platformName, url }) {
-  const iconSize = 24
+  const iconSize = 24;
   return (
     <>
       <a
@@ -373,7 +504,7 @@ function LinkButton({ platformName, url }) {
         </div>
       </a>
     </>
-  )
+  );
 }
 
 function MetaSection({ following, followers, profile }) {
@@ -389,16 +520,16 @@ function MetaSection({ following, followers, profile }) {
             <p tw="text-white font-bold">{following}</p>
             <p tw="text-white">Following</p>
           </div>
-          <div tw="flex flex-row space-x-1 items-center">
+          {/* <div tw="flex flex-row space-x-1 items-center">
             <p tw="text-white font-bold">
-              {profile.shoutouts_count ? profile.shoutouts_count : '0'}
+              {profile.shoutouts_count ? profile.shoutouts_count : "0"}
             </p>
             <p tw="text-white">Shouts</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function BioSection({ bio }) {
@@ -408,7 +539,7 @@ function BioSection({ bio }) {
       {/* <p tw="mt-3 text-gray-400">{bio}</p> */}
       <p tw="w-full mt-3 text-gray-400 text-sm break-words">{bio}</p>
     </>
-  )
+  );
 }
 
 function MessageBox({ text }) {
@@ -420,6 +551,6 @@ function MessageBox({ text }) {
         </div>
       </div>
     </>
-  )
+  );
 }
-export default ProfilePage
+export default ProfilePage;

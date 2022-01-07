@@ -1,14 +1,14 @@
-import React from 'react'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { extractCritical } from '@emotion/server'
-import { GA_TRACKING_ID } from '../lib/gtag'
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import { extractCritical } from "@emotion/server";
+import { GA_TRACKING_ID } from "../lib/gtag";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx)
-    const page = await ctx.renderPage()
-    const styles = extractCritical(page.html)
-    return { ...initialProps, ...page, ...styles }
+    const initialProps = await Document.getInitialProps(ctx);
+    const page = await ctx.renderPage();
+    const styles = extractCritical(page.html);
+    return { ...initialProps, ...page, ...styles };
   }
 
   render() {
@@ -16,10 +16,11 @@ class MyDocument extends Document {
       <Html
         lang="en"
         style={{
-          backgroundColor: '#000',
+          backgroundColor: "#000",
         }}
       >
         <Head>
+          <script src="https://cdn.tailwindcss.com"></script>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async
@@ -139,7 +140,7 @@ class MyDocument extends Document {
           />
           {/* Avoid page flickering on first render */}
           <style
-            data-emotion-css={this.props.ids.join(' ')}
+            data-emotion-css={this.props.ids.join(" ")}
             dangerouslySetInnerHTML={{ __html: this.props.css }}
           />
           <link rel="icon" href="/favicon.ico" />
@@ -149,8 +150,8 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument
+export default MyDocument;

@@ -6,12 +6,8 @@ const Hero = ({ children }) => {
         flex h-screen
         w-full
         text-center
+        bg-primary-900
     `}
-    background: linear-gradient(
-        0deg,
-        rgba(23, 0, 66, 1) 50%,
-        rgba(0, 0, 0, .92) 100%
-      );
   `;
   return (
     <>

@@ -1,5 +1,5 @@
-@import 'tailwindcss/dist/base.min';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss/dist/base.min";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 $primary: rgba(255, 32, 32, 1);
 $secondary: rgba(235, 0, 141, 1);
@@ -38,12 +38,37 @@ $d-text-lighter: rgb(26, 32, 44);
   --color-primary-200: #e5e7eb;
   --color-primary-100: #f3f4f6;
 
+  // --color-primary-900: #f3f4f6;
+  // --color-primary-800: #e5e7eb;
+  // --color-primary-700: #d1d5db;
+  // --color-primary-600: #9ca3af;
+  // --color-primary-500: #6b7280;
+  // --color-primary-400: #4b5563;
+  // --color-primary-300: #2b3136;
+  // --color-primary-200: #21262b;
+  // --color-primary-100: #181c20;
+
+  // --color-primary-900: #ebecee;
+  // --color-primary-800: #f9f9fa;
+  // --color-primary-700: #f3f4f6;
+  // --color-primary-600: #9ca3af;
+  // --color-primary-500: #6b7280;
+  // --color-primary-400: #4b5563;
+  // --color-primary-300: #2b3136;
+  // --color-primary-200: #21262b;
+  // --color-primary-100: #181c20;
+
   --border-input: #000;
 
-  --color-accent: #eb008d;
-  --color-accent-hover: #ee38a5;
-  --color-accent-hover-outline: #ee38a525;
-  --color-accent-disabled: #ec41a8;
+  // --color-accent: #eb008d;
+  // --color-accent-hover: #ee38a5;
+  // --color-accent-hover-outline: #ee38a525;
+  // --color-accent-disabled: #ec41a8;
+
+  --color-accent: #0079eb;
+  --color-accent-hover: #388dee;
+  --color-accent-hover-outline: #3881ee25;
+  --color-accent-disabled: #419fec;
 
   --text-button: #f3f4f6;
   --text-button-disabled: #f3f4f69c;
@@ -58,12 +83,12 @@ $d-text-lighter: rgb(26, 32, 44);
   --text-lighter: #{$text-lighter};
   --text-dark: #{$text-dark};
   --text-darker: #{$text-darker};
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background-primary: #{$d-background-primary};
   --background-secondary: #{$d-background-secondary};
   --text-light: #{$d-text-light};
@@ -90,53 +115,76 @@ $d-text-lighter: rgb(26, 32, 44);
 }
 
 @font-face {
-  font-family: 'basiclazer';
-  src: url('../public/fonts/basiclazer.ttf');
+  font-family: "basiclazer";
+  src: url("../public/fonts/basiclazer.ttf");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 .basiclazer {
-  font-family: 'basiclazer';
+  font-family: "basiclazer";
 }
 
 @font-face {
-  font-family: 'Lazer84';
-  src: url('../public/fonts/Lazer84.ttf');
+  font-family: "Lazer84";
+  src: url("../public/fonts/Lazer84.ttf");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 .Lazer84 {
-  font-family: 'Lazer84';
+  font-family: "Lazer84";
 }
 
 @font-face {
-  font-family: 'American Captain';
-  src: url('../public/fonts/American\ Captain.ttf');
+  font-family: "American Captain";
+  src: url("../public/fonts/American\ Captain.ttf");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 .AmericanCaptain {
-  font-family: 'American Captain';
+  font-family: "American Captain";
 }
 
 @font-face {
-  font-family: 'Robot Crush';
-  src: url('../public/fonts/Robot\ Crush.ttf');
+  font-family: "Robot Crush";
+  src: url("../public/fonts/Robot\ Crush.ttf");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 .RobotCrush {
-  font-family: 'Robot Crush';
+  font-family: "Robot Crush";
 }
 
+@font-face {
+  font-family: "Pacifico";
+  src: url("../public/fonts/Pacifico-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.Pacifico {
+  font-family: "Pacifico";
+}
+
+@font-face {
+  font-family: "Permanent Marker";
+  src: url("../public/fonts/PermanentMarker-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.Pacifico {
+  font-family: "Permanent Marker";
+}
 // @font-face {
 //   font-family: "Press Start 2P";
 //   @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
@@ -210,7 +258,7 @@ $d-text-lighter: rgb(26, 32, 44);
 }
 
 .react-tags__selected-tag:after {
-  content: '\2715';
+  content: "\2715";
   color: var(--color-accent);
   margin-left: 8px;
 }
@@ -346,7 +394,7 @@ input.input-donate-amount {
 .browser-mockup:before {
   display: block;
   position: absolute;
-  content: '';
+  content: "";
   top: -1.25em;
   left: 1em;
   width: 0.5em;

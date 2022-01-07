@@ -1,200 +1,203 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { Formik, Form, ErrorMessage } from 'formik'
-import ReactTags from 'react-tag-autocomplete'
-import { useToasts } from 'react-toast-notifications'
-import FormGroup from '../../FormsProfile/FormGroup'
-import FormLabel from '../../FormsProfile/FormLabel'
-import FormField from '../../FormsProfile/FormField'
-import { ButtonCTA as SubmitButton } from '../../Buttons/ButtonCTA'
-import ProfileSchema from '../../../validations/profile.schema'
-import ValidationErrorMessage from '../../FormsProfile/FormErrorField'
-import axios from '../../../lib/client'
-import useUser from '../../../lib/useUser'
-import redirectTo from '../../../utils/redirectTo'
-import PictureCropperModal from '../../Modals/PictureCropperModal'
-import 'twin.macro'
-import Description from '../../Description'
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Formik, Form, ErrorMessage } from "formik";
+import ReactTags from "react-tag-autocomplete";
+import { useToasts } from "react-toast-notifications";
+import FormGroup from "../../FormsProfile/FormGroup";
+import FormLabel from "../../FormsProfile/FormLabel";
+import FormField from "../../FormsProfile/FormField";
+import { ButtonCTA as SubmitButton } from "../../Buttons/ButtonCTA";
+import ProfileSchema from "../../../validations/profile.schema";
+import ValidationErrorMessage from "../../FormsProfile/FormErrorField";
+import axios from "../../../lib/client";
+import useUser from "../../../lib/useUser";
+import redirectTo from "../../../utils/redirectTo";
+import PictureCropperModal from "../../Modals/PictureCropperModal";
+import "twin.macro";
+import Description from "../../Description";
 
 const EditProfile = ({ user: userData }) => {
-  const { user, mutateUser } = useUser({ initialData: userData })
-  const [tagsSuggestions, setTagsSuggestions] = useState([])
-  const [categories, setCategories] = useState([])
-  const [croppedImageUrl, setCroppedImageUrl] = useState(null)
-  const [croppedCoverUrl, setCroppedCoverUrl] = useState(null)
-  const [src, setSrc] = useState(null)
-  const [showModal, setShowModal] = useState(false)
-  const [showModalCover, setShowModalCover] = useState(false)
-  const [imageCropped, setImageCropped] = useState(null)
-  const [loadingImage, setLoadingImage] = useState(false)
+  const { user, mutateUser } = useUser({ initialData: userData });
+  const [tagsSuggestions, setTagsSuggestions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [croppedImageUrl, setCroppedImageUrl] = useState(null);
+  const [croppedCoverUrl, setCroppedCoverUrl] = useState(null);
+  const [src, setSrc] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalCover, setShowModalCover] = useState(false);
+  const [imageCropped, setImageCropped] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(false);
   const [profileCrop, setProfileCrop] = useState({
-    unit: '%',
+    unit: "%",
     aspect: 1 / 1,
     width: 90,
     x: 5,
     y: 5,
-  })
+  });
   const [cropCover, setCropCover] = useState({
-    unit: '%',
+    unit: "%",
     aspect: 16 / 9,
     width: 90,
     x: 5,
     y: 5,
-  })
-  const imageRef = useRef(null)
-  const { addToast } = useToasts()
-  const [tags, setTags] = useState([
-    ...(user.tags.map((tag, idx) => ({
-      id: idx,
-      name: tag,
-    })) || []),
-  ])
+  });
+  const imageRef = useRef(null);
+  const { addToast } = useToasts();
+  // const [tags, setTags] = useState([
+  //   ...(user.tags.map((tag, idx) => ({
+  //     id: idx,
+  //     name: tag,
+  //   })) || []),
+  // ])
 
-  useEffect(() => {
-    let isMounted = true
-    if (isMounted) {
-      ;(async () => {
-        const { data } = await axios({
-          url: '/profile-tags',
-          method: 'GET',
-          headers: {},
-        })
-        const suggestions = data.map((tag, idx) => ({
-          id: idx,
-          name: tag,
-        }))
-        setTagsSuggestions(suggestions)
-      })()
-      ;(async () => {
-        const { data } = await axios({
-          url: '/profile-categories',
-          method: 'GET',
-          headers: {},
-        })
-        setCategories(data)
-      })()
-    }
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (isMounted) {
+  //     (async () => {
+  //       const { data } = await axios({
+  //         url: "/profile-tags",
+  //         method: "GET",
+  //         headers: {},
+  //       });
+  //       const suggestions = data.map((tag, idx) => ({
+  //         id: idx,
+  //         name: tag,
+  //       }));
+  //       setTagsSuggestions(suggestions);
+  //     })();
+  //     (async () => {
+  //       const { data } = await axios({
+  //         url: "/profile-categories",
+  //         method: "GET",
+  //         headers: {},
+  //       });
+  //       setCategories(data);
+  //     })();
+  //   }
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, []);
   const handleSubmit = async (values, { setFieldError }) => {
     try {
-      values.tags = tags.map((tag) => tag.name)
-      delete values.profile_picture
-      delete values.cover_picture
+      values.tags = tags.map((tag) => tag.name);
+      delete values.profile_picture;
+      delete values.cover_picture;
       const { data } = await axios({
-        method: 'PATCH',
+        method: "PATCH",
         url: `/profiles/${user.username}/edit`,
         body: values,
-      })
-      await mutateUser({ is_logged_in: user.is_logged_in, ...data.data }, false)
+      });
+      await mutateUser(
+        { is_logged_in: user.is_logged_in, ...data.data },
+        false
+      );
       // redirectTo('/profile')
-      addToast('Profile updated successfully.', {
-        appearance: 'success',
+      addToast("Profile updated successfully.", {
+        appearance: "success",
         autoDismiss: true,
-      })
+      });
     } catch (err) {
-      console.error(err)
+      console.error(err);
       if (err.response.data.errors.username) {
-        setFieldError('username', err.response.data.errors.username)
+        setFieldError("username", err.response.data.errors.username);
       }
     }
-  }
-  const onDeleteTag = (i) => {
-    const tagsResult = tags.slice(0)
-    tagsResult.splice(i, 1)
-    setTags(tagsResult)
-  }
-  const onAdditionTag = (tag) => {
-    const tagsResult = [].concat(tags, tag)
-    setTags(tagsResult)
-  }
+  };
+  // const onDeleteTag = (i) => {
+  //   const tagsResult = tags.slice(0)
+  //   tagsResult.splice(i, 1)
+  //   setTags(tagsResult)
+  // }
+  // const onAdditionTag = (tag) => {
+  //   const tagsResult = [].concat(tags, tag)
+  //   setTags(tagsResult)
+  // }
   const onSelectFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      const reader = new FileReader()
-      reader.addEventListener('load', () => setSrc(reader.result))
-      reader.readAsDataURL(e.target.files[0])
-      setShowModal(true)
+      const reader = new FileReader();
+      reader.addEventListener("load", () => setSrc(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+      setShowModal(true);
     }
-  }
+  };
 
   const onSelectCoverFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      const reader = new FileReader()
-      reader.addEventListener('load', () => setSrc(reader.result))
-      reader.readAsDataURL(e.target.files[0])
-      setShowModalCover(true)
+      const reader = new FileReader();
+      reader.addEventListener("load", () => setSrc(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+      setShowModalCover(true);
     }
-  }
+  };
 
   const onImageLoaded = useCallback((image) => {
-    imageRef.current = image
+    imageRef.current = image;
     const width =
-      image.width > image.height ? (image.height / image.width) * 100 : 100
+      image.width > image.height ? (image.height / image.width) * 100 : 100;
     const height =
-      image.height > image.width ? (image.width / image.height) * 100 : 100
-    const x = width === 100 ? 0 : (100 - width) / 2
-    const y = height === 100 ? 0 : (100 - height) / 2
+      image.height > image.width ? (image.width / image.height) * 100 : 100;
+    const x = width === 100 ? 0 : (100 - width) / 2;
+    const y = height === 100 ? 0 : (100 - height) / 2;
 
     const newCrop = {
-      unit: '%',
+      unit: "%",
       aspect: 1,
       width: width,
       height: height,
       x,
       y,
-    }
+    };
 
     const pixelCrop = {
-      unit: 'px',
+      unit: "px",
       aspect: newCrop.aspect,
       x: (newCrop.x * image.width) / 100,
       y: (newCrop.y * image.height) / 100,
       width: (newCrop.width * image.width) / 100,
       height: (newCrop.height * image.height) / 100,
-    }
+    };
 
-    setProfileCrop(newCrop)
-    makeClientCrop(pixelCrop)
-    return false
-  }, [])
+    setProfileCrop(newCrop);
+    makeClientCrop(pixelCrop);
+    return false;
+  }, []);
 
   const onCoverLoaded = (image) => {
-    imageRef.current = image
-    return makeClientCoverCrop(cropCover)
-  }
+    imageRef.current = image;
+    return makeClientCoverCrop(cropCover);
+  };
 
   const onCropComplete = (crop) => {
-    return makeClientCrop(crop)
-  }
+    return makeClientCrop(crop);
+  };
 
   const onCropCoverComplete = (crop) => {
-    return makeClientCoverCrop(crop)
-  }
+    return makeClientCoverCrop(crop);
+  };
 
   const onCropChange = (crop, percentCrop) => {
-    return setProfileCrop(crop)
-  }
+    return setProfileCrop(crop);
+  };
 
   const onCropCoverChange = (crop, percentCrop) => {
-    return setCropCover(crop)
-  }
+    return setCropCover(crop);
+  };
 
   const makeClientCrop = async (avatarCrop) => {
-    console.log({ avatarCrop })
+    console.log({ avatarCrop });
     if (imageRef.current && avatarCrop.width && avatarCrop.height) {
       const croppedImageUrl = await getCropped(
         imageRef.current,
         avatarCrop,
         `profile_avatar.jpg`
-      )
+      );
 
-      return setCroppedImageUrl(croppedImageUrl)
+      return setCroppedImageUrl(croppedImageUrl);
     }
-  }
+  };
 
   const makeClientCoverCrop = async (cropCover) => {
     if (imageRef.current && cropCover.width && cropCover.height) {
@@ -202,20 +205,20 @@ const EditProfile = ({ user: userData }) => {
         imageRef.current,
         cropCover,
         `profile_cover.jpg`
-      )
+      );
 
-      return setCroppedCoverUrl(croppedImageUrl)
+      return setCroppedCoverUrl(croppedImageUrl);
     }
-  }
+  };
 
   const getCropped = (image, crop, fileName) => {
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
-    const tmpCanvas = document.createElement('canvas')
-    tmpCanvas.width = Math.ceil(crop.width * scaleX)
-    tmpCanvas.height = Math.ceil(crop.height * scaleY)
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    const tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = Math.ceil(crop.width * scaleX);
+    tmpCanvas.height = Math.ceil(crop.height * scaleY);
 
-    const ctx = tmpCanvas.getContext('2d')
+    const ctx = tmpCanvas.getContext("2d");
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -226,76 +229,79 @@ const EditProfile = ({ user: userData }) => {
       0,
       crop.width * scaleX,
       crop.height * scaleY
-    )
+    );
 
     return new Promise((resolve, reject) => {
       tmpCanvas.toBlob((blob) => {
         if (!blob) {
           //reject(new Error('Canvas is empty'));
-          console.error('Canvas is empty')
-          return
+          console.error("Canvas is empty");
+          return;
         }
-        blob.name = fileName
-        setImageCropped(blob)
-        resolve(window.URL.createObjectURL(blob))
-      }, 'image/jpeg')
-    })
-  }
+        blob.name = fileName;
+        setImageCropped(blob);
+        resolve(window.URL.createObjectURL(blob));
+      }, "image/jpeg");
+    });
+  };
 
   const saveImage = async (field) => {
     try {
-      setLoadingImage(true)
-      const form = new FormData()
-      form.append(field, new File([imageCropped], imageCropped.name))
+      setLoadingImage(true);
+      const form = new FormData();
+      form.append(field, new File([imageCropped], imageCropped.name));
       const { data } = await axios({
-        method: 'PATCH',
+        method: "PATCH",
         url: `/profiles/${user.username}/edit`,
         body: form,
-        contentType: 'multipart/form-data',
-      })
-      const fieldName = field === 'cover_picture' ? 'Cover' : 'Profile'
-      if (fieldName === 'Cover') {
+        contentType: "multipart/form-data",
+      });
+      const fieldName = field === "cover_picture" ? "Cover" : "Profile";
+      if (fieldName === "Cover") {
         setTimeout(() => {
-          setShowModalCover(false)
-          mutateUser({ ...user, cover_picture: data.data.cover_picture }, false)
-          setLoadingImage(false)
-        }, 5000)
+          setShowModalCover(false);
+          mutateUser(
+            { ...user, cover_picture: data.data.cover_picture },
+            false
+          );
+          setLoadingImage(false);
+        }, 5000);
       } else {
         setTimeout(() => {
-          setShowModal(false)
+          setShowModal(false);
           mutateUser(
             { ...user, profile_picture: data.data.profile_picture },
             false
-          )
-          setLoadingImage(false)
-        }, 3000)
+          );
+          setLoadingImage(false);
+        }, 3000);
       }
       addToast(`${fieldName} picture updated successfully.`, {
-        appearance: 'success',
+        appearance: "success",
         autoDismiss: true,
-      })
+      });
     } catch (err) {
-      console.error(err)
-      setLoadingImage(false)
+      console.error(err);
+      setLoadingImage(false);
     }
-  }
+  };
 
   return (
     <>
       {/* FORM START */}
       <Formik
         initialValues={{
-          username: user.username,
-          first_name: user.first_name || '',
-          last_name: user.last_name || '',
-          location_country: user.location_country || '',
-          location_city: user.location_city || '',
-          profile_picture: user.profile_picture || '',
-          cover_picture: user.cover_picture || '',
-          category: user.category || null,
-          website: user.website || '',
-          tags: tags.map((tag) => tag.name),
-          bio: user.bio || '',
+          username: user.profile.username,
+          first_name: user.profile.first_name || "",
+          last_name: user.profile.last_name || "",
+          location_country: user.profile.location_country || "",
+          location_city: user.profile.location_city || "",
+          profile_picture: user.profile.image_avatar || "",
+          cover_picture: user.profile.image_cover || "",
+          category: user.profile.category || null,
+          website: user.profile.website || "",
+          // tags: tags.map((tag) => tag.name),
+          bio: user.bio || "",
         }}
         validationSchema={ProfileSchema}
         validateOnBlur={false}
@@ -313,12 +319,12 @@ const EditProfile = ({ user: userData }) => {
             <FormGroup>
               <div tw="mt-6 mb-8">
                 <h2 tw="text-2xl text-primary-200 font-bold">
-                  Profile Information
+                  Información del perfil
                 </h2>
                 <Description tw="text-primary-400 text-sm flex justify-between">
-                  Update your profile information, profile and cover photo,
-                  profile description, tags, and more. Feel free to customize
-                  everything.
+                  Actualiza tu información del perfil, imagen de perfil, nombre,
+                  descripcion, país, locación, etc. Eres libre de personalizarlo
+                  como gustes.
                 </Description>
               </div>
               <FormLabel htmlFor="username">Username</FormLabel>
@@ -331,13 +337,17 @@ const EditProfile = ({ user: userData }) => {
               />
             </FormGroup>
             <FormGroup>
-              <FormLabel htmlFor="profile_picture">Photo</FormLabel>
+              <FormLabel htmlFor="profile_picture">Foto de perfil</FormLabel>
               <div tw="w-full flex items-center">
                 <div tw="w-16 h-16 border rounded-full relative bg-primary-800 mb-4 shadow">
                   <img
                     tw="object-cover w-full h-full rounded-full"
-                    src={user.profile_picture || '/img/avatar_placeholder.png'}
-                    key={user.profile_picture || '/img/avatar_placeholder.png'}
+                    src={
+                      user.profile.image_avatar || "/img/avatar_placeholder.png"
+                    }
+                    key={
+                      user.profile.image_avatar || "/img/avatar_placeholder.png"
+                    }
                     alt={`${user.username} profile`}
                   />
                 </div>
@@ -348,7 +358,7 @@ const EditProfile = ({ user: userData }) => {
                 >
                   <span tw="cursor-pointer inline-block  ml-4 mb-2 rounded-lg py-2 px-4 bg-primary-800 text-button hover:bg-primary-700 shadow font-medium  focus:outline-none duration-75 ease-in-out">
                     <CamIcon />
-                    Change
+                    Cambiar
                   </span>
                 </FormLabel>
 
@@ -395,11 +405,13 @@ const EditProfile = ({ user: userData }) => {
                     <img
                       tw="object-cover h-32 w-full"
                       src={
-                        user.cover_picture
-                          ? user.cover_picture
-                          : '/img/cover_placeholder.jpg'
+                        user.profile.image_cover
+                          ? user.profile.image_cover
+                          : "/img/cover_placeholder.jpg"
                       }
-                      key={user.cover_picture || '/img/cover_placeholder.jpg'}
+                      key={
+                        user.profile.image_cover || "/img/cover_placeholder.jpg"
+                      }
                       alt="coverphoto"
                     />
                   </div>
@@ -415,12 +427,12 @@ const EditProfile = ({ user: userData }) => {
                       shadow text-button bg-primary-800 font-medium hover:border-red-300 focus:outline-none hover:bg-primary-700 duration-75 ease-in-out"
                   >
                     <CamIcon />
-                    Browse Photo
+                    Buscar imagen
                   </span>
                 </FormLabel>
 
                 <div tw="mx-auto w-48 text-primary-400 text-xs text-center mt-1">
-                  Click to add cover picture
+                  Haz click y agrega tu portada
                 </div>
 
                 <input
@@ -449,9 +461,9 @@ const EditProfile = ({ user: userData }) => {
               )}
             </FormGroup>
             <FormGroup>
-              <FormLabel htmlFor="bio">About</FormLabel>
+              <FormLabel htmlFor="bio">Sobre mí</FormLabel>
               <span tw="text-primary-400 text-sm mb-2">
-                Write a few sentences about yourself.
+                Escribe lo que quieras sobre tí
               </span>
               <FormField
                 inputAs="textarea"
@@ -459,14 +471,14 @@ const EditProfile = ({ user: userData }) => {
                 errors={errors}
                 touched={touched}
                 style={{
-                  whiteSpace: 'pre-wrap',
-                  overflowY: 'hidden',
+                  whiteSpace: "pre-wrap",
+                  overflowY: "hidden",
                 }}
                 rows={6}
               />
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormLabel htmlFor="Categories">Categories</FormLabel>
               <span tw="text-sm text-primary-400 mb-2">
                 This is relevant for our search tool, your profile will be more
@@ -477,17 +489,17 @@ const EditProfile = ({ user: userData }) => {
                 tw="mt-1 appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg py-3 px-3 leading-tight 
 hover:border-accent duration-75 ease-in-out focus:outline-none"
                 name="category"
-                value={values.category || 'Select a category'}
+                value={values.category || "Select a category"}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundSize: '1.5em 1.5em',
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 0.5rem center",
+                  backgroundSize: "1.5em 1.5em",
                 }}
               >
-                {/* {!user.category ? (
+                {!user.category ? (
                     <option defaultValue disabled selected tw="py-1">
                       Select a category
                     </option>
@@ -495,7 +507,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                     <option selected tw="py-1">
                       {user.category}
                     </option>
-                  )} */}
+                  )} 
 
                 {categories.map((category) => (
                   <option key={category.id} tw="py-1 hover:bg-accent">
@@ -503,15 +515,15 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   </option>
                 ))}
               </select>
-              {/* <ReactTags
+             <ReactTags
                   tags={tags}
                   suggestions={tagsSuggestions}
                   onDelete={onDeleteTag}
                   onAddition={onAdditionTag}
-                /> */}
-            </FormGroup>
+                /> 
+            </FormGroup> */}
 
-            <FormGroup>
+            {/* <FormGroup>
               <FormLabel htmlFor="tags">Tags</FormLabel>
               <span tw="text-sm text-primary-400 mb-4">
                 Add whatever you want... how you feel?, what you love? add
@@ -530,21 +542,21 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   onAddition={onAdditionTag}
                 />
               </div>
-            </FormGroup>
+            </FormGroup> */}
 
             <div tw="w-full mt-10 mb-8 border-b border-primary-700" />
 
             <div tw="mb-8">
               <h2 tw="text-2xl text-primary-200 font-bold">
-                Personal Information
+                Información personal
               </h2>
               <p tw="text-primary-400 text-sm flex justify-between">
-                Use a permanent address where you can receive mail.
+                Mantén actualizada tu información personal.
               </p>
             </div>
             <div tw="w-full grid grid-cols-1 md:grid-cols-2 gap-2">
               <FormGroup>
-                <FormLabel htmlFor="first_name">First name</FormLabel>
+                <FormLabel htmlFor="first_name">Nombre</FormLabel>
                 <FormField
                   name="first_name"
                   errors={errors}
@@ -558,7 +570,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                 />
               </FormGroup>
               <FormGroup>
-                <FormLabel htmlFor="last_name">Last name</FormLabel>
+                <FormLabel htmlFor="last_name">Apellido</FormLabel>
                 <FormField name="last_name" errors={errors} touched={touched} />
                 <ErrorMessage
                   name="last_name"
@@ -568,7 +580,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                 />
               </FormGroup>
               <FormGroup>
-                <FormLabel htmlFor="location_country">Country</FormLabel>
+                <FormLabel htmlFor="location_country">País</FormLabel>
                 <FormField
                   name="location_country"
                   errors={errors}
@@ -582,7 +594,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                 />
               </FormGroup>
               <FormGroup>
-                <FormLabel htmlFor="location_city">City</FormLabel>
+                <FormLabel htmlFor="location_city">Ciudad</FormLabel>
                 <FormField
                   name="location_city"
                   errors={errors}
@@ -611,7 +623,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
             <FormGroup lastSibling>
               <div tw="flex">
                 <SubmitButton type="submit" isSubmitting={isSubmitting}>
-                  Update profile
+                  Actualizar perfil
                 </SubmitButton>
               </div>
             </FormGroup>
@@ -619,14 +631,14 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
         )}
       </Formik>
     </>
-  )
-}
+  );
+};
 
-export default EditProfile
+export default EditProfile;
 
 const Tags = ({ tags, onAdditionTag, tagsSelected }) => {
-  const selectedIds = tagsSelected.map((tag) => tag.id)
-  const filtered = tags.filter((tag) => !selectedIds.includes(tag.id))
+  const selectedIds = tagsSelected.map((tag) => tag.id);
+  const filtered = tags.filter((tag) => !selectedIds.includes(tag.id));
   return (
     <div tw="">
       {/* Categories / Tags */}
@@ -640,8 +652,8 @@ const Tags = ({ tags, onAdditionTag, tagsSelected }) => {
         </span>
       ))}
     </div>
-  )
-}
+  );
+};
 function CamIcon() {
   return (
     <svg
@@ -658,5 +670,5 @@ function CamIcon() {
       <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
       <circle cx="12" cy="13" r="3" />
     </svg>
-  )
+  );
 }

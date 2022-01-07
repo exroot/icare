@@ -1,23 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
-import { RiNotification2Line } from 'react-icons/ri'
-import Link from 'next/link'
-import OutsideClickHandler from 'react-outside-click-handler'
-import { BeatLoader } from 'react-spinners'
-import useSWR from 'swr'
-import TimeAgo from 'timeago-react'
-import Transition from '../Transitions/Transition'
-import 'twin.macro'
+import React from "react";
+import { RiNotification2Line } from "react-icons/ri";
+import Link from "next/link";
+import OutsideClickHandler from "react-outside-click-handler";
+import { BeatLoader } from "react-spinners";
+import useSWR from "swr";
+import TimeAgo from "timeago-react";
+import Transition from "../Transitions/Transition";
+import "twin.macro";
 
 const NotificationsDropdown = ({ dropdownActive, setDropdownActive }) => {
-  const { data, error } = useSWR('/notifications/?page=1&show_meta=1')
+  // const { data, error } = useSWR('/notifications/?page=1&show_meta=1')
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
         if (dropdownActive.notifications) {
-          setDropdownActive({ profile: false, notifications: false })
+          setDropdownActive({ profile: false, notifications: false });
         }
       }}
     >
@@ -31,8 +31,8 @@ const NotificationsDropdown = ({ dropdownActive, setDropdownActive }) => {
                   const newState = {
                     notifications: !prevState.notifications,
                     profile: false,
-                  }
-                  return newState
+                  };
+                  return newState;
                 })
               // eslint-disable-next-line react/jsx-curly-newline
             }
@@ -53,14 +53,14 @@ const NotificationsDropdown = ({ dropdownActive, setDropdownActive }) => {
             >
               <div
                 tw="max-h-48 overflow-y-scroll mx-auto w-full"
-                style={{ scrollbarWidth: 'thin' }}
+                style={{ scrollbarWidth: "thin" }}
               >
                 {/* Notifications */}
-                <Notifications notifications={data} error={error} />
+                {/* <Notifications notifications={data} error={error} /> */}
               </div>
               <Link href="/notifications" passHref>
                 <a tw="block bg-primary-800 hover:bg-primary-700 text-white text-center py-2 rounded-b-md">
-                  See all notifications
+                  Ver todas las notificaciones
                 </a>
               </Link>
             </div>
@@ -68,8 +68,8 @@ const NotificationsDropdown = ({ dropdownActive, setDropdownActive }) => {
         </Transition>
       </div>
     </OutsideClickHandler>
-  )
-}
+  );
+};
 
 const Notifications = ({ notifications }) => {
   if (!notifications) {
@@ -77,22 +77,22 @@ const Notifications = ({ notifications }) => {
       <div tw="w-full text-center">
         <BeatLoader tw="text-center" color="var(--text-button)" size={16} />
       </div>
-    )
+    );
   }
   if (notifications && !notifications.length) {
     return (
       <div tw="text-button text-center text-sm">
         You dont have notifications yet.
       </div>
-    )
+    );
   }
   const notificationsGroup = notifications.slice(0, 3).map((notification) => {
-    if (notification.notification_type === 'FOLLOW') {
-      const index = notification.body.indexOf(' ')
+    if (notification.notification_type === "FOLLOW") {
+      const index = notification.body.indexOf(" ");
       const [username] = [
         notification.body.slice(0, index),
         notification.body.slice(index + 1),
-      ]
+      ];
 
       return (
         <a
@@ -103,13 +103,13 @@ const Notifications = ({ notifications }) => {
           <p tw="text-primary-400 text-sm mx-2">
             <span tw="font-bold text-button" href="#">
               {username}
-            </span>{' '}
+            </span>{" "}
             start following you. <TimeAgo datetime={notification.created_at} />
           </p>
         </a>
-      )
+      );
     }
-    if (notification.notification_type === 'SHOUTOUTPOST') {
+    if (notification.notification_type === "SHOUTOUTPOST") {
       return (
         <a
           href="/notifications"
@@ -119,12 +119,12 @@ const Notifications = ({ notifications }) => {
           <p tw="text-primary-400 text-sm mx-2">
             <span tw="font-bold text-button" href="#">
               {notification.title}
-            </span>{' '}
-            posted a new Shoutout.{' '}
+            </span>{" "}
+            posted a new Shoutout.{" "}
             <TimeAgo datetime={notification.created_at} />
           </p>
         </a>
-      )
+      );
     }
     return (
       <a
@@ -135,12 +135,12 @@ const Notifications = ({ notifications }) => {
         <p tw="text-primary-400 text-sm mx-2">
           <span tw="font-bold text-button" href="#">
             {notification.title}
-          </span>{' '}
+          </span>{" "}
           New notification. <TimeAgo datetime={notification.created_at} />
         </p>
       </a>
-    )
-  })
-  return <>{notificationsGroup}</>
-}
-export default NotificationsDropdown
+    );
+  });
+  return <>{notificationsGroup}</>;
+};
+export default NotificationsDropdown;

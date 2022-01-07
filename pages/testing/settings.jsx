@@ -1,42 +1,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/prop-types */
-import React from 'react'
-import Head from 'next/head'
-import tw, { css } from 'twin.macro'
-import SiteLogo from '../../components/SiteLogo'
-import EditProfile from '../../components/Profile/edit/EditProfile'
-import PageLoader from '../../components/PageLoader'
-import useUser from '../../lib/useUser'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import TabMenu from '../../components/Navigation/TabNavigator'
-import Layout from '../../components/Layout'
+import React from "react";
+import Head from "next/head";
+import tw, { css } from "twin.macro";
+import SiteLogo from "../../components/SiteLogo";
+import EditProfile from "../../components/Profile/edit/EditProfile";
+import PageLoader from "../../components/PageLoader";
+import useUser from "../../lib/useUser";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import TabMenu from "../../components/Navigation/TabNavigator";
+import Layout from "../../components/Layout";
 
 const linkz = [
   {
-    title: 'Profile',
-    path: '/settings',
+    title: "Perfil",
+    path: "/settings",
   },
+  // {
+  //   title: 'Links',
+  //   path: '/settings/links',
+  // },
   {
-    title: 'Links',
-    path: '/settings/links',
+    title: "Notificaciones",
+    path: "/settings/notifications",
   },
+  // {
+  //   title: 'Shareables',
+  //   path: '/settings/shareables',
+  // },
   {
-    title: 'Notifications',
-    path: '/settings/notifications',
+    title: "Seguridad",
+    path: "/settings/security",
   },
-  {
-    title: 'Shareables',
-    path: '/settings/shareables',
-  },
-  {
-    title: 'Security',
-    path: '/settings/security',
-  },
-]
+];
 
 const Settings = () => {
-  const { user, isLoading } = useUser({ redirectTo: '/login' })
+  const { user, isLoading } = useUser({ redirectTo: "/login" });
 
   if (isLoading || user.is_logged_in === false) {
     return (
@@ -47,7 +47,7 @@ const Settings = () => {
         </Head>
         <PageLoader />
       </>
-    )
+    );
   }
   return (
     <>
@@ -66,17 +66,17 @@ const Settings = () => {
         </div>
       </Layout>
     </>
-  )
-}
+  );
+};
 
 const BackButton = () => (
   <div tw="flex py-1 mr-4">
     <a tw=" cursor-pointer  block w-auto px-4 py-2 font-bold rounded-full text-button bg-accent border border-accent hover:bg-accent-hover duration-200 ease-in-out">
-      {' '}
-      Back{' '}
+      {" "}
+      Back{" "}
     </a>
   </div>
-)
+);
 
 const SettingsMenu = () => {
   return (
@@ -84,7 +84,7 @@ const SettingsMenu = () => {
       <div
         tw="w-full h-screen flex flex-col font-mono overflow-y-scroll py-12"
         style={{
-          fontFamily: 'Inter',
+          fontFamily: "Inter",
         }}
       >
         <header tw="flex align-middle mb-4 px-24">
@@ -96,8 +96,8 @@ const SettingsMenu = () => {
         </main>
       </div>
     </>
-  )
-}
+  );
+};
 
 const Menu = () => (
   <div tw="mx-auto mt-12">
@@ -112,11 +112,11 @@ const Menu = () => (
       <MenuItem>Legal</MenuItem>
     </ul>
   </div>
-)
+);
 
 const MenuItem = ({ children }) => (
   <li tw="">
     <a tw="px-4 py-2  hover:underline cursor-pointer">{children}</a>
   </li>
-)
-export default Settings
+);
+export default Settings;

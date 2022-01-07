@@ -4,46 +4,46 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import localforage from 'localforage'
-import { Form, Formik, ErrorMessage } from 'formik'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useToasts } from 'react-toast-notifications'
-import { RiCloseFill } from 'react-icons/ri'
-import { IoMdInformationCircleOutline } from 'react-icons/io'
-import LoginSchema from '../../validations/login.schema'
-import SignUpModalSchema from '../../validations/signupModal.schema'
-import useUser from '../../lib/useUser'
-import axios from '../../lib/client'
-import { ButtonCTA as SubmitButton } from '../Buttons/ButtonCTA'
-import ValidationErrorMessage from '../FormsAuth/ErrorMessage'
-import FormGroup from '../FormsAuth/FormGroup'
-import FormField from '../FormsAuth/FormField'
-import FormLabel from '../FormsAuth/FormLabel'
-import initializeFCM from '../../utils/initializeFCM'
-import 'twin.macro'
+import React, { useState } from "react";
+import localforage from "localforage";
+import { Form, Formik, ErrorMessage } from "formik";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToasts } from "react-toast-notifications";
+import { RiCloseFill } from "react-icons/ri";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import LoginSchema from "../../validations/login.schema";
+import SignUpModalSchema from "../../validations/signupModal.schema";
+import useUser from "../../lib/useUser";
+import axios from "../../lib/client";
+import { ButtonCTA as SubmitButton } from "../Buttons/ButtonCTA";
+import ValidationErrorMessage from "../FormsAuth/ErrorMessage";
+import FormGroup from "../FormsAuth/FormGroup";
+import FormField from "../FormsAuth/FormField";
+import FormLabel from "../FormsAuth/FormLabel";
+import initializeFCM from "../../utils/initializeFCM";
+import "twin.macro";
 
 const ShoutoutModal = ({ showModal, setShowModal }) => {
-  const { addToast } = useToasts()
-  const { mutateUser } = useUser()
-  const [tab, setTab] = useState('login')
+  const { addToast } = useToasts();
+  const { mutateUser } = useUser();
+  const [tab, setTab] = useState("login");
   const handleSubmit = async (values, { setFieldError }) => {
     try {
-      if (tab === 'login') {
+      if (tab === "login") {
         const { data: response } = await axios({
-          url: '/auth/login/',
-          method: 'POST',
+          url: "/auth/login/",
+          method: "POST",
           body: values,
           headers: {},
-        })
+        });
         /* TODO: REMOVE LOCALSTORAGE USAGE BEFORE OFFICIAL RELEASE */
-        localStorage.setItem('access', response.data.tokens.access)
-        localStorage.setItem('refresh', response.data.tokens.refresh)
+        localStorage.setItem("access", response.data.tokens.access);
+        // localStorage.setItem('refresh', response.data.tokens.refresh)
 
-        const fcmToken = await localforage.getItem('fcm_token')
-        if (!fcmToken) {
-          await initializeFCM()
-        }
+        const fcmToken = await localforage.getItem("fcm_token");
+        // if (!fcmToken) {
+        //   await initializeFCM()
+        // }
         await mutateUser(
           {
             username: response.data.username,
@@ -51,39 +51,39 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
             is_logged_in: true,
           },
           true
-        )
-        addToast('Log in successfully.', {
-          appearance: 'success',
+        );
+        addToast("Log in successfully.", {
+          appearance: "success",
           autoDismiss: true,
-        })
-        setShowModal(false)
-        return
+        });
+        setShowModal(false);
+        return;
       }
       await axios({
-        url: '/auth/register/',
+        url: "/auth/register/",
         body: values,
-        method: 'POST',
+        method: "POST",
         headers: {},
-      })
-      addToast('You have registered sucessfully. Now you can log in.', {
-        appearance: 'success',
+      });
+      addToast("You have registered sucessfully. Now you can log in.", {
+        appearance: "success",
         autoDismiss: true,
-      })
-      setTab('login')
+      });
+      setTab("login");
     } catch (err) {
-      if (tab === 'login' && err.response.data.errors.detail) {
-        setFieldError('email', err.response.data.errors.detail)
+      if (tab === "login" && err.response.data.errors.detail) {
+        setFieldError("email", err.response.data.errors.detail);
       }
       if (err.response.data.errors.email) {
-        setFieldError('email', err.response.data.errors.email)
+        setFieldError("email", err.response.data.errors.email);
       }
       if (err.response.data.errors.username) {
-        setFieldError('username', err.response.data.errors.username)
+        setFieldError("username", err.response.data.errors.username);
       } else {
-        console.log(err)
+        console.log(err);
       }
     }
-  }
+  };
 
   const container = {
     initial: {
@@ -95,7 +95,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const backup = {
     initial: {
       opacity: 0,
@@ -106,7 +106,7 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
     exit: {
       opacity: 0,
     },
-  }
+  };
   const modal = {
     initial: {
       scale: 1.2,
@@ -121,18 +121,18 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
       opacity: 0,
       scale: 1.2,
     },
-  }
+  };
   const settings = {
     handleSubmit,
     setShowModal,
     setTab,
-  }
+  };
   const ActiveModal =
-    tab === 'login' ? (
+    tab === "login" ? (
       <LoginModal {...settings} />
     ) : (
       <SignUpModal {...settings} />
-    )
+    );
   return (
     <AnimatePresence exitBeforeEnter>
       {showModal && (
@@ -167,14 +167,14 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
 const LoginModal = ({ handleSubmit, setShowModal, setTab }) => (
   <Formik
     initialValues={{
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     }}
     validationSchema={LoginSchema}
     validateOnBlur={false}
@@ -195,15 +195,15 @@ const LoginModal = ({ handleSubmit, setShowModal, setTab }) => (
             <RiCloseFill color="var(--color-primary-200)" />
           </button>
           <InfoMessage login />
-          <Header>Log In</Header>
+          <Header>Iniciar sesión</Header>
           <div tw="text-primary-200 text-sm pt-2 pb-4 px-2 w-full text-center">
-            You don't have an account?{' '}
+            ¿No tienes una cuenta?{" "}
             <button
               type="button"
               tw="text-accent-hover font-bold cursor-pointer hover:underline"
-              onClick={() => setTab('signup')}
+              onClick={() => setTab("signup")}
             >
-              Sign Up
+              Regístrate
             </button>
           </div>
           <FormGroup>
@@ -223,7 +223,7 @@ const LoginModal = ({ handleSubmit, setShowModal, setTab }) => (
             />
           </FormGroup>
           <FormGroup>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Contraseña</FormLabel>
             <FormField
               name="password"
               placeholder="password"
@@ -241,21 +241,21 @@ const LoginModal = ({ handleSubmit, setShowModal, setTab }) => (
           {/* footer */}
           <div tw="w-full px-3 flex justify-center pb-4">
             <SubmitButton type="submit" isSubmitting={isSubmitting}>
-              Log In
+              Ingresar
             </SubmitButton>
           </div>
         </div>
       </Form>
     )}
   </Formik>
-)
+);
 
 const SignUpModal = ({ handleSubmit, setShowModal, setTab }) => (
   <Formik
     initialValues={{
-      username: '',
-      email: '',
-      password: '',
+      username: "",
+      email: "",
+      password: "",
     }}
     validationSchema={SignUpModalSchema}
     validateOnBlur={false}
@@ -276,15 +276,15 @@ const SignUpModal = ({ handleSubmit, setShowModal, setTab }) => (
             <RiCloseFill color="var(--text-primary-200)" />
           </button>
           <InfoMessage />
-          <Header>Sign Up</Header>
+          <Header>Registro</Header>
           <div tw="text-primary-200 text-sm pb-4 px-2 w-full text-center">
-            You already have an account?{' '}
+            ¿Ya tienes una cuenta?{" "}
             <button
               type="button"
               tw="text-accent-hover font-bold cursor-pointer hover:underline"
-              onClick={() => setTab('login')}
+              onClick={() => setTab("login")}
             >
-              Log In
+              Inicia sesión
             </button>
           </div>
           <FormGroup>
@@ -320,7 +320,7 @@ const SignUpModal = ({ handleSubmit, setShowModal, setTab }) => (
             />
           </FormGroup>
           <FormGroup>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Contraseña</FormLabel>
             <FormField
               name="password"
               placeholder="password"
@@ -339,7 +339,7 @@ const SignUpModal = ({ handleSubmit, setShowModal, setTab }) => (
           <FormGroup lastSibling>
             <div tw="w-full flex justify-center pb-1">
               <SubmitButton type="submit" isSubmitting={isSubmitting}>
-                Sign Up
+                Crear cuenta
               </SubmitButton>
             </div>
           </FormGroup>
@@ -347,13 +347,13 @@ const SignUpModal = ({ handleSubmit, setShowModal, setTab }) => (
       </Form>
     )}
   </Formik>
-)
+);
 
 const Header = ({ children }) => (
   <div tw="text-primary-200 mt-2 text-center pt-4 px-2 font-bold text-2xl">
     {children}
   </div>
-)
+);
 const InfoMessage = ({ login }) => (
   <div tw="w-full px-2 mt-6">
     <div tw="bg-primary-700 rounded-lg font-bold w-full text-white text-sm border-teal-200 border px-4 py-4 sm:py-2 mt-4 flex justify-center flex-col sm:flex-row">
@@ -361,11 +361,11 @@ const InfoMessage = ({ login }) => (
         <IoMdInformationCircleOutline size={40} />
       </span>
       <p>
-        After you {`${login ? 'log in' : 'finish sign up'}`}, the person that
-        you're trying to follow will be added to your feed.
+        Después de que te {`${login ? "logees" : "registres"}`}, la persona que
+        estás intentando seguir será agregada a tu pantalla de inicio.
       </p>
     </div>
   </div>
-)
+);
 
-export default ShoutoutModal
+export default ShoutoutModal;

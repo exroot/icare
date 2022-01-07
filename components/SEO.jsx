@@ -2,7 +2,7 @@ import { NextSeo } from "next-seo";
 
 export const SEOconfig = {
   url: process.env.NEXT_PUBLIC_CLIENT_URL,
-  title: "Shoutmo",
+  title: "iCare",
   description: "Join now to start sharing your connections today.",
   type: "website",
   image: "",

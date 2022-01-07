@@ -1,116 +1,116 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react'
-import { RiShareLine } from 'react-icons/ri'
-import axios from 'axios'
-import TabMenu from '../../components/Navigation/TabNavigator'
-import { ButtonCTA as FollowButton } from '../../components/Buttons/ButtonCTA'
+import React, { useState, useEffect } from "react";
+import { RiShareLine } from "react-icons/ri";
+import axios from "axios";
+import TabMenu from "../../components/Navigation/TabNavigator";
+import { ButtonCTA as FollowButton } from "../../components/Buttons/ButtonCTA";
 import {
   ButtonPrimary as EditButton,
   ButtonPrimary as ShareButton,
-} from '../../components/Buttons/ButtonPrimary'
-import { ButtonSecondary as UnfollowButton } from '../../components/Buttons/ButtonSecondary'
-import TopNavbar from '../../components/Navigation/TopNavbar'
-import AuthModal from '../../components/Modals/AuthModal'
-import ShareModal from '../../components/Modals/ShareModal'
-import LinksSection from '../../components/Profile/LinksSection'
-import BottomNavigation from '../../components/Navigation/BottomNavigation'
-import useUser from '../../lib/useUser'
-import axiosClient from '../../lib/client'
-import SEOProfile from '../../components/SEOProfile'
-import 'twin.macro'
-import NotFoundPage from '../../components/404'
+} from "../../components/Buttons/ButtonPrimary";
+import { ButtonSecondary as UnfollowButton } from "../../components/Buttons/ButtonSecondary";
+import TopNavbar from "../../components/Navigation/TopNavbar";
+import AuthModal from "../../components/Modals/AuthModal";
+import ShareModal from "../../components/Modals/ShareModal";
+import LinksSection from "../../components/Profile/LinksSection";
+import BottomNavigation from "../../components/Navigation/BottomNavigation";
+import useUser from "../../lib/useUser";
+import axiosClient from "../../lib/client";
+import SEOProfile from "../../components/SEOProfile";
+import "twin.macro";
+import NotFoundPage from "../../components/404";
 
 const ProfileLinks = ({ data }) => {
   const linkz = [
     {
-      title: 'Info',
+      title: "Info",
       path: `/${data.profile.username}`,
     },
     {
-      title: 'Links',
+      title: "Links",
       path: `/${data.profile.username}/links`,
     },
     {
-      title: 'QR Code',
+      title: "QR Code",
       path: `/${data.profile.username}/qr`,
     },
     {
-      title: 'Shoutouts',
+      title: "Shoutouts",
       path: `/${data.profile.username}/shoutouts`,
     },
-  ]
-  const [buttonText, setButtonText] = useState('Following')
-  const [showModal, setShowModal] = useState(false)
-  const [showShareModal, setShowShareModal] = useState(false)
-  const [followingStatus, setFollowingStatus] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { user } = useUser()
+  ];
+  const [buttonText, setButtonText] = useState("Following");
+  const [showModal, setShowModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const isUser =
-    user && user.is_logged_in && user.username === data.profile.username
+    user && user.is_logged_in && user.username === data.profile.username;
 
   useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     if (isMounted) {
-      ;(async () => {
-        let params = {}
+      (async () => {
+        let params = {};
         if (user) {
           params = {
             url: `/profiles/${data.profile.username}`,
-            method: 'GET',
-          }
+            method: "GET",
+          };
         } else {
           params = {
             url: `/profiles/${data.profile.username}`,
-            method: 'GET',
+            method: "GET",
             headers: {},
-          }
+          };
         }
-        const { data: responseData } = await axiosClient(params)
+        const { data: responseData } = await axiosClient(params);
         if (isMounted && responseData.data.following) {
-          setFollowingStatus(true)
+          setFollowingStatus(true);
         }
-      })()
+      })();
     }
     return () => {
-      isMounted = false
-    }
-  }, [user])
+      isMounted = false;
+    };
+  }, [user]);
 
   const followAction = async () => {
     try {
       if (user.is_logged_in === false) {
         // redirectTo(`/login?next=${profile.username}`);
-        setShowModal(true)
-        return
+        setShowModal(true);
+        return;
       }
-      setLoading(true)
+      setLoading(true);
       if (!followingStatus) {
         // action: follow user
         await axiosClient({
           url: `/profiles/${data.profile.username}/follows/`,
-          method: 'POST',
+          method: "POST",
           body: {
             follower: user.id,
             followed: data.profile.id,
           },
-        })
-        setFollowingStatus(true)
-        setLoading(false)
+        });
+        setFollowingStatus(true);
+        setLoading(false);
       } else {
         // action: unfollow user
         await axiosClient({
           url: `/profiles/${data.profile.username}/follows/`,
-          method: 'DELETE',
-        })
-        setFollowingStatus(false)
-        setLoading(false)
+          method: "DELETE",
+        });
+        setFollowingStatus(false);
+        setLoading(false);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
   if (data.notFound) {
     //  Show profile doesnt exist
     return (
@@ -118,7 +118,7 @@ const ProfileLinks = ({ data }) => {
         <SEOProfile profile={null} />
         <NotFoundPage />
       </>
-    )
+    );
   }
 
   return (
@@ -134,7 +134,7 @@ const ProfileLinks = ({ data }) => {
             {/* start card */}
             <div tw="max-w-md mx-auto">
               <TopSection
-                avatar={data.profile.profile_picture}
+                avatar={data.profile.avatar_image}
                 firstname={data.profile.first_name}
                 lastname={data.profile.last_name}
                 username={data.profile.username}
@@ -147,8 +147,8 @@ const ProfileLinks = ({ data }) => {
                     </FollowButton>
                   ) : (
                     <UnfollowButton
-                      onMouseEnter={() => setButtonText('Unfollow')}
-                      onMouseLeave={() => setButtonText('Following')}
+                      onMouseEnter={() => setButtonText("Unfollow")}
+                      onMouseLeave={() => setButtonText("Following")}
                       isSubmitting={loading}
                       onClick={followAction}
                     >
@@ -189,8 +189,8 @@ const ProfileLinks = ({ data }) => {
         <BottomNavigation />
       </div>
     </>
-  )
-}
+  );
+};
 
 function TopSection({ firstname, lastname, username, avatar }) {
   return (
@@ -208,21 +208,21 @@ function TopSection({ firstname, lastname, username, avatar }) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 const nameParser = (firstname, lastname, username) => {
   if (firstname && lastname) {
-    return `${firstname} ${lastname}`
+    return `${firstname} ${lastname}`;
   }
   if (!lastname && firstname) {
-    return firstname
+    return firstname;
   }
   if (!firstname && lastname) {
-    return lastname
+    return lastname;
   }
-  return `${username}'s profile`
-}
+  return `${username}'s profile`;
+};
 
 function Avatar({ src, username }) {
   return (
@@ -231,7 +231,7 @@ function Avatar({ src, username }) {
         <img src={src} tw="rounded-lg" alt={`${username} avatar.`} />
       </div>
     </>
-  )
+  );
 }
 
 function CenteredNameUsername({ firstname, lastname, username }) {
@@ -244,30 +244,30 @@ function CenteredNameUsername({ firstname, lastname, username }) {
         <p tw="text-xl font-bold text-primary-500 pt-2">{`@${username}`}</p>
       </div>
     </>
-  )
+  );
 }
 
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: 'blocking',
-  }
+    fallback: "blocking",
+  };
 }
 
 // This also gets called at build time
 export async function getStaticProps({ params }) {
   // params contains the post `id`.
-  const { username } = params
+  const { username } = params;
   try {
     const { data: response } = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/profiles/${username}`
-    )
-    const { data } = response
-    return { props: { data } }
+    );
+    const { data } = response;
+    return { props: { data } };
   } catch (err) {
-    console.error(err)
-    return { props: { data: { notFound: true } } }
+    console.error(err);
+    return { props: { data: { notFound: true } } };
   }
 }
 
-export default ProfileLinks
+export default ProfileLinks;

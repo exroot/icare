@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import { TwitterTweetEmbed } from 'react-twitter-embed'
-import { RiMovieFill } from 'react-icons/ri'
-import ReactPlayer from 'react-player/soundcloud'
-import { css } from 'twin.macro'
+import React, { useState } from "react";
+import { TwitterTweetEmbed } from "react-twitter-embed";
+import { RiMovieFill } from "react-icons/ri";
+import ReactPlayer from "react-player/soundcloud";
+import { css } from "twin.macro";
 
 const style = css`
   position: relative;
@@ -17,7 +17,7 @@ const style = css`
     width: 100%;
     height: 100%;
   }
-`
+`;
 
 const ButtonVisibility = ({ setVisibility, visibility, ...props }) => (
   <button
@@ -27,12 +27,12 @@ const ButtonVisibility = ({ setVisibility, visibility, ...props }) => (
     {...props}
   >
     <RiMovieFill size={14} tw="mr-1" />
-    {!visibility ? 'Show' : 'Hide'}
+    {!visibility ? "Mostrar" : "Ocultar"}
   </button>
-)
+);
 
 export const BitchuteEmbed = ({ videocode }) => {
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(false);
   return (
     <>
       <ButtonVisibility setVisibility={setVisibility} visibility={visibility} />
@@ -40,7 +40,7 @@ export const BitchuteEmbed = ({ videocode }) => {
         <div
           css={style}
           style={{
-            display: visibility ? 'block' : 'none',
+            display: visibility ? "block" : "none",
           }}
         >
           <iframe
@@ -55,11 +55,11 @@ export const BitchuteEmbed = ({ videocode }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export const YoutubeEmbed = ({ videocode }) => {
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(false);
   return (
     <>
       <ButtonVisibility setVisibility={setVisibility} visibility={visibility} />
@@ -67,7 +67,7 @@ export const YoutubeEmbed = ({ videocode }) => {
         <div
           css={style}
           style={{
-            display: visibility ? 'block' : 'none',
+            display: visibility ? "block" : "none",
           }}
         >
           <iframe
@@ -82,17 +82,17 @@ export const YoutubeEmbed = ({ videocode }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export const TwitterEmbed = ({ twitterTweetCode }) => (
   <div>
     <TwitterTweetEmbed key={twitterTweetCode} tweetId={twitterTweetCode} />
   </div>
-)
+);
 
 export const SoundCloudEmbed = ({ streamURL }) => {
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(false);
   return (
     <>
       <ButtonVisibility setVisibility={setVisibility} visibility={visibility} />
@@ -101,7 +101,7 @@ export const SoundCloudEmbed = ({ streamURL }) => {
         <div
           css={style}
           style={{
-            display: visibility ? 'block' : 'none',
+            display: visibility ? "block" : "none",
           }}
         >
           <ReactPlayer
@@ -122,11 +122,11 @@ export const SoundCloudEmbed = ({ streamURL }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export const TwitchEmbed = ({ twitchCode }) => {
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(false);
 
   return (
     <>
@@ -135,7 +135,7 @@ export const TwitchEmbed = ({ twitchCode }) => {
         <div
           css={style}
           style={{
-            display: visibility ? 'block' : 'none',
+            display: visibility ? "block" : "none",
           }}
         >
           <iframe
@@ -150,11 +150,11 @@ export const TwitchEmbed = ({ twitchCode }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export const ShowGiphy = ({ giphyCode }) => {
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(false);
   return (
     <>
       <ButtonVisibility setVisibility={setVisibility} visibility={visibility} />
@@ -162,7 +162,7 @@ export const ShowGiphy = ({ giphyCode }) => {
         <div
           css={style}
           style={{
-            display: visibility ? 'block' : 'none',
+            display: visibility ? "block" : "none",
           }}
         >
           <iframe
@@ -179,5 +179,5 @@ export const ShowGiphy = ({ giphyCode }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};

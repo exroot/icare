@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
-import SidebarItem from './SidebarItem'
-import { FaBullhorn } from 'react-icons/fa'
-import PrimaryButton from '../Buttons/PrimaryButton'
+import { useRouter } from "next/router";
+import SidebarItem from "./SidebarItem";
+import { FaBullhorn } from "react-icons/fa";
+import PrimaryButton from "../Buttons/PrimaryButton";
 import {
   RiDashboardLine,
   RiLinksLine,
@@ -13,19 +13,19 @@ import {
   RiUserSettingsFill,
   RiFeedbackLine,
   RiSearchLine,
-} from 'react-icons/ri'
-import { FiUsers } from 'react-icons/fi'
-import { BiUserPin } from 'react-icons/bi'
-import useUser from '../../lib/useUser'
+} from "react-icons/ri";
+import { FiUsers } from "react-icons/fi";
+import { BiUserPin } from "react-icons/bi";
+import useUser from "../../lib/useUser";
 
-import 'twin.macro'
+import "twin.macro";
 
 const SidebarAuthenticated = ({ setShowModal, router }) => {
   return (
     <nav tw="flex-1 pr-2 pl-2 pt-4 pb-6 bg-background-primary">
       <div className="app-area">
-        <SidebarItem href={'/feed'} pathname={router.pathname}>
-          {router.pathname === '/feed' ? (
+        <SidebarItem href={"/feed"} pathname={router.pathname}>
+          {router.pathname === "/feed" ? (
             <RiDashboardFill tw="mt-1 mr-2 w-4 text-lg" />
           ) : (
             <RiDashboardLine tw="mt-1 mr-2 w-4 text-lg" />
@@ -33,8 +33,8 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
           Feed
         </SidebarItem>
 
-        <SidebarItem href={'/links'} pathname={router.pathname}>
-          {router.pathname === '/links' ? (
+        <SidebarItem href={"/links"} pathname={router.pathname}>
+          {router.pathname === "/links" ? (
             <RiLinksFill tw="mt-1 mr-2 text-lg" />
           ) : (
             <RiLinksLine tw="mt-1 mr-2 text-lg" />
@@ -42,8 +42,8 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
           Update links
         </SidebarItem>
 
-        <SidebarItem href={'/profile'} pathname={router.pathname}>
-          {router.pathname === '/profile' ? (
+        <SidebarItem href={"/profile"} pathname={router.pathname}>
+          {router.pathname === "/profile" ? (
             <RiUserSettingsFill tw="mt-1 mr-2 text-lg" />
           ) : (
             <RiUserSettingsLine tw="mt-1 mr-2 text-lg" />
@@ -51,8 +51,8 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
           Update profile
         </SidebarItem>
         {/* Search */}
-        <SidebarItem href={'/search'} pathname={router.pathname}>
-          {router.pathname === '/search' ? (
+        <SidebarItem href={"/search"} pathname={router.pathname}>
+          {router.pathname === "/search" ? (
             <RiSearchLine tw="mt-1 mr-2 text-lg" />
           ) : (
             <RiSearchLine tw="mt-1 mr-2 text-lg" />
@@ -60,8 +60,8 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
           Search
         </SidebarItem>
         {/* Following */}
-        <SidebarItem href={'/following'} pathname={router.pathname}>
-          {router.pathname === '/following' ? (
+        <SidebarItem href={"/following"} pathname={router.pathname}>
+          {router.pathname === "/following" ? (
             <BiUserPin tw="mt-1 mr-2 text-lg" />
           ) : (
             <BiUserPin tw="mt-1 mr-2 text-lg" />
@@ -92,7 +92,7 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
         tw="-ml-4 bg-background-primary pl-4 pr-2 pt-4"
       >
         <SidebarItem
-          href={'/profile/settings'}
+          href={"/profile/settings"}
           pathname={router.pathname}
           tw=""
         >
@@ -100,25 +100,25 @@ const SidebarAuthenticated = ({ setShowModal, router }) => {
           Settings
         </SidebarItem>
 
-        <SidebarItem href={'/info/help'} pathname={router.pathname} tw="">
+        <SidebarItem href={"/info/help"} pathname={router.pathname} tw="">
           <RiQuestionLine tw="mt-1 mr-2 text-lg" />
           Help
         </SidebarItem>
 
-        <SidebarItem href={'/info/contact'} pathname={router.pathname} tw="">
+        <SidebarItem href={"/info/contact"} pathname={router.pathname} tw="">
           <RiFeedbackLine tw="mt-1 mr-2 text-lg" />
           Send Feedback
         </SidebarItem>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 const SidebarUnauthenticated = ({ router }) => {
   return (
     <nav tw="flex-1 pr-2 pl-2 pt-4 pb-6 bg-background-primary">
       <div className="app-area">
-        <SidebarItem href={'/shoutouts'}>
+        <SidebarItem href={"/shoutouts"}>
           <div tw="flex justify-center">
             <FaBullhorn tw="mt-1 mr-2 text-lg" />
             Shoutouts
@@ -129,23 +129,23 @@ const SidebarUnauthenticated = ({ router }) => {
         className="help-area"
         tw="-ml-4 bg-background-primary pl-4 pr-2 pt-4"
       >
-        <SidebarItem href={'/info/help'} pathname={router.pathname} tw="">
+        <SidebarItem href={"/info/help"} pathname={router.pathname} tw="">
           <RiQuestionLine tw="mt-1 mr-2 text-lg" />
           Help
         </SidebarItem>
 
-        <SidebarItem href={'/info/contact'} pathname={router.pathname} tw="">
+        <SidebarItem href={"/info/contact"} pathname={router.pathname} tw="">
           <RiFeedbackLine tw="mt-1 mr-2 text-lg" />
           Send Feedback
         </SidebarItem>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 const Sidebar = ({ setShowModal }) => {
-  const { user } = useUser()
-  const router = useRouter()
+  const { user } = useUser();
+  const router = useRouter();
   return (
     <div tw="hidden md:flex md:flex-shrink-0 md:w-56 lg:w-64">
       <div tw="flex flex-col w-full">
@@ -156,7 +156,7 @@ const Sidebar = ({ setShowModal }) => {
           <h1
             tw="text-secondary w-full font-bold text-5xl text-center"
             style={{
-              fontFamily: 'basiclazer',
+              fontFamily: "basiclazer",
             }}
           >
             Shoutmo
@@ -165,7 +165,7 @@ const Sidebar = ({ setShowModal }) => {
         <div
           tw="h-0 flex-1 flex flex-col overflow-y-auto"
           style={{
-            scrollbarWidth: 'thin',
+            scrollbarWidth: "thin",
           }}
         >
           {/* Sidebar component */}
@@ -177,12 +177,12 @@ const Sidebar = ({ setShowModal }) => {
 
           {/* sidebar footer */}
           <div tw="text-sm text-gray-600 w-full pl-6 pb-4 pt-2 font-semibold bg-background-primary">
-            <p>© 2020 SHOUTMO</p>
+            <p>© 2021 iCare</p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
