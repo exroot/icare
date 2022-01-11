@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import OutsideClickHandler from 'react-outside-click-handler'
-import ReactCrop from 'react-image-crop'
-import { RiCloseFill } from 'react-icons/ri'
-import { BeatLoader } from 'react-spinners'
-import 'twin.macro'
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import OutsideClickHandler from "react-outside-click-handler";
+import ReactCrop from "react-image-crop";
+import { RiCloseFill } from "react-icons/ri";
+import { BeatLoader } from "react-spinners";
+import "twin.macro";
 
 const PictureCropperModal = ({
   showModal,
@@ -30,7 +30,7 @@ const PictureCropperModal = ({
     exit: {
       opacity: 0,
     },
-  }
+  };
   const backup = {
     initial: {
       opacity: 0,
@@ -41,7 +41,7 @@ const PictureCropperModal = ({
     exit: {
       opacity: 0,
     },
-  }
+  };
   const modal = {
     initial: {
       scale: 1.2,
@@ -56,7 +56,7 @@ const PictureCropperModal = ({
       opacity: 0,
       scale: 1.2,
     },
-  }
+  };
   return (
     <AnimatePresence exitBeforeEnter>
       {showModal && (
@@ -86,7 +86,7 @@ const PictureCropperModal = ({
               animate="animate"
               exit="exit"
               style={{
-                overflowY: 'initial !important',
+                overflowY: "initial !important",
               }}
             >
               {/* content */}
@@ -106,8 +106,8 @@ const PictureCropperModal = ({
                 <div
                   tw="block p-4"
                   style={{
-                    maxHeight: 'calc(100vh - 200px)',
-                    overflowY: 'auto',
+                    maxHeight: "calc(100vh - 200px)",
+                    overflowY: "auto",
                   }}
                 >
                   <div tw="w-full mb-4 mr-4">
@@ -120,8 +120,8 @@ const PictureCropperModal = ({
                       locked={!cover}
                       circularCrop={!cover}
                       imageStyle={{
-                        maxWidth: '22rem',
-                        maxHeight: '25rem',
+                        maxWidth: "22rem",
+                        maxHeight: "25rem",
                       }}
                     />
                   </div>
@@ -135,9 +135,9 @@ const PictureCropperModal = ({
                         tw="mx-auto border border-primary-200"
                         alt="Crop"
                         style={{
-                          height: '10rem',
-                          maxWidth: '100%',
-                          borderRadius: cover ? '0%' : '50%',
+                          height: "10rem",
+                          maxWidth: "100%",
+                          borderRadius: cover ? "0%" : "50%",
                         }}
                         src={croppedImageUrl}
                       />
@@ -150,7 +150,7 @@ const PictureCropperModal = ({
                     type="button"
                     disabled={loading}
                     onClick={() => {
-                      onSave(cover ? 'cover_picture' : 'profile_picture')
+                      onSave(cover ? "image_cover" : "image_avatar");
                       // setShowModal(false);
                     }}
                     tw="w-full bg-accent text-center text-gray-100 px-4 py-2 rounded-lg hover:bg-accent-hover duration-75 ease-in-out uppercase tracking-wide font-bold"
@@ -158,7 +158,7 @@ const PictureCropperModal = ({
                     {loading ? (
                       <BeatLoader color="#fff" size={15} />
                     ) : (
-                      <span>Save</span>
+                      <span>Guardar</span>
                     )}
                   </button>
                 </div>
@@ -168,7 +168,7 @@ const PictureCropperModal = ({
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
-export default PictureCropperModal
+export default PictureCropperModal;

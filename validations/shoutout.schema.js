@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 
 const ShoutoutSchema = Yup.object().shape({
-    text: Yup.string().required("This field is required."),
+  title: Yup.string().required("Ingrese un título."),
+  text: Yup.string().required("Ingrese el texto del post."),
 });
 
 export default ShoutoutSchema;

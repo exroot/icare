@@ -46,7 +46,6 @@ const SuggestedUsers = () => {
     <>
       <div tw="flex flex-col space-y-1">
         <div tw="flex flex-row overflow-x-scroll space-x-3 h-64">
-          {console.log("suggested: ", suggested)}
           {suggested.map((profile) => (
             <Suggested key={profile.id} profile={profile} />
           ))}

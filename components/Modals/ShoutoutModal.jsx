@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Form, Field, Formik } from "formik";
+import { Form, Field, Formik, ErrorMessage } from "formik";
 import { useToasts } from "react-toast-notifications";
 import { motion, AnimatePresence } from "framer-motion";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -13,6 +13,7 @@ import useUser from "../../lib/useUser";
 import axios from "../../lib/client";
 import { ButtonCTA as SubmitButton } from "../Buttons/ButtonCTA";
 import resizeImage from "../../utils/resizeImage";
+import ValidationErrorMessage from "../FormsProfile/FormErrorField";
 
 const ShoutoutModal = ({ showModal, setShowModal }) => {
   const { addToast } = useToasts();
@@ -145,6 +146,14 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                           placeholder="Titulo del post"
                           rows={5}
                         />
+                        <ErrorMessage
+                          name="title"
+                          render={(msg) => (
+                            <ValidationErrorMessage>
+                              {msg}
+                            </ValidationErrorMessage>
+                          )}
+                        />
                       </div>
                       <img
                         tw="absolute h-10 w-10 top-0 left-0 mt-4 ml-4 rounded-full"
@@ -164,6 +173,14 @@ const ShoutoutModal = ({ showModal, setShowModal }) => {
                           touched={touched}
                           placeholder="Contenido del post"
                           rows={5}
+                        />
+                        <ErrorMessage
+                          name="text"
+                          render={(msg) => (
+                            <ValidationErrorMessage>
+                              {msg}
+                            </ValidationErrorMessage>
+                          )}
                         />
                       </div>
                     </div>

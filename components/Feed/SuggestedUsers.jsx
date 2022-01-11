@@ -9,7 +9,6 @@ import useUser from "../../lib/useUser";
 import tw, { css } from "twin.macro";
 
 const SuggestedUsers = ({ suggested, loading, error }) => {
-  console.log("suggested: ", suggested);
   if (error) {
     return null;
   }

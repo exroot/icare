@@ -183,7 +183,7 @@ const Post = ({ data }) => {
             <div tw="mx-auto">
               <img
                 tw="h-32 w-32 rounded-full mx-auto"
-                src={data.user.profile.image_avatar}
+                src={data?.user?.profile?.image_avatar}
               />
               <span tw="block text-xl text-primary-200 font-bold">
                 <Link href={`/${data.user.profile.username}`}>

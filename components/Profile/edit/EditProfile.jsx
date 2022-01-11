@@ -29,6 +29,7 @@ const EditProfile = ({ user: userData }) => {
   const [showModalCover, setShowModalCover] = useState(false);
   const [imageCropped, setImageCropped] = useState(null);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [profileCrop, setProfileCrop] = useState({
     unit: "%",
     aspect: 1 / 1,
@@ -81,28 +82,33 @@ const EditProfile = ({ user: userData }) => {
   //   };
   // }, []);
   const handleSubmit = async (values, { setFieldError }) => {
+    setLoading(true);
     try {
-      values.tags = tags.map((tag) => tag.name);
-      delete values.profile_picture;
-      delete values.cover_picture;
+      // values.tags = tags.map((tag) => tag.name);
+      delete values.image_avatar;
+      delete values.image_cover;
+      if (user.profile.username === values.username) {
+        delete values.username;
+      }
       const { data } = await axios({
-        method: "PATCH",
-        url: `/profiles/${user.username}/edit`,
+        method: "PUT",
+        url: `/profiles/${user.profile.username}`,
         body: values,
       });
       await mutateUser(
-        { is_logged_in: user.is_logged_in, ...data.data },
+        { is_logged_in: user.is_logged_in, profile: data.data },
         false
       );
       // redirectTo('/profile')
-      addToast("Profile updated successfully.", {
+      addToast("Información del perfil actualizada.", {
         appearance: "success",
         autoDismiss: true,
       });
     } catch (err) {
-      console.error(err);
-      if (err.response.data.errors.username) {
-        setFieldError("username", err.response.data.errors.username);
+      console.error({ ...err });
+      console.log("error: ", err.response.data.message);
+      if (err.message) {
+        setFieldError("username", err.response.data.message);
       }
     }
   };
@@ -187,7 +193,6 @@ const EditProfile = ({ user: userData }) => {
   };
 
   const makeClientCrop = async (avatarCrop) => {
-    console.log({ avatarCrop });
     if (imageRef.current && avatarCrop.width && avatarCrop.height) {
       const croppedImageUrl = await getCropped(
         imageRef.current,
@@ -206,7 +211,7 @@ const EditProfile = ({ user: userData }) => {
         cropCover,
         `profile_cover.jpg`
       );
-
+      console.log(("AC", croppedImageUrl));
       return setCroppedCoverUrl(croppedImageUrl);
     }
   };
@@ -246,22 +251,31 @@ const EditProfile = ({ user: userData }) => {
   };
 
   const saveImage = async (field) => {
+    console.log("FIEEEELD: ", field);
     try {
       setLoadingImage(true);
       const form = new FormData();
-      form.append(field, new File([imageCropped], imageCropped.name));
+      form.append("username", user.profile.username);
+      form.append("imagetype", field === "image_cover" ? "cover" : "avatar");
+      form.append("image", new File([imageCropped], imageCropped.name));
+
       const { data } = await axios({
-        method: "PATCH",
-        url: `/profiles/${user.username}/edit`,
+        method: "POST",
+        url: `/profiles/${user.profile.username}`,
         body: form,
         contentType: "multipart/form-data",
       });
-      const fieldName = field === "cover_picture" ? "Cover" : "Profile";
-      if (fieldName === "Cover") {
+      console.log("data: ", data);
+      console.log("image_avatar: ", data.data.image_avatar);
+      const fieldName = field === "image_cover" ? "portada" : "perfil";
+      if (fieldName === "portada") {
         setTimeout(() => {
           setShowModalCover(false);
           mutateUser(
-            { ...user, cover_picture: data.data.cover_picture },
+            {
+              ...user,
+              profile: { ...user.profile, image_cover: data.data.image_cover },
+            },
             false
           );
           setLoadingImage(false);
@@ -270,13 +284,19 @@ const EditProfile = ({ user: userData }) => {
         setTimeout(() => {
           setShowModal(false);
           mutateUser(
-            { ...user, profile_picture: data.data.profile_picture },
+            {
+              ...user,
+              profile: {
+                ...user.profile,
+                image_avatar: data.data.image_avatar,
+              },
+            },
             false
           );
           setLoadingImage(false);
         }, 3000);
       }
-      addToast(`${fieldName} picture updated successfully.`, {
+      addToast(`Imagen de ${fieldName} actualizada satisfactoriamente.`, {
         appearance: "success",
         autoDismiss: true,
       });
@@ -296,12 +316,12 @@ const EditProfile = ({ user: userData }) => {
           last_name: user.profile.last_name || "",
           location_country: user.profile.location_country || "",
           location_city: user.profile.location_city || "",
-          profile_picture: user.profile.image_avatar || "",
-          cover_picture: user.profile.image_cover || "",
-          category: user.profile.category || null,
+          image_avatar: user.profile.image_avatar || "",
+          image_cover: user.profile.image_cover || "",
+          // category: user.profile.category || null,
           website: user.profile.website || "",
           // tags: tags.map((tag) => tag.name),
-          bio: user.bio || "",
+          bio: user.profile.bio || "",
         }}
         validationSchema={ProfileSchema}
         validateOnBlur={false}
@@ -337,22 +357,26 @@ const EditProfile = ({ user: userData }) => {
               />
             </FormGroup>
             <FormGroup>
-              <FormLabel htmlFor="profile_picture">Foto de perfil</FormLabel>
+              <FormLabel htmlFor="image_avatar">Foto de perfil</FormLabel>
               <div tw="w-full flex items-center">
                 <div tw="w-16 h-16 border rounded-full relative bg-primary-800 mb-4 shadow">
                   <img
                     tw="object-cover w-full h-full rounded-full"
                     src={
-                      user.profile.image_avatar || "/img/avatar_placeholder.png"
+                      user.profile.image_avatar
+                        ? user.profile.image_avatar
+                        : "/img/avatar_placeholder.png"
                     }
                     key={
-                      user.profile.image_avatar || "/img/avatar_placeholder.png"
+                      user.profile.image_avatar
+                        ? user.profile.image_avatar
+                        : "/img/avatar_placeholder.png"
                     }
                     alt={`${user.username} profile`}
                   />
                 </div>
                 <FormLabel
-                  htmlFor="profile_picture"
+                  htmlFor="image_avatar"
                   type="button"
                   onChange={onSelectFile}
                 >
@@ -363,7 +387,7 @@ const EditProfile = ({ user: userData }) => {
                 </FormLabel>
 
                 <input
-                  id="profile_picture"
+                  id="image_avatar"
                   accept="image/*"
                   tw="hidden"
                   type="file"
@@ -390,7 +414,7 @@ const EditProfile = ({ user: userData }) => {
                 <div tw="mx-auto h-32 w-full md:w-64 border relative bg-primary-800 mb-4">
                   {/* <img
                         tw="object-cover h-32 w-64 w-full"
-                        src={user.cover_picture || "/img/cover_placeholder.jpg"}
+                        src={user.image_cover || "/img/cover_placeholder.jpg"}
                         alt="cover photo"
                       /> */}
                   {/* <Image
@@ -398,8 +422,8 @@ const EditProfile = ({ user: userData }) => {
                         quality={75}
                         objectFit="cover"
                         tw="h-32 w-full"
-                        src={user.cover_picture || "/img/cover_placeholder.jpg"}
-                        key={user.cover_picture || "/img/cover_placeholder.jpg"}
+                        src={user.image_cover || "/img/cover_placeholder.jpg"}
+                        key={user.image_cover || "/img/cover_placeholder.jpg"}
                       /> */}
                   <div tw="mx-auto h-32 w-full border relative bg-gray-100 mb-4 shadow">
                     <img
@@ -418,7 +442,7 @@ const EditProfile = ({ user: userData }) => {
                 </div>
 
                 <FormLabel
-                  htmlFor="cover_picture"
+                  htmlFor="image_cover"
                   type="button"
                   onChange={onSelectCoverFile}
                 >
@@ -436,7 +460,7 @@ const EditProfile = ({ user: userData }) => {
                 </div>
 
                 <input
-                  id="cover_picture"
+                  id="image_cover"
                   type="file"
                   accept="image/*"
                   onChange={onSelectCoverFile}
@@ -477,72 +501,6 @@ const EditProfile = ({ user: userData }) => {
                 rows={6}
               />
             </FormGroup>
-
-            {/* <FormGroup>
-              <FormLabel htmlFor="Categories">Categories</FormLabel>
-              <span tw="text-sm text-primary-400 mb-2">
-                This is relevant for our search tool, your profile will be more
-                easier to be found and more likely to appear on results.
-              </span>
-
-              <select
-                tw="mt-1 appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg py-3 px-3 leading-tight 
-hover:border-accent duration-75 ease-in-out focus:outline-none"
-                name="category"
-                value={values.category || "Select a category"}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "right 0.5rem center",
-                  backgroundSize: "1.5em 1.5em",
-                }}
-              >
-                {!user.category ? (
-                    <option defaultValue disabled selected tw="py-1">
-                      Select a category
-                    </option>
-                  ) : (
-                    <option selected tw="py-1">
-                      {user.category}
-                    </option>
-                  )} 
-
-                {categories.map((category) => (
-                  <option key={category.id} tw="py-1 hover:bg-accent">
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-             <ReactTags
-                  tags={tags}
-                  suggestions={tagsSuggestions}
-                  onDelete={onDeleteTag}
-                  onAddition={onAdditionTag}
-                /> 
-            </FormGroup> */}
-
-            {/* <FormGroup>
-              <FormLabel htmlFor="tags">Tags</FormLabel>
-              <span tw="text-sm text-primary-400 mb-4">
-                Add whatever you want... how you feel?, what you love? add
-                anything that could interest you.
-              </span>
-              <div tw="mt-1">
-                <Tags
-                  tags={tagsSuggestions}
-                  tagsSelected={tags}
-                  onAdditionTag={onAdditionTag}
-                />
-                <ReactTags
-                  tags={tags}
-                  suggestions={tagsSuggestions}
-                  onDelete={onDeleteTag}
-                  onAddition={onAdditionTag}
-                />
-              </div>
-            </FormGroup> */}
 
             <div tw="w-full mt-10 mb-8 border-b border-primary-700" />
 
@@ -585,6 +543,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   name="location_country"
                   errors={errors}
                   touched={touched}
+                  // value={user.profile.location_country}
                 />
                 <ErrorMessage
                   name="location_country"
@@ -599,6 +558,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   name="location_city"
                   errors={errors}
                   touched={touched}
+                  // value={user.profile.location_city}
                 />
                 <ErrorMessage
                   name="location_city"

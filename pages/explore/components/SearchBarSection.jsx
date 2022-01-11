@@ -12,6 +12,8 @@ import resizeImage from "../../../utils/resizeImage";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import { BiError } from "react-icons/bi";
 import SecondaryButtonForResults from "../../../components/Buttons/SecondaryButtonResultsCardFromSearch";
+import { ENDPOINTS } from "../../../utils/api";
+import axios from "../../../lib/client";
 
 function SearchBarSection() {
   return (
@@ -60,26 +62,23 @@ const SearchBar = ({ setLoading, setResults, setError }) => {
   const [searchTerm, setSearchTerm] = useState(""); // this holds the search term that use effect watches
 
   useEffect(() => {
+    console.log("whaaaat");
     if (searchTerm.length === 0) {
       setResults([]);
       setLoading(false);
       setError(false);
     }
     if (searchTerm.length > 0) {
+      console.log("initial");
       setLoading(true);
-      const delayDebounceFn = setTimeout(() => {
-        fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/profile-search/?keyword=${searchTerm}`
-        )
-          .then((data) => data.json())
-          .then((data) => {
-            setResults(data.data.results);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError(true);
-            setLoading(false);
-          });
+      const delayDebounceFn = setTimeout(async () => {
+        const { data } = await axios({
+          url: `${ENDPOINTS.profiles}/search?q=${searchTerm}`,
+        });
+
+        console.log("DATA: ", data.data);
+        setResults(data.data);
+        setLoading(false);
       }, 2500);
 
       return () => clearTimeout(delayDebounceFn);
@@ -162,7 +161,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
             animate="animate"
             exit="exit"
           >
-            <BeatLoader color="#eb008d" size={15} />
+            <BeatLoader color="var(--color-accent)" size={15} />
             <div tw="text-white text-center">Loading results...</div>
           </motion.div>
         )}
@@ -203,7 +202,7 @@ const ResultsContainer = ({ results, isLoading, error }) => {
             exit="exit"
           >
             <div tw="text-center text-white  text-center">
-              <span tw="font-bold">{`${results.length}`}</span> results
+              <span tw="font-bold">{`${results.length}`}</span> resultados
             </div>
           </motion.div>
         )}
@@ -220,7 +219,7 @@ const SearchResult = ({ result, isFollower, setFollower }) => {
   return (
     <Link href={`/${result.username}`} passHref>
       <div
-        tw="flex justify-between bg-primary-800 hover:bg-primary-600 rounded hover:cursor-pointer hover:underline"
+        tw="flex justify-between bg-primary-800 hover:bg-primary-600 rounded-lg hover:cursor-pointer hover:underline"
         type="link"
         href={`/${result.username}`}
       >

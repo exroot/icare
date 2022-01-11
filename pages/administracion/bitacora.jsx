@@ -188,25 +188,25 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   </tbody>
                 </table>
                 <div tw="px-5 py-5  flex flex-col sm:flex-row items-center sm:justify-between bg-primary-800">
-                  <span tw="text-sm sm:text-sm text-primary-200">
-                    Mostrando 8 de 20 registros.
-                  </span>
+                  <span tw="text-sm sm:text-sm text-primary-200"></span>
                   <div tw="inline-flex mt-2 sm:mt-0">
                     {page > 1 && (
                       <button
-                        tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold py-2 px-4 rounded-l"
+                        tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold py-2 px-4 rounded-lg"
                         onClick={() => setPage((page) => page - 1)}
                       >
                         Anterior
                       </button>
                     )}
                     &nbsp; &nbsp;
-                    <button
-                      tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold py-2 px-4 rounded-lg"
-                      onClick={() => setPage((page) => page + 1)}
-                    >
-                      Siguiente
-                    </button>
+                    {records.length >= limit && (
+                      <button
+                        tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold py-2 px-4 rounded-lg"
+                        onClick={() => setPage((page) => page + 1)}
+                      >
+                        Siguiente
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

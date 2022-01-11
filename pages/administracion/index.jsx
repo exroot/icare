@@ -25,6 +25,9 @@ import TrendingTags from "../../components/Feed/TrendingTags";
 import TabMenu from "../../components/Navigation/TabNavigator";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import data from "@iconify/icons-bx/bxs-up-arrow-square";
+import FormField from "../../components/FormsAuth/FormField";
+import moment from "moment";
+import axios from "../../lib/client";
 
 const linkz = [
   {
@@ -35,24 +38,24 @@ const linkz = [
     title: "Bitácora",
     path: "/administracion/bitacora",
   },
-  // {
-  //   title: "Links",
-  //   path: "/settings/links",
-  // },
 ];
 
 const Reportes = () => {
   const { user, isLoading } = useUser({ redirectTo: "/login" });
-  const [rangetime, setRangetime] = useState([
-    "1 dia",
-    "1 semana",
-    "1 mes",
-    "3 meses",
-    "6 meses",
-    "1 año",
-    "Siempre",
+  const [loading, setLoading] = useState(false);
+  const [dateStart, setDateStart] = useState(
+    `${new Date(Date.now() - 86400000)}`
+  );
+  const [dateEnd, setDateEnd] = useState(`${new Date(Date.now())}`);
+  const [modulesOptions, setModulesOptions] = useState([
+    "REGISTERS",
+    "LOGINS",
+    "POSTS",
+    "COMMENTS",
   ]);
-  const [range, setRange] = useState(rangetime[4]);
+  const [reportsOptions, setReportsOptions] = useState(["Barras", "Circular"]);
+  const [reportType, setReportType] = useState(reportsOptions[0]);
+  const [module, setModule] = useState(modulesOptions[0]);
   const [data, setData] = useState({
     labels: [
       "Julio",
@@ -79,11 +82,35 @@ const Reportes = () => {
     ],
   });
 
-  const loadMore = useCallback(async () => setSize((i) => i + 1));
-  const handleRangetimeChange = (e) => {
-    setRange(e.target.value);
+  const handleDateChange = (e, type) => {
+    if (type === "date_start") {
+      setDateStart(e.target.value);
+    } else {
+      setDateEnd(e.target.value);
+    }
   };
 
+  const handleModuleChange = (e) => {
+    setModule(e.target.value);
+  };
+
+  const handleReportTypeChange = (e) => {
+    setReportType(e.target.value);
+  };
+
+  const getReport = async () => {
+    try {
+      const url = `/reports?module=${module}&date_start=${moment(
+        dateStart
+      ).format("DD-MM-yyyy")}&date_end=${moment(dateEnd).format("DD-MM-yyyy")}`;
+      const { data } = await axios({
+        url,
+      });
+      console.log("data: ", data);
+    } catch (err) {
+      console.log("error: ", err);
+    }
+  };
   if (isLoading || user.is_logged_in === false) {
     return (
       <>
@@ -114,38 +141,120 @@ const Reportes = () => {
         </div>
         <TabMenu links={linkz} />
         <div tw="w-auto my-8">
-          <div tw="w-48">
-            <label tw="text-primary-200 font-bold mb-1 block">Rango:</label>
-            <select
-              tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg px-6 leading-tight 
-hover:border-accent duration-75 ease-in-out focus:outline-none h-10"
-              name="category"
-              value={range}
-              onChange={handleRangetimeChange}
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "right 0.5rem center",
-                backgroundSize: "1.5em 1.5em",
-              }}
-            >
-              {rangetime &&
-                rangetime.map((opcion) => (
-                  <option key={opcion} value={opcion}>
-                    {opcion}
-                  </option>
-                ))}
-            </select>
+          <div tw="w-full">
+            <label tw="text-primary-200 font-bold mb-1 block text-2xl">
+              Rango:
+            </label>
+            <div tw="flex space-x-4">
+              <div tw="flex items-center space-x-2 font-bold">
+                <span tw="text-primary-200">Desde:</span>{" "}
+                <input
+                  tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium  rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none h-10 w-48"
+                  name="date_start"
+                  value={`${moment(dateStart).format("yyyy-MM-DD")}`}
+                  required="1"
+                  type="date"
+                  onChange={(e) => handleDateChange(e, "date_start")}
+                />
+              </div>
+              <div tw="flex items-center space-x-2 font-bold">
+                <span tw="text-primary-200">Hasta:</span>{" "}
+                <input
+                  tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium  rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none h-10 w-48"
+                  name="date_end"
+                  value={moment(dateEnd).format("yyyy-MM-DD")}
+                  required="1"
+                  type="date"
+                  onChange={(e) => handleDateChange(e, "date_end")}
+                />
+              </div>
+              <div tw="">
+                <div tw="flex items-center space-x-2">
+                  <label tw="text-primary-200 font-bold mb-1 block">
+                    Módulo:
+                  </label>
+                  <select
+                    tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium  rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none h-10 w-48"
+                    name="category"
+                    value={module}
+                    onChange={handleModuleChange}
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 0.5rem center",
+                      backgroundSize: "1.5em 1.5em",
+                    }}
+                  >
+                    {modulesOptions &&
+                      modulesOptions.map((opcion) => (
+                        <option key={opcion} value={opcion}>
+                          {opcion}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div tw="">
+                <div tw="flex items-center space-x-2">
+                  <label tw="text-primary-200 font-bold mb-1 block">
+                    TIPO:
+                  </label>
+                  <select
+                    tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium  rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none h-10 w-48"
+                    name="category"
+                    value={reportType}
+                    onChange={handleReportTypeChange}
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 0.5rem center",
+                      backgroundSize: "1.5em 1.5em",
+                    }}
+                  >
+                    {reportsOptions &&
+                      reportsOptions.map((opcion) => (
+                        <option key={opcion} value={opcion}>
+                          {opcion}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <button
+                tw="bg-accent hover:bg-accent-hover px-4 py-2 text-primary-200 w-full font-bold uppercase rounded-lg w-48"
+                onClick={getReport}
+              >
+                Obtener reporte
+              </button>
+            </div>
           </div>
         </div>
-        <div tw="md:flex md:justify-between w-full">
+        <div tw="w-full">
           <div tw="bg-primary-900 w-full">
-            <Chart
-              chartData={data}
-              meta={meta}
-              location="Massachusetts"
-              legendPosition="bottom"
-            />
+            {reportType === "Barras" && (
+              <ChartBar
+                chartData={data}
+                meta={meta}
+                location="Massachusetts"
+                legendPosition="bottom"
+                dateStart={moment(dateStart).format("DD-MM-yyyy")}
+                dateEnd={moment(dateEnd).format("DD-MM-yyyy")}
+              />
+            )}
+            {reportType === "Circular" && (
+              <ChartPie
+                chartData={data}
+                meta={meta}
+                location="Massachusetts"
+                legendPosition="bottom"
+                dateStart={moment(dateStart).format("DD-MM-yyyy")}
+                dateEnd={moment(dateEnd).format("DD-MM-yyyy")}
+              />
+            )}
           </div>
           <div tw="lg:w-56 lg:h-24" />
         </div>
@@ -154,7 +263,7 @@ hover:border-accent duration-75 ease-in-out focus:outline-none h-10"
   );
 };
 
-const Chart = ({ chartData, meta }) => {
+const ChartBar = ({ chartData, meta, dateStart, dateEnd }) => {
   return (
     <div className="chart" tw="w-full">
       <div tw="w-full flex justify-between mb-16">
@@ -168,12 +277,37 @@ const Chart = ({ chartData, meta }) => {
                 "Octubre",
                 "Noviembre",
                 "Diciembre",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre",
               ],
               datasets: [
                 {
                   label: "Registros",
-                  data: [258, 149, 278, 333, 447, 612],
+                  data: [
+                    258,
+                    149,
+                    278,
+                    333,
+                    447,
+                    612,
+                    258,
+                    149,
+                    278,
+                    333,
+                    447,
+                    612,
+                  ],
                   backgroundColor: [
+                    "#9dc6e0",
+                    "#c1e7ff",
+                    "#9dc6e0",
+                    "#7aa6c2",
+                    "#5886a5",
+                    "#346888",
                     "#9dc6e0",
                     "#c1e7ff",
                     "#9dc6e0",
@@ -239,10 +373,12 @@ const Chart = ({ chartData, meta }) => {
               <span tw="font-bold text-primary-200">Rango del reporte:</span>
               <div tw="space-x-2">
                 <span tw="font-light">
-                  Desde: <span tw="font-bold text-primary-200">13-06-2021</span>
+                  Desde:{" "}
+                  <span tw="font-bold text-primary-200">{`${dateStart}`}</span>
                 </span>
                 <span tw="font-light">
-                  Hasta: <span tw="font-bold text-primary-200">12-12-2021</span>
+                  Hasta:{" "}
+                  <span tw="font-bold text-primary-200">{`${dateEnd}`}</span>
                 </span>
               </div>
             </div>
@@ -264,9 +400,13 @@ const Chart = ({ chartData, meta }) => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
 
-      <span tw="border-t w-full border-primary-800 block mb-16"></span>
-
+const ChartPie = ({ chartData, meta, dateStart, dateEnd }) => {
+  return (
+    <div>
       <Pie
         data={{
           labels: [
@@ -338,5 +478,4 @@ const Chart = ({ chartData, meta }) => {
     </div>
   );
 };
-
 export default Reportes;

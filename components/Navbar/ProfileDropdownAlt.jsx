@@ -48,12 +48,14 @@ const ProfileDropdown = ({
               <>
                 <img
                   key={
-                    user.profile.image_avatar || "/img/avatar_placeholder.png"
+                    user?.profile?.image_avatar
+                      ? user?.profile?.image_avatar
+                      : "/img/avatar_placeholder.png"
                   }
                   tw="h-10 w-10 rounded-full border-2 border-button"
                   src={
-                    user.profile.image_avatar
-                      ? user.profile.image_avatar
+                    user?.profile?.image_avatar
+                      ? user?.profile?.image_avatar
                       : "/img/avatar_placeholder.png"
                   }
                   width="60px"

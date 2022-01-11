@@ -104,7 +104,6 @@ const Profile = ({ profile, followersList = [], followingList = [] }) => {
             },
           }
         );
-        console.log("DATA: ", data);
         setFollowingStatus(false);
         setLoading(false);
       }
@@ -181,12 +180,11 @@ const Profile = ({ profile, followersList = [], followingList = [] }) => {
               </div>
 
               <div tw="space-y-2">
-                <Description
-                  description={
-                    "Hola, soy el administrador de iCare y desarrolle esta plataforma con la que intencion de que sirva como una herramienta para la comunidad de cuidadores de pacientes con Alzheimer."
-                  }
+                <Description description={profile.bio} />
+                <GeoPosition
+                  country={profile.location_country}
+                  city={profile.location_city}
                 />
-                <GeoPosition country={"Venezuela"} city={"El Tocuyo"} />
               </div>
 
               <Follows

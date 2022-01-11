@@ -32,7 +32,7 @@ const SettingsNotifications = () => {
   return (
     <>
       <Head>
-        <title>Settings - Notifications</title>
+        <title>Configuración - Notificationes</title>
       </Head>
       <Layout>
         <div tw="flex justify-between items-center">
