@@ -227,12 +227,14 @@ hover:border-accent duration-75 ease-in-out focus:outline-none"
                   </button>
                 )}
                 &nbsp; &nbsp;
-                <button
-                  tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold px-4 rounded-lg"
-                  onClick={() => setPage((page) => page + 1)}
-                >
-                  Siguiente
-                </button>
+                {records.length >= limit && (
+                  <button
+                    tw="text-sm transition duration-150 hover:bg-accent-hover text-primary-200 bg-accent font-semibold py-2 px-4 rounded-lg"
+                    onClick={() => setPage((page) => page + 1)}
+                  >
+                    Siguiente
+                  </button>
+                )}
               </div>
             </div>
           </div>
