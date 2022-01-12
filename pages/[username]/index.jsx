@@ -269,7 +269,7 @@ const ProfilePage = ({ data, referrer }) => {
                 {!isUser ? (
                   !followingStatus ? (
                     <FollowButton isSubmitting={loading} onClick={followAction}>
-                      Follow
+                      Seguir
                     </FollowButton>
                   ) : (
                     <UnfollowButton
