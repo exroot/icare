@@ -135,7 +135,7 @@ const TopSection = ({
       <div tw="leading-6 self-center ml-3 flex justify-between w-full">
         {/* <Link href="/testing/testmockup/screens/viewprofile"> */}
         <div>
-          <Link href={`/${postId}`} passHref>
+          <Link href={`/posts/${postId}`} passHref>
             <a tw="block text-primary-200 text-xl font-semibold hover:underline">
               {title}
             </a>
