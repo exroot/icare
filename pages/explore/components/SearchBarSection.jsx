@@ -162,11 +162,11 @@ const ResultsContainer = ({ results, isLoading, error }) => {
             exit="exit"
           >
             <BeatLoader color="var(--color-accent)" size={15} />
-            <div tw="text-white text-center">Loading results...</div>
+            <div tw="text-white text-center">Cargando resultados...</div>
           </motion.div>
         )}
         {!isLoading && results.length === 0 && (
-          <div tw="text-center text-white">Empty search.</div>
+          <div tw="text-center text-white">No se encontraron resultados.</div>
         )}
         {!isLoading && results.length > 0 && (
           <ul>
