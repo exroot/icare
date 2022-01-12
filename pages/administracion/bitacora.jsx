@@ -40,27 +40,66 @@ const linkz = [
   // },
 ];
 
-const Feed = () => {
+const Bitacora = () => {
   const { user, isLoading } = useUser({ redirectTo: "/login" });
   const [records, setRecords] = useState([]);
   const loadMore = useCallback(async () => setSize((i) => i + 1));
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
+  const [firstFilterOptions, setFirstFilterOptions] = useState([
+    "Módulo",
+    "Evento",
+    "Usuario",
+  ]);
+  const [firstFilter, setFirstFilter] = useState(null);
+  const [secondFilterOptionsAux, setSecondFilterOptionsAux] = useState({
+    module: ["USER", "COMMENTS", "POSTS"],
+    event: ["CREATE", "READ", "UPDATE", "DELETE", "LOGIN", "REGISTER"],
+    user: "user",
+  });
+  const [userFilter, setUserFilter] = useState(null);
+  const [secondFilterOptions, setSecondFilterOptions] = useState([]);
+  const [secondFilter, setSecondFilter] = useState(null);
   const [limitOptions, setLimitOptions] = useState([5, 10, 15, 20]);
   useEffect(() => {
     (async () => {
+      const check = {
+        Módulo: "module",
+        Evento: "event",
+        Usuario: "user",
+      };
+      const url = `/bitacora?show_meta=1&page=${page}&limit=${limit}&${
+        firstFilter ? `q=${check[firstFilter]}` : ""
+      }&${secondFilter ? `identifier=${secondFilter}` : ""}`;
       const { data: res } = await axiosClient({
         method: "GET",
-        url: `/bitacora?show_meta=1&page=${page}&limit=${limit}`,
+        url,
       });
+      console.log("url: ", url);
       setRecords(res);
     })();
-  }, [page, limit]);
+  }, [page, limit, firstFilter, secondFilter]);
 
   const handleLimitChange = (e) => {
     const newLimit = parseInt(e.target.value);
     setLimit(newLimit);
   };
+
+  useEffect(() => {
+    const check = {
+      Módulo: "module",
+      Evento: "event",
+      Usuario: "user",
+    };
+    const filter = secondFilterOptionsAux[check[firstFilter]];
+    console.log("EL FILTRO: ", filter);
+    if (filter !== "user") {
+      setSecondFilterOptions(filter);
+      setUserFilter(false);
+    } else {
+      setUserFilter(true);
+    }
+  }, [firstFilter]);
 
   useEffect(() => {}, [limit]);
 
@@ -96,28 +135,68 @@ const Feed = () => {
               </span>
             </div>
             <div tw="flex items-center justify-between">
-              {/* <div tw="flex bg-gray-50 items-center p-2 rounded-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  tw="h-5 w-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+              <div tw="inline-flex mt-2 sm:mt-0 space-x-2">
+                <select
+                  tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none"
+                  name="category"
+                  value={firstFilter}
+                  onChange={(e) => setFirstFilter(e.target.value)}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 0.5rem center",
+                    backgroundSize: "1.5em 1.5em",
+                  }}
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <input
-                  tw="bg-gray-50 outline-none ml-1 block "
-                  type="text"
-                  name=""
-                  id=""
-                  placeholder="search..."
-                />
-              </div> */}
-              <div tw="inline-flex mt-2 sm:mt-0">
+                  <option selected tw="py-1">
+                    Filtrar por
+                  </option>
+                  {firstFilterOptions &&
+                    firstFilterOptions.map((opcion) => (
+                      <option key={opcion} value={opcion}>
+                        {opcion}
+                      </option>
+                    ))}
+                </select>
+                {!userFilter && firstFilter && firstFilter.length > 0 && (
+                  <select
+                    tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg px-6 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none"
+                    name="category"
+                    value={secondFilter}
+                    onChange={(e) => setSecondFilter(e.target.value)}
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z'/%3e%3c/svg%3e")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 0.5rem center",
+                      backgroundSize: "1.5em 1.5em",
+                    }}
+                  >
+                    <option selected tw="py-1">
+                      Filtrar por
+                    </option>
+                    {secondFilterOptions &&
+                      secondFilterOptions.map((opcion) => (
+                        <option key={opcion} value={opcion}>
+                          {opcion}
+                        </option>
+                      ))}
+                  </select>
+                )}
+                {userFilter && (
+                  <div tw="flex items-center space-x-2 font-bold">
+                    <span tw="text-primary-200">ID:</span>{" "}
+                    <input
+                      tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium  rounded-lg px-3 leading-tight 
+hover:border-accent duration-75 ease-in-out focus:outline-none h-10 w-48"
+                      name="identifier"
+                      required="1"
+                      type="text"
+                      onChange={(e) => setSecondFilter(e.target.value)}
+                    />
+                  </div>
+                )}
                 <select
                   tw="appearance-none block w-full bg-primary-700 text-primary-200 truncate font-medium border border-black rounded-lg px-6 leading-tight 
 hover:border-accent duration-75 ease-in-out focus:outline-none"
@@ -237,7 +316,10 @@ const Row = ({ record }) => {
             <div tw="flex-shrink-0 w-10 h-10">
               <img
                 tw="w-full h-full rounded-full"
-                src={record.user.profile.image_avatar}
+                src={
+                  record.user.profile.image_avatar ||
+                  "/img/avatar_placeholder.png"
+                }
                 alt=""
               />
             </div>
@@ -258,4 +340,4 @@ const Row = ({ record }) => {
   );
 };
 
-export default Feed;
+export default Bitacora;

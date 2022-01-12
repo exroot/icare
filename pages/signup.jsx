@@ -33,23 +33,33 @@ const SignUp = () => {
 
   const handleSubmit = async (values, { setFieldError }) => {
     try {
+      const { password_confirm, ...body } = values;
+      console.log("VALUES: ", body);
       await axios({
         url: "/auth/register/",
-        body: values,
+        body: body,
         method: "POST",
         headers: {},
       });
-      addToast("You have signed up sucessfully. Now you can log in.", {
+      addToast("Registro satisfactorio, ahora puedes iniciar sesión.", {
         appearance: "success",
         autoDismiss: true,
       });
       return redirectTo("/login");
     } catch (err) {
-      if (err.response.data.errors.email) {
-        setFieldError("email", err.response.data.errors.email);
-      }
-      if (err.response.data.errors.username) {
-        setFieldError("username", err.response.data.errors.username);
+      if (err.response.data.message) {
+        console.log("ERRORCITO: ", err.response.data.message);
+        if (err.response.data.message.includes("email")) {
+          setFieldError("email", err.response.data.message);
+        }
+        // console.log("ERRORCITO: ", err.response.data.message);
+        else if (err.response.data.message.includes("username")) {
+          setFieldError("username", err.response.data.message);
+        }
+        addToast(err.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+        });
       }
     }
   };

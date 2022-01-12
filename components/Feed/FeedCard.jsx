@@ -167,10 +167,9 @@ const TopSection = ({
     {/* <span>Whatever</span> */}
     <div tw="text-sm mt-2 mx-3 flex space-x-4">
       <span tw="flex">
-        26 <BiCommentDetail tw="mt-1 ml-1" />
+        <BiCommentDetail tw="mt-1 ml-1" />
       </span>
       <span tw="flex">
-        40
         <RiUserLine tw="mt-1 ml-1" />
       </span>
     </div>

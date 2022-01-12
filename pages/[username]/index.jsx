@@ -514,11 +514,11 @@ function MetaSection({ following, followers, profile }) {
         <div tw="flex flex-row flex-wrap w-full place-items-start space-x-5">
           <div tw="flex flex-row space-x-1 items-center">
             <p tw="text-white font-bold">{followers}</p>
-            <p tw="text-white">Followers</p>
+            <p tw="text-white">Seguidores</p>
           </div>
           <div tw="flex flex-row space-x-1 items-baseline">
             <p tw="text-white font-bold">{following}</p>
-            <p tw="text-white">Following</p>
+            <p tw="text-white">Siguiendo</p>
           </div>
           {/* <div tw="flex flex-row space-x-1 items-center">
             <p tw="text-white font-bold">

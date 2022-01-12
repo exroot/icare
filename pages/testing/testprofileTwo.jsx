@@ -1,9 +1,9 @@
-import React from 'react'
-import tw, { css } from 'twin.macro'
+import React from "react";
+import tw, { css } from "twin.macro";
 
 // icons
-import { TiThMenu } from 'react-icons/ti'
-import { VscBell } from 'react-icons/vsc'
+import { TiThMenu } from "react-icons/ti";
+import { VscBell } from "react-icons/vsc";
 
 import {
   FaAngleDown,
@@ -24,11 +24,11 @@ import {
   FaBars,
   FaRegEnvelope,
   FaShare,
-} from 'react-icons/fa'
+} from "react-icons/fa";
 
-import { BsList } from 'react-icons/bs'
+import { BsList } from "react-icons/bs";
 
-import { BsChevronCompactDown } from 'react-icons/bs'
+import { BsChevronCompactDown } from "react-icons/bs";
 
 export default function Screen() {
   return (
@@ -87,7 +87,7 @@ export default function Screen() {
 
       <TestingAvatarSection />
     </>
-  )
+  );
 }
 
 function Blank() {
@@ -95,7 +95,7 @@ function Blank() {
     <>
       <p>blank</p>
     </>
-  )
+  );
 }
 
 function Avatar() {
@@ -106,7 +106,7 @@ function Avatar() {
         src="https://randomuser.me/api/portraits/women/21.jpg"
       />
     </>
-  )
+  );
 }
 
 function Username() {
@@ -120,7 +120,7 @@ function Username() {
         <p tw="text-xl sm:text-2xl sm:leading-none">@imacoolchica</p>
       </div>
     </>
-  )
+  );
 }
 
 function FollowButton() {
@@ -130,10 +130,10 @@ function FollowButton() {
         type="button"
         tw="h-12 w-1/2 w-full sm:w-1/2 md:w-1/3 lg:w-3/12 bg-blue-500 rounded"
       >
-        <p tw="text-xl sm:text-base font-semibold tracking-wide">Follow</p>
+        <p tw="text-xl sm:text-base font-semibold tracking-wide">Seguir</p>
       </button>
     </>
-  )
+  );
 }
 
 function MessageButton() {
@@ -148,7 +148,7 @@ function MessageButton() {
         <p tw="text-xl sm:text-base font-semibold tracking-wide">Message</p>
       </button>
     </>
-  )
+  );
 }
 
 function ShareButton() {
@@ -162,7 +162,7 @@ function ShareButton() {
         <p tw="text-xl sm:text-base font-semibold tracking-wide">Share</p>
       </button>
     </>
-  )
+  );
 }
 
 function MessageButtonIcon() {
@@ -176,7 +176,7 @@ function MessageButtonIcon() {
         <FaRegEnvelope size={24} />
       </button>
     </>
-  )
+  );
 }
 
 function ShareButtonIcon() {
@@ -190,7 +190,7 @@ function ShareButtonIcon() {
         <FaShare size={24} />
       </button>
     </>
-  )
+  );
 }
 function WebsiteLink() {
   return (
@@ -202,7 +202,7 @@ function WebsiteLink() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function Bio() {
@@ -224,7 +224,7 @@ function Bio() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Meta() {
@@ -236,12 +236,12 @@ function Meta() {
           <p tw="text-white text-4xl font-bold">27k+</p>
         </div>
         <div>
-          <p tw="text-white">Following</p>
+          <p tw="text-white">Siguiendo</p>
           <p tw="text-white text-4xl font-bold">99</p>
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function BackButton() {
@@ -255,7 +255,7 @@ function BackButton() {
         <p tw="font-semibold tracking-wide">Back</p>
       </button>
     </>
-  )
+  );
 }
 
 function FullbioSectionWrappedTwo() {
@@ -315,7 +315,7 @@ function FullbioSectionWrappedTwo() {
                 type="button"
                 tw="h-12 w-1/2 w-full sm:w-1/2 md:w-1/3 lg:w-3/12 bg-blue-500 rounded-sm"
               >
-                <p tw="font-semibold tracking-wide">Follow</p>
+                <p tw="font-semibold tracking-wide">Seguir</p>
               </button>
 
               <div tw="space-y-2">
@@ -341,7 +341,7 @@ function FullbioSectionWrappedTwo() {
                   <p tw="text-white text-4xl font-bold">27k+</p>
                 </div>
                 <div>
-                  <p tw="text-white">Following</p>
+                  <p tw="text-white">Siguiendo</p>
                   <p tw="text-white text-4xl font-bold">99</p>
                 </div>
               </div>
@@ -350,7 +350,7 @@ function FullbioSectionWrappedTwo() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function TestingFontSizes() {
@@ -368,7 +368,7 @@ function TestingFontSizes() {
         {/* <p tw="text-biggest font-bold leading-none">Carrisa Somebody</p> */}
       </div>
     </>
-  )
+  );
 }
 
 function TestingAvatarSection() {
@@ -421,7 +421,7 @@ function TestingAvatarSection() {
                   <p tw="text-white text-2xl font-bold">27k+</p>
                 </div>
                 <div>
-                  <p tw="text-white">Following</p>
+                  <p tw="text-white">Siguiendo</p>
                   <p tw="text-white text-2xl font-bold">99</p>
                 </div>
               </div>
@@ -492,7 +492,7 @@ function TestingAvatarSection() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function SiteLogo() {
@@ -504,12 +504,12 @@ function SiteLogo() {
             tw="w-full font-bold text-center text-5xl leading-4"
             // className="threedeeshadow"
             style={{
-              fontFamily: 'basiclazer',
+              fontFamily: "basiclazer",
               // color: '#ff27e1',
-              letterSpacing: 0.025 + 'em',
+              letterSpacing: 0.025 + "em",
               fontWeight: 500,
-              fontSize: 36 + 'px',
-              marginTop: -4 + 'px',
+              fontSize: 36 + "px",
+              marginTop: -4 + "px",
             }}
             className="threedeeshadow"
           >
@@ -518,7 +518,7 @@ function SiteLogo() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Topbar() {
@@ -535,7 +535,7 @@ function Topbar() {
         </div>
       </nav>
     </>
-  )
+  );
 }
 
 function Testbox() {
@@ -550,7 +550,7 @@ function Testbox() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function LinksSection() {
@@ -573,7 +573,7 @@ function LinksSection() {
         <SharedLink />
       </div>
     </>
-  )
+  );
 }
 
 function SharedLink() {
@@ -592,7 +592,7 @@ function SharedLink() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function SharedLinkWhite() {
@@ -611,5 +611,5 @@ function SharedLinkWhite() {
         </div>
       </div>
     </>
-  )
+  );
 }

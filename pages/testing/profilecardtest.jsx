@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
-import QRCode from 'qrcode.react'
+import React, { useState, useEffect, useRef } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
+import QRCode from "qrcode.react";
 
-import tw, { css } from 'twin.macro'
+import tw, { css } from "twin.macro";
 import {
   BsInfoCircle,
   BsFillInfoCircleFill,
   BsSquareFill,
-} from 'react-icons/bs'
-import { FaChevronRight, FaInfo } from 'react-icons/fa'
+} from "react-icons/bs";
+import { FaChevronRight, FaInfo } from "react-icons/fa";
 
 export default function NewProfileCardWithLinks() {
   return (
@@ -17,7 +17,7 @@ export default function NewProfileCardWithLinks() {
         <NewCard />
       </div>
     </>
-  )
+  );
 }
 
 function NewCard() {
@@ -28,7 +28,7 @@ function NewCard() {
         <TabBar />
       </div>
     </>
-  )
+  );
 }
 
 function TopSection() {
@@ -39,7 +39,7 @@ function TopSection() {
         <CenteredNameUsername />
       </div>
     </>
-  )
+  );
 }
 
 function DescriptionSection() {
@@ -54,7 +54,7 @@ function DescriptionSection() {
         </p>
       </div>
     </>
-  )
+  );
 }
 
 function Avatar() {
@@ -67,7 +67,7 @@ function Avatar() {
         />
       </div>
     </>
-  )
+  );
 }
 
 function CenteredNameUsername() {
@@ -78,7 +78,7 @@ function CenteredNameUsername() {
         <p tw="text-xl font-bold">@username</p>
       </div>
     </>
-  )
+  );
 }
 
 function Links() {
@@ -135,7 +135,7 @@ function Links() {
         </li>
       </ul>
     </>
-  )
+  );
 }
 
 function LinkButton(props) {
@@ -143,17 +143,17 @@ function LinkButton(props) {
     <>
       <button tw="flex flex-row h-14 items-center bg-gray-700 py-2 px-4 rounded-lg w-full hover:bg-gray-500 hover:ring-2 hover:ring-purple-600">
         <BsFillInfoCircleFill tw="mx-auto h-6" size={24} />
-        <p tw="flex-grow text-lg font-bold">{props.name || 'cool'}</p>
+        <p tw="flex-grow text-lg font-bold">{props.name || "cool"}</p>
         <FaChevronRight tw="mx-auto h-6" size={24} />
       </button>
     </>
-  )
+  );
 }
 
 // TABS --------------------------------------------------------------------------------------------------------------
 
 function TabBar(props) {
-  const [selectedItem, setSelectedItem] = useState('links')
+  const [selectedItem, setSelectedItem] = useState("links");
 
   return (
     <>
@@ -170,22 +170,22 @@ function TabBar(props) {
         <div tw="w-full">{TABBAR_ITEM[selectedItem]}</div>
       </div>
     </>
-  )
+  );
 }
 
 function CardTabBar({ setSelectedItem, selectedItem, props }) {
   const defaultStyle = css`
     ${tw`text-gray-600 rounded-lg border border border-transparent cursor-pointer px-3 py-2 flex text-center hover:text-gray-400 text-white`}
-  `
+  `;
   const selectedStyle = css`
     ${tw`text-3xl rounded-lg border border border-transparent cursor-pointer px-3 py-2 flex text-center text-white bg-gray-700`}
-  `
+  `;
   return (
     <>
       <div tw="flex flex-row text-white rounded-md text-purple-300 py-2 overflow-x-scroll space-x-1">
         <div
-          onClick={() => setSelectedItem('links')}
-          css={selectedItem === 'links' ? selectedStyle : defaultStyle}
+          onClick={() => setSelectedItem("links")}
+          css={selectedItem === "links" ? selectedStyle : defaultStyle}
         >
           <span tw="text-xl font-bold leading-6 font-bold text-2xl sm:text-2xl">
             Links
@@ -193,8 +193,8 @@ function CardTabBar({ setSelectedItem, selectedItem, props }) {
         </div>
 
         <div
-          onClick={() => setSelectedItem('about')}
-          css={selectedItem === 'about' ? selectedStyle : defaultStyle}
+          onClick={() => setSelectedItem("about")}
+          css={selectedItem === "about" ? selectedStyle : defaultStyle}
         >
           <span tw="text-xl font-bold leading-6 font-bold text-2xl sm:text-2xl">
             Info
@@ -202,8 +202,8 @@ function CardTabBar({ setSelectedItem, selectedItem, props }) {
         </div>
 
         <div
-          onClick={() => setSelectedItem('shoutouts')}
-          css={selectedItem === 'shoutouts' ? selectedStyle : defaultStyle}
+          onClick={() => setSelectedItem("shoutouts")}
+          css={selectedItem === "shoutouts" ? selectedStyle : defaultStyle}
         >
           <span tw="text-xl font-bold leading-6 font-bold text-2xl sm:text-2xl">
             Shoutouts
@@ -211,8 +211,8 @@ function CardTabBar({ setSelectedItem, selectedItem, props }) {
         </div>
 
         <div
-          onClick={() => setSelectedItem('qr')}
-          css={selectedItem === 'qr' ? selectedStyle : defaultStyle}
+          onClick={() => setSelectedItem("qr")}
+          css={selectedItem === "qr" ? selectedStyle : defaultStyle}
         >
           <span tw="text-xl font-bold leading-6 font-bold text-2xl sm:text-2xl">
             QR
@@ -220,7 +220,7 @@ function CardTabBar({ setSelectedItem, selectedItem, props }) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 const TABBAR_ITEM = {
@@ -228,7 +228,7 @@ const TABBAR_ITEM = {
   about: <TabDataAbout />,
   qr: <TabDataQR />,
   shoutouts: <TabDataShoutouts />,
-}
+};
 
 function TabDataLinks(props) {
   return (
@@ -239,7 +239,7 @@ function TabDataLinks(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function TabDataShoutouts(props) {
@@ -251,7 +251,7 @@ function TabDataShoutouts(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function TabDataQR(props) {
@@ -274,7 +274,7 @@ function TabDataQR(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function TabDataAbout(props) {
@@ -284,12 +284,12 @@ function TabDataAbout(props) {
         <div tw="list-disc space-y-4 h-full p-3">
           <div tw="flex items-start">
             <button tw="flex flex-row h-14 items-center bg-gray-700 py-2 px-4 rounded-lg w-full hover:bg-gray-500">
-              <p tw="flex-grow text-lg font-bold">Follow</p>
+              <p tw="flex-grow text-lg font-bold">Seguir</p>
             </button>
           </div>
           <div tw="flex items-start">
             <button tw="flex flex-row h-14 items-center bg-gray-700 py-2 px-4 rounded-lg w-full hover:bg-gray-500">
-              <p tw="flex-grow text-lg font-bold">Share</p>
+              <p tw="flex-grow text-lg font-bold">Compartir</p>
             </button>
           </div>
         </div>
@@ -300,7 +300,7 @@ function TabDataAbout(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Following() {
@@ -308,7 +308,7 @@ function Following() {
     <>
       <div tw="list-disc space-y-2">
         <div tw="flex items-center space-x-3">
-          <p tw="text-xl font-bold">Following</p>
+          <p tw="text-xl font-bold">Siguiendo</p>
 
           <div tw="flex">
             <img
@@ -338,7 +338,7 @@ function Following() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function Followers() {
@@ -346,7 +346,7 @@ function Followers() {
     <>
       <ul tw="list-disc space-y-2">
         <li tw="flex items-center space-x-3">
-          <p tw="text-xl font-bold">Followers</p>
+          <p tw="text-xl font-bold">Seguidores</p>
 
           <div tw="flex">
             <img
@@ -376,5 +376,5 @@ function Followers() {
         </li>
       </ul>
     </>
-  )
+  );
 }

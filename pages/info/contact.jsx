@@ -1,8 +1,8 @@
-import React from 'react';
-import { RiTwitterFill, RiDiscordFill } from 'react-icons/ri';
-import Wrapper from '../../components/Wrapper';
-import SEO from '../../components/SEO';
-import 'twin.macro';
+import React from "react";
+import { RiTwitterFill, RiDiscordFill } from "react-icons/ri";
+import Wrapper from "../../components/Wrapper";
+import SEO from "../../components/SEO";
+import "twin.macro";
 
 const Contact = () => (
   <>
@@ -11,21 +11,21 @@ const Contact = () => (
       description="Let us know how we can help you, contact with us."
       openGraph={{
         url: process.env.NEXT_PUBLIC_CLIENT_URL,
-        type: 'website',
-        description: 'Let us know how we can help you, contact with us.',
+        type: "website",
+        description: "Let us know how we can help you, contact with us.",
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_CLIENT_URL}img/shoutmo.png`,
             width: 1000,
             height: 300,
-            alt: 'Shoutmo image',
+            alt: "Shoutmo image",
           },
         ],
       }}
       twitter={{
-        handle: '@handle',
-        site: '@site',
-        cardType: 'summary_large_image',
+        handle: "@handle",
+        site: "@site",
+        cardType: "summary_large_image",
       }}
     />
     <Wrapper>
@@ -52,8 +52,8 @@ function GetStartedTodaySection() {
       <div
         tw="flex flex-col w-full rounded-lg shadow-lg"
         style={{
-          background: 'rgba(0, 0, 26, .9)',
-          color: 'white',
+          background: "rgba(0, 0, 26, .9)",
+          color: "white",
         }}
       >
         <div tw="text-3xl font-extrabold leading-tight ml-6 py-8 text-left">
@@ -62,7 +62,7 @@ function GetStartedTodaySection() {
             <span
               tw="text-2xl font-bold leading-tight"
               style={{
-                color: '#ff08ff',
+                color: "#ff08ff",
               }}
             >
               Got a question? Want to get involved? Just wanna to say hi?
@@ -89,7 +89,7 @@ function FollowUsOnTwitterBanner() {
           <p tw="text-3xl font-extrabold leading-tight my-2">
             <RiTwitterFill tw="inline-block mr-2" fill="#1b95e0" size={48} />
 
-            <span tw="inline-block align-middle">Follow us on Twitter</span>
+            <span tw="inline-block align-middle">Siguenos en Twitter</span>
           </p>
         </div>
       </a>
@@ -138,8 +138,8 @@ function TweetUsBanner() {
       <div
         tw="flex flex-col w-full rounded-lg shadow-lg mt-4"
         style={{
-          background: 'rgba(0, 0, 26, .9)',
-          color: 'white',
+          background: "rgba(0, 0, 26, .9)",
+          color: "white",
         }}
       >
         <a href="#">
@@ -159,8 +159,8 @@ function MessagesOnTwitterBanner() {
       <div
         tw="flex flex-col w-full rounded-lg shadow-lg mt-4"
         style={{
-          background: 'rgba(0, 0, 26, .9)',
-          color: 'white',
+          background: "rgba(0, 0, 26, .9)",
+          color: "white",
         }}
       >
         <a href="https://twitter.com/shoutmofficial">

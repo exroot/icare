@@ -14,8 +14,10 @@ import { BiMessageAdd } from "react-icons/bi";
 import tw, { css } from "twin.macro";
 import ShoutoutModal from "../Modals/ShoutoutModal";
 import SiteLogo from "../SiteLogo";
+import useUser from "../../lib/useUser";
 
 const Sidebar = () => {
+  const { user } = useUser({ oneCall: true });
   const { pathname } = useRouter();
   return (
     <div tw="w-72 relative">
@@ -53,7 +55,7 @@ const Sidebar = () => {
             />
             <span tw="mx-4 text-lg font-bold">Explorar</span>
           </SidebarItem>
-          <SidebarItem
+          {/* <SidebarItem
             href="/notifications"
             active={pathname === "/notifications"}
           >
@@ -66,7 +68,7 @@ const Sidebar = () => {
               }
             />
             <span tw="mx-4 text-lg font-bold">Notificaciones</span>
-          </SidebarItem>
+          </SidebarItem> */}
           <SidebarItem href="/profile" active={pathname === "/profile"}>
             <CgProfile
               tw="h-6 w-6 self-center text-primary-500"
@@ -89,20 +91,23 @@ const Sidebar = () => {
             />
             <span tw="mx-4 text-lg font-bold">Configuración</span>
           </SidebarItem>
-          <SidebarItem
-            href="/administracion"
-            active={pathname.includes("/administracion")}
-          >
-            <RiDashboard3Line
-              tw="h-6 w-6 self-center text-primary-500"
-              color={
-                pathname.includes("/administracion")
-                  ? "var(--color-accent)"
-                  : "var(--color-primary-500)"
-              }
-            />
-            <span tw="mx-4 text-lg font-bold">Administración</span>
-          </SidebarItem>
+          {/* {alert(JSON.stringify(user))} */}
+          {user.rol_id <= 2 && (
+            <SidebarItem
+              href="/administracion"
+              active={pathname.includes("/administracion")}
+            >
+              <RiDashboard3Line
+                tw="h-6 w-6 self-center text-primary-500"
+                color={
+                  pathname.includes("/administracion")
+                    ? "var(--color-accent)"
+                    : "var(--color-primary-500)"
+                }
+              />
+              <span tw="mx-4 text-lg font-bold">Administración</span>
+            </SidebarItem>
+          )}
         </div>
       </div>
     </div>

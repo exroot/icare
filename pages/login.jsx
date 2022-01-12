@@ -42,19 +42,19 @@ const Login = () => {
       /* TODO: REMOVE LOCALSTORAGE USAGE BEFORE OFFICIAL RELEASE */
       localStorage.setItem("access", response.data.tokens.access);
       localStorage.setItem("refresh", response.data.tokens.refresh);
-      setTimeout(async () => {
-        await mutateUser(
-          {
-            username: response.data.username,
-            email: response.data.email,
-            is_logged_in: true,
-          },
-          true
-        );
-      }, 5000);
+      console.log("response: ", response);
+
+      await mutateUser(
+        {
+          username: response.data.username,
+          email: response.data.email,
+          is_logged_in: true,
+        },
+        true
+      );
     } catch (err) {
-      if (err.response.data.errors.detail) {
-        setFieldError("email", err.response.data.errors.detail);
+      if (err.response.data.message) {
+        setFieldError("email", err.response.data.message);
       } else {
         console.log(err);
       }

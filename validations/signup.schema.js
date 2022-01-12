@@ -5,7 +5,7 @@ const SignUpSchema = Yup.object().shape({
     .email("Ingresa una dirección de email válida.")
     .required("Ingresa tu dirección de email."),
   password: Yup.string()
-    .min(6, "Ingresa una contraseña válida (mínimo 6 caracteres).")
+    .min(6, "Ingresa una contraseña válida (mínimo 8 caracteres).")
     .required("Ingresa tu contraseña."),
   username: Yup.string()
     .min(4, "Ingresa un username válido (mínimo 4 caracteres).")

@@ -46,41 +46,7 @@ const EditProfile = ({ user: userData }) => {
   });
   const imageRef = useRef(null);
   const { addToast } = useToasts();
-  // const [tags, setTags] = useState([
-  //   ...(user.tags.map((tag, idx) => ({
-  //     id: idx,
-  //     name: tag,
-  //   })) || []),
-  // ])
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   if (isMounted) {
-  //     (async () => {
-  //       const { data } = await axios({
-  //         url: "/profile-tags",
-  //         method: "GET",
-  //         headers: {},
-  //       });
-  //       const suggestions = data.map((tag, idx) => ({
-  //         id: idx,
-  //         name: tag,
-  //       }));
-  //       setTagsSuggestions(suggestions);
-  //     })();
-  //     (async () => {
-  //       const { data } = await axios({
-  //         url: "/profile-categories",
-  //         method: "GET",
-  //         headers: {},
-  //       });
-  //       setCategories(data);
-  //     })();
-  //   }
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, []);
   const handleSubmit = async (values, { setFieldError }) => {
     setLoading(true);
     try {
@@ -279,7 +245,7 @@ const EditProfile = ({ user: userData }) => {
             false
           );
           setLoadingImage(false);
-        }, 5000);
+        }, 500);
       } else {
         setTimeout(() => {
           setShowModal(false);
@@ -294,7 +260,7 @@ const EditProfile = ({ user: userData }) => {
             false
           );
           setLoadingImage(false);
-        }, 3000);
+        }, 500);
       }
       addToast(`Imagen de ${fieldName} actualizada satisfactoriamente.`, {
         appearance: "success",

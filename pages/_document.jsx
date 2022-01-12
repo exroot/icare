@@ -16,11 +16,10 @@ class MyDocument extends Document {
       <Html
         lang="en"
         style={{
-          backgroundColor: "#000",
+          backgroundColor: "#181c20",
         }}
       >
         <Head>
-          <script src="https://cdn.tailwindcss.com"></script>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
             async

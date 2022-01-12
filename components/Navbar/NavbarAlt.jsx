@@ -1,45 +1,45 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { RiMenuLine } from 'react-icons/ri'
-import { trigger, cache } from 'swr'
-import localforage from 'localforage'
-import NotificationsDropdownAlt from './NotificationDropdownAlt'
-import ProfileDropdownAlt from './ProfileDropdownAlt'
-import useUser from '../../lib/useUser'
-import axios from '../../lib/client'
-import redirectTo from '../../utils/redirectTo'
-import 'twin.macro'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { RiMenuLine } from "react-icons/ri";
+import { trigger, cache } from "swr";
+import localforage from "localforage";
+import NotificationsDropdownAlt from "./NotificationDropdownAlt";
+import ProfileDropdownAlt from "./ProfileDropdownAlt";
+import useUser from "../../lib/useUser";
+import axios from "../../lib/client";
+import redirectTo from "../../utils/redirectTo";
+import "twin.macro";
 
 const Navbar = ({ setIsSidebarOpen }) => {
   const { user, isLoading, mutateUser, error } = useUser({
     oneCall: true,
-  })
+  });
   const [dropdownActive, setDropdownActive] = useState({
     notifications: false,
     profile: false,
-  })
+  });
   const handleLogout = async () => {
     try {
       const body = {
-        refresh_token: localStorage.getItem('refresh'),
-        device_token: await localforage.getItem('fcm_token'),
-      }
+        refresh_token: localStorage.getItem("refresh"),
+        device_token: await localforage.getItem("fcm_token"),
+      };
       const { data } = await axios({
-        url: '/auth/logout/',
-        method: 'POST',
+        url: "/auth/logout/",
+        method: "POST",
         body,
-      })
-      localStorage.removeItem('access')
-      localStorage.removeItem('refresh')
-      await mutateUser({ ...user, is_logged_in: false }, false)
-      await trigger('/auth/me')
-      cache.clear()
-      redirectTo('/login')
+      });
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      await mutateUser({ ...user, is_logged_in: false }, false);
+      await trigger("/auth/me");
+      cache.clear();
+      redirectTo("/login");
     } catch (err) {
-      console.log(err)
-      throw err
+      console.log(err);
+      throw err;
     }
-  }
+  };
 
   return (
     <nav tw="hidden lg:flex flex-shrink-0 h-16 bg-transparent z-10">
@@ -58,10 +58,10 @@ const Navbar = ({ setIsSidebarOpen }) => {
         <div tw="flex-1 flex" />
 
         <div tw="ml-4 flex items-center md:ml-6">
-          <NotificationsDropdownAlt
+          {/* <NotificationsDropdownAlt
             dropdownActive={dropdownActive}
             setDropdownActive={setDropdownActive}
-          />
+          /> */}
           {/* Profile dropdown */}
           <div tw="ml-3 mr-6">
             <ProfileDropdownAlt
@@ -74,10 +74,10 @@ const Navbar = ({ setIsSidebarOpen }) => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 Navbar.propTypes = {
   setIsSidebarOpen: PropTypes.func,
-}
-export default Navbar
+};
+export default Navbar;
