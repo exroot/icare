@@ -218,7 +218,7 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-      <CookieConsent />
+      {/* <CookieConsent /> */}
     </>
   );
 };

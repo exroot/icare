@@ -168,7 +168,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <CookieConsent />
+      {/* <CookieConsent /> */}
     </>
   );
 };

@@ -32,7 +32,7 @@ const Wrapper = ({ children }) => {
           </main>
         </div>
       </div>
-      <CookieConsent />
+      {/* <CookieConsent /> */}
     </>
   );
 };

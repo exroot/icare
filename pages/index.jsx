@@ -52,7 +52,7 @@ const Home = () => {
         </GlowButton>
         {/* <TakeActionButtonArea /> */}
       </Hero>
-      <CookieConsent />
+      {/* <CookieConsent /> */}
     </>
   );
 };
